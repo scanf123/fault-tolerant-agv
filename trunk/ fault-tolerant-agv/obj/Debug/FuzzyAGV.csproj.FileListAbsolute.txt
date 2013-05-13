@@ -1,0 +1,38 @@
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\FuzzyAGV.AboutForm.resources
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\FuzzyAGV.MainForm.resources
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\FuzzyRobot.Properties.Resources.resources
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\ResGen.read.1.tlog
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\ResGen.write.1.tlog
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\FuzzyRobot.exe
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\FuzzyRobot.pdb
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\AForge.Fuzzy.dll
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\AForge.dll
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\AForge.Fuzzy.xml
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\bin\Debug\AForge.xml
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\FuzzyRobot.exe
+C:\Users\IVAN\Desktop\FuzzyAGVTest2\obj\Debug\FuzzyRobot.pdb
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyRobot.exe
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyRobot.pdb
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\bin\Debug\FuzzyRobot.exe
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\bin\Debug\FuzzyRobot.pdb
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\bin\Debug\AForge.dll
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\bin\Debug\AForge.Fuzzy.xml
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\bin\Debug\AForge.xml
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyAGV.csprojResolveAssemblyReference.cache
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyAGV.AboutForm.resources
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyAGV.MainForm.resources
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyRobot.Properties.Resources.resources
+D:\DocumentosIvan\EC\VIII Semestre\IC - Labs\Mes 09\27_09_2012\FuzzyAGVTest2\obj\Debug\FuzzyAGV.csproj.GenerateResource.Cache
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyRobot.exe
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyRobot.pdb
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\bin\Debug\FuzzyRobot.exe
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\bin\Debug\FuzzyRobot.pdb
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\bin\Debug\AForge.dll
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\bin\Debug\AForge.Fuzzy.xml
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\bin\Debug\AForge.xml
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyAGV.csprojResolveAssemblyReference.cache
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyAGV.AboutForm.resources
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyAGV.MainForm.resources
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyRobot.Properties.Resources.resources
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FuzzyAGVTest\obj\Debug\FuzzyAGV.csproj.GenerateResource.Cache
