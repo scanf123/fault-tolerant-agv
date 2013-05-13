@@ -1,0 +1,94 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="using" priority="0" />
+      <Item value="System" priority="0" />
+      <Item value="cnDistPerto" priority="1" />
+      <Item value="cnDistMedio" priority="0" />
+      <Item value="cnDistLonge" priority="0" />
+      <Item value="cnAnguloDireita" priority="0" />
+      <Item value="cnAnguloEsq" priority="0" />
+      <Item value="lvDistanciaDir" priority="0" />
+      <Item value="lvDistanciaEsq" priority="0" />
+      <Item value="lvDistanciaFrente" priority="0" />
+      <Item value="rightDist" priority="0" />
+      <Item value="leftDist" priority="0" />
+      <Item value="frontDist" priority="0" />
+      <Item value="Angle" priority="5" />
+      <Item value="Int64`0" priority="0" />
+      <Item value="if" priority="3" />
+      <Item value="soma2" priority="0" />
+      <Item value="private" priority="0" />
+      <Item value="string" priority="1" />
+      <Item value="else" priority="2" />
+      <Item value="String`0" priority="0" />
+      <Item value="_lastTurn" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Empty" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:AboutForm.cs" caret="758" fromTop="24" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:Clausula.cs" caret="70" fromTop="2" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:IntReta.cs" caret="69" fromTop="2" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:Linguistica.cs" caret="70" fromTop="2" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:ConjuntoNebuloso.cs" caret="283" fromTop="10" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:Defuzz.cs" caret="1243" fromTop="31" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:MainForm.cs" caret="178" fromTop="5" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="13894" fromTop="15" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:Regra.cs" caret="619" fromTop="16" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="7532" fromTop="10" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="15494" fromTop="13" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="12144" fromTop="10" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="10121" fromTop="22" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="10698" fromTop="29" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="10032" fromTop="25" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="4609" fromTop="15" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="242" fromTop="12" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="10698" fromTop="32" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="8300" fromTop="17" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="4700" fromTop="14" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="3747" fromTop="16" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1697" fromTop="26" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1697" fromTop="23" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1697" fromTop="21" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1690" fromTop="18" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1072" fromTop="18" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1698" fromTop="21" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1697" fromTop="21" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1074" fromTop="24" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1698" fromTop="19" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="8938" fromTop="24" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1699" fromTop="26" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1024" fromTop="12" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="829" fromTop="11" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="9240" fromTop="19" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="8482" fromTop="7" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="9436" fromTop="23" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="1026" fromTop="15" />
+      <File id="BCC446EF-0F10-4FBB-AB37-9A9E0B1CDBAB/f:FIS.cs" caret="830" fromTop="15" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>
