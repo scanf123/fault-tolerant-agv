@@ -14,3 +14,11 @@ C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FaultTolerantAG
 C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FaultTolerantAGV\obj\Debug\FuzzyAGV.MainForm.resources
 C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FaultTolerantAGV\obj\Debug\FaultTolerantAGV.Properties.Resources.resources
 C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\FaultTolerantAGV\obj\Debug\FaultTolerantAGV.csproj.GenerateResource.Cache
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\bin\Debug\FaultTolerantAGV.exe
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\bin\Debug\FaultTolerantAGV.pdb
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\FaultTolerantAGV.csprojResolveAssemblyReference.cache
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\AGVFaultTolerant.MainForm.resources
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\FaultTolerantAGV.Properties.Resources.resources
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\FaultTolerantAGV.csproj.GenerateResource.Cache
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\FaultTolerantAGV.exe
+C:\Users\IVAN\Desktop\TCC\Alg Gen Hard Evolu\Source Code\Projeto\fault-tolerant-agv\obj\Debug\FaultTolerantAGV.pdb

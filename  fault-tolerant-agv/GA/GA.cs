@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 //namespace QuadradoSoma
-namespace FuzzyAGV
+namespace AGVFaultTolerant
 {
 
     /// <summary>
@@ -14,23 +14,62 @@ namespace FuzzyAGV
     {
         // Tamanho da população
         private int populationSize;
-        // Número máximo de gerações e geração atual 
-        private int generations, generation;
-        // Taxa de mutação
-        private double mutation_rate;
+
+        public int PopulationSize
+        {
+            get { return populationSize; }
+            set { populationSize = value; }
+        }
+        //Numero de vezes que será colnado a população para gerar clones mutados 
+        //e geração atual 
+        private int clonepopulation, generation;
+
+        /// <summary>
+        //Numero de vezes que será colnado a população para gerar clones mutados 
+        /// </summary>
+        public int Clonepopulation
+        {
+            get { return clonepopulation; }
+            set { clonepopulation = value; }
+        }
+
+        //_distance - position counter two motors
+        //_time - value of the IO period counter
+        private double _distance, _time;
+
+        // Taxa de mutação, o calculo do mutation_rate é feito de forma dinamica e depende do fitness
+        //private double mutation_rate;
         // Gerador de números randômicos
         private static Random random = new Random(DateTime.Now.Millisecond);
 
-        private int[] totLin;
-        private int[] totCol;
-        private int max;
         private bool solucao = false;
 
+        public bool Solucao
+        {
+            get { return solucao; }
+            set { solucao = value; }
+        }
 
+        public double Time
+        {
+            get { return _time; }
+            //Replica para os cromossomos
+            set { _time = value; if (chromosomes.Count > 0) foreach (CircuitoChromosome q in chromosomes) q.Time = _time; }
+        }
 
+        public double Distance
+        {
+            get { return _distance; }
+            //Replica para os cromossomos
+            set { _distance = value; if (chromosomes.Count > 0) foreach (CircuitoChromosome q in chromosomes) q.Distance = _distance; }
+        }
         private int killnumber;
+        //private int _mi;
+        private int _k;//Constant to be turned by the user (utilizada no calculo do numero de bits a ser mutado)
 
-        private List<QSChromosome> chromosomes;
+
+        private List<CircuitoChromosome> chromosomes;
+
         /// <summary>
         /// Propriedade para expor geração
         /// </summary>
@@ -39,57 +78,86 @@ namespace FuzzyAGV
             get { return generation; }
         }
 
-        public bool Solucao
+
+        /// <summary>
+        /// Numero de vezes que será colnado a população para gerar filhos mutados
+        /// </summary>
+        //public int Mi
+        //{
+        //    get { return _mi; }
+        //    set { _mi = value; }
+        //}
+
+        /// <summary>
+        /// Constant to be turned by the user (utilizada no calculo do numero de bits a ser mutado)
+        /// </summary>
+        public int K
         {
-            get { return solucao; }
-            set { solucao = value; }
+            get { return _k; }
+            set { _k = value; }
         }
+
 
 
         /// <summary>
         /// Inicializa o algoritmo genético, inicializando a população e o vetor com os fitness.
         /// </summary>
         /// <param name="populationSize"> Tamanho da população </param>
-        /// <param name="generations"> Gerações </param>
+        /// <param name="clones"> Número de clones </param>
         /// <param name="mutation_rate"> Taxa de mutação </param>
-        public GA(int populationSize, int generations, double mutation_rate, int[] Lin, int[] Col, int maxVal)
+        public GA(int populationSize, int clones, bool[] sensors)
         {
-
             this.populationSize = populationSize;
-            this.generations = generations;
-            this.mutation_rate = mutation_rate;
+            this.clonepopulation = clones;
             this.generation = 0;
 
-            totLin = Lin;
-            totCol = Col;
-            max = maxVal;
-
-            this.chromosomes = new List<QSChromosome>(populationSize);
-            InitializePopulation();
+            this.chromosomes = new List<CircuitoChromosome>(populationSize);
+            InitializePopulation(sensors);
         }
 
         /// <summary>
         /// Busca a solução, criando as sucessivas gerações da população. 
         /// </summary>
-        public QSChromosome FindSolution()
-        {
-            for (int i = 0; i < generations; i++)
-            {
-                //Usado para depuração para acompanhar o fitness do melhor elemento
-                if (i % 1000 == 0)
-                    i = i;
+        //public CircuitoChromosome FindSolution()
+        //{
+        //    generation++;
+        //    //GenerateChildren();
+        //    //Os Clones são cridos e avaliados dinamicamente (cda qual é implementado por 140 ms)
+        //    //QSChromosome c = GetBestIndividual();           
 
-                generation++;
-                Selection(populationSize / 3);
-                GenerateChildren();
-                QSChromosome c = GetBestIndividual();
-                if (c.GetFitness() == 0)
+        //    //Apenas o melhor individuo será mantido
+        //    Selection(populationSize - 1);
+        //    //Atribui ao Pai, os melhores individuos dos clones (se houverem mudanças para melhor no circuito)
+        //    return GetBestIndividual();
+        //}
+
+        //public CircuitoChromosome FindSolution()
+        public void FindSolution()
+        {
+            generation++;
+            Evaluate();
+            //GenerateChildren();
+            //Os Clones são cridos e avaliados dinamicamente (cda qual é implementado por 140 ms)
+            //QSChromosome c = GetBestIndividual();           
+
+            //Apenas o melhor individuo será mantido
+            Selection(populationSize - 1);
+            //Atribui ao Pai, os melhores individuos dos clones (se houverem mudanças para melhor no circuito)
+            //return GetBestIndividual();
+        }
+
+        private void Evaluate()
+        {
+            //Avalia população de pais
+            foreach (CircuitoChromosome c in this.chromosomes)
+            {
+                //Avalia população de clones
+                foreach (CircuitoChromosome clone in c.Clones)
                 {
-                    solucao = true;
-                    return c;
+                    clone.GetFitness();
                 }
+                c.GetFitness();
             }
-            return GetBestIndividual();
         }
 
 
@@ -97,7 +165,7 @@ namespace FuzzyAGV
         /// Retorna o indivíduo com o melhor fitness
         /// </summary>
         /// <returns></returns>
-        public QSChromosome GetBestIndividual()
+        public CircuitoChromosome GetBestIndividual()
         {
             AvaliatePopulation();
             chromosomes.Sort();
@@ -107,10 +175,16 @@ namespace FuzzyAGV
         /// <summary>
         /// Inicializa a população
         /// </summary>
-        public void InitializePopulation()
+        //public void InitializePopulation()
+        //{
+        //    for (int i = 0; i < populationSize; i++)
+        //        this.chromosomes.Add(QSChromosome.CreateRandomChromosome());
+        //}
+
+        public void InitializePopulation(bool[] sensors)
         {
             for (int i = 0; i < populationSize; i++)
-                this.chromosomes.Add(QSChromosome.CreateRandomChromosome(totLin, totCol, max));
+                this.chromosomes.Add(CircuitoChromosome.CreateRandomChromosome(sensors));
         }
 
         /// <summary>
@@ -118,8 +192,14 @@ namespace FuzzyAGV
         /// </summary>
         public void AvaliatePopulation()
         {
-            foreach (QSChromosome c in this.chromosomes)
+            foreach (CircuitoChromosome c in this.chromosomes)
+            {
+                foreach (CircuitoChromosome clone in c.Clones)
+                {
+                    clone.GetFitness();
+                }
                 c.GetFitness();
+            }
         }
 
         /// <summary>
@@ -132,38 +212,30 @@ namespace FuzzyAGV
             this.killnumber = killnumber;
 
             AvaliatePopulation();
+
+            //ordena clones
+            foreach (CircuitoChromosome c in chromosomes)
+            {
+                c.Clones.Sort();
+            }
             chromosomes.Sort();
 
-            //QSChromosome c;
-            //int i = chromosomes.Count - 1;
-
-            while (countKill > 0)
+            //seleciona apenas os melhores para compor a proxima geração de pais
+            List<CircuitoChromosome> lstTmp = new List<CircuitoChromosome>();
+            foreach (CircuitoChromosome c in chromosomes)
             {
-                MetodoDoTorneio();
-                countKill -= 2;
-
-
-                //Sorteio proporcional ao fitnes
-                //fitness, mais prox. de 0 , dificuldade de ser sorteado
-                //c = MetodoDaRoleta();
-                //this.chromosomes.Remove(c);
-                //countKill--;                
-
-                ////Extremamente mais rápido
-                //c = this.chromosomes[i];
-                ////Compara o individuo com uma valor randomico, se for maior descarta-o
-                //if (c.Fitness >= random.Next(max))
-                //{
-                //    this.chromosomes.Remove(c);
-                //    countKill--;
-                //}
-                //if (i > 0)
-                //    i--;
-                //else
-                //    i = chromosomes.Count - 1;
+                lstTmp.Add(c.Clones[0]);
             }
-            if (countKill < 0)
-                countKill = countKill;
+            lstTmp.Add(chromosomes[0]);
+
+            lstTmp.Sort();
+            for (int i = 0; i < populationSize; i++)
+            {
+                chromosomes[i] = lstTmp[i];
+            }
+
+
+
         }
 
         /// <summary>
@@ -175,26 +247,27 @@ namespace FuzzyAGV
         {
             if (this.chromosomes.Count > 0)
             {
-                //Repete p/ nao diminuir a população
-                while (populationSize > this.chromosomes.Count)
+                CircuitoChromosome c = GetBestIndividual();
+                double fit = c.GetFitness();
+                int norm_fi = (int)Math.Truncate(fit);
+                List<CircuitoChromosome> lstClonedMutated = new List<CircuitoChromosome>(); ;
+
+                List<CircuitoChromosome> Cloned;
+                //Clona _mi vezes a população inicial
+                //for (int i = 0; i < (_mi); i++)
+                for (int i = 0; i < (this.clonepopulation); i++)
                 {
-
-                    for (int i = 0; i < (killnumber); i++)
+                    Cloned = new List<CircuitoChromosome>();
+                    Cloned.AddRange(this.chromosomes.ToArray());
+                    for (int j = 0; j < Cloned.Count; j++)
                     {
-                        int index = -1;
-
-                        do { index = random.Next(populationSize - killnumber + i); } while (index >= this.chromosomes.Count);
-                        QSChromosome pai = this.chromosomes[index];
-                        do { index = random.Next(populationSize - killnumber + i); } while (index >= this.chromosomes.Count);
-                        QSChromosome mae = this.chromosomes[index];
-                        QSChromosome nenem = pai.Crossover(mae);
-
-                        nenem.Mutate(mutation_rate);
-
-                        this.chromosomes.Add(nenem);
+                        //Aplica mutação no individuo
+                        Cloned[i].Mutate(_k, norm_fi);
                     }
-
+                    //Adiciona os clones mutados a população atual
+                    lstClonedMutated.AddRange(Cloned.ToArray());
                 }
+                this.chromosomes.AddRange(lstClonedMutated.ToArray());
             }
         }
 
@@ -206,7 +279,7 @@ namespace FuzzyAGV
         /// </summary>
         private void MetodoDoTorneio()
         {
-            QSChromosome c1, c2, c3;
+            CircuitoChromosome c1, c2, c3;
             int[] listaSorteados = { -1, -1, -1 };
             int ctIndex = 0;
             if (this.chromosomes.Count > 0)
@@ -223,7 +296,7 @@ namespace FuzzyAGV
                         //Pega um chromossomo random
                         indexChromo = random.Next((chromosomes.Count - 1));
 
-                        //Verifica repetição de item
+                        //Verifica repetição de item                                                
                         for (int i = 0; i < 3; i++)
                             if (listaSorteados[i] == indexChromo) repetido = true;
 
@@ -233,7 +306,6 @@ namespace FuzzyAGV
                     //Adiciona item a lista de sorteados
                     listaSorteados[ctIndex] = indexChromo;
                     ctIndex++;
-
                 }
 
                 //Escolhido tres individuos randomicamente sem repetição, faz-se o torneio
@@ -241,21 +313,21 @@ namespace FuzzyAGV
                 c2 = this.chromosomes[listaSorteados[1]];
                 c3 = this.chromosomes[listaSorteados[2]];
 
-                if (c1.GetFitness() <= c2.GetFitness() && c1.GetFitness() <= c3.GetFitness())
+                if (c1.GetFitness() >= c2.GetFitness() && c1.GetFitness() >= c3.GetFitness())
                 {
-                    //c1 é o menor
+                    //c1 é o melhor
                     this.chromosomes.Remove(c2);
                     this.chromosomes.Remove(c3);
                 }
-                if (c2.GetFitness() <= c1.GetFitness() && c2.GetFitness() <= c3.GetFitness())
+                if (c2.GetFitness() >= c1.GetFitness() && c2.GetFitness() >= c3.GetFitness())
                 {
-                    //c2 é o menor
+                    //c2 é o melhor
                     this.chromosomes.Remove(c1);
                     this.chromosomes.Remove(c3);
                 }
-                if (c3.GetFitness() <= c2.GetFitness() && c3.GetFitness() <= c1.GetFitness())
+                if (c3.GetFitness() >= c2.GetFitness() && c3.GetFitness() >= c1.GetFitness())
                 {
-                    //c3 é o menor
+                    //c3 é o melhor
                     this.chromosomes.Remove(c2);
                     this.chromosomes.Remove(c1);
                 }
@@ -266,7 +338,7 @@ namespace FuzzyAGV
         /// Cada candidato possui uma fatia da “roleta” proporcional a sua aptidão
         /// </summary>
         /// <returns></returns>
-        private QSChromosome MetodoDaRoleta()
+        private CircuitoChromosome MetodoDaRoleta()
         {
 
             Hashtable htLista = new Hashtable();
@@ -299,5 +371,24 @@ namespace FuzzyAGV
 
         #endregion
 
+
+        public CircuitoChromosome GetCurrentChromosome(int parent)
+        {
+            return chromosomes[parent];
+        }
+
+        public CircuitoChromosome GetCurrentCloneChromosome(int ctControleParent, int ctControleClones)
+        {
+            return chromosomes[ctControleParent].Clones[ctControleClones];
+        }
+
+        public void InitializeClones(int ctControleParent, bool[] sensors)
+        {
+
+            for (int i = 0; i < clonepopulation; i++)
+                this.chromosomes[ctControleParent].Clones.Add(CircuitoChromosome.CreateRandomClone(sensors, this.chromosomes[ctControleParent].GetFitness(), this.chromosomes[ctControleParent].Cgp.Genotype, this._k));
+
+        }
     }
 }
+

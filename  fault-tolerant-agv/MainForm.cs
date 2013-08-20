@@ -1,10 +1,8 @@
-// Fuzzy Auto Guided Vehicle Sample
-// AForge.NET framework
-// http://www.aforgenet.com/framework/
-//
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
-//
+//Fault Tolerant AGV
+//Utilizado como matriz:
+//      Fuzzy Auto Guided Vehicle Sample
+//      AForge.NET framework
+//      http://www.aforgenet.com/framework/
 
 using System;
 using System.Drawing;
@@ -15,14 +13,25 @@ using System.Windows.Forms;
 using System.Data;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 
-namespace FuzzyAGV
+namespace AGVFaultTolerant
 {
     public class MainForm : System.Windows.Forms.Form
     {
 
         #region Private members
+        int ctControleParent = 0;
+        int ctControleClones = 0;
+        private bool _bCiclo = false;
+        private bool _ponto1 = true;
+        private bool _ponto2 = false;
+        Point p1, p2;
+        List<int> lstDist;
+
         private string RunLabel;
+        private bool _traz;
+        //private TimeSpan _IoPeriodCounter = new TimeSpan(0, 0, 0);
         private Point InitialPos;
         private bool FirstInference;
         private int LastX;
@@ -31,7 +40,10 @@ namespace FuzzyAGV
         private double Angle, Speed;
         private Bitmap OriginalMap, InitialMap;
         private Thread thMovement;
-        private FIS fis;
+        //private FIS fis;
+        private GA _ga;
+        private bool[] sensors;
+
 
         /// <summary>
         /// Required designer variable.
@@ -84,6 +96,21 @@ namespace FuzzyAGV
         private Label label23;
         private Label label22;
         private Label label21;
+        private GroupBox groupBox6;
+        private Label lblFitness4;
+        private Label lblGeneration;
+        private Label label19;
+        private Label label24;
+        private PictureBox pbLimiar7;
+        private PictureBox pbLimiar6;
+        private PictureBox pbLimiar0;
+        private PictureBox pbLimiar5;
+        private PictureBox pbLimiar4;
+        private PictureBox pbLimiar1;
+        private PictureBox pbLimiar2;
+        private PictureBox pbLimiar3;
+        private TextBox txtGeneAgv;
+        private Label lblGeneCircuito;
         private System.Windows.Forms.CheckBox cbTrajeto;
         #endregion
 
@@ -105,11 +132,24 @@ namespace FuzzyAGV
             Angle = 0;
             OriginalMap = new Bitmap(pbTerrain.Image);
             InitialMap = new Bitmap(pbTerrain.Image);
+            sensors = new bool[8];
+            sensors[0] = false;
+            sensors[1] = false;
+            sensors[2] = false;
+            sensors[3] = false;
+            sensors[4] = false;
+            sensors[5] = false;
+            sensors[6] = false;
+            sensors[7] = false;
+            _traz = false;
+            //fis = new FIS();
+            //_ga = new GA(16, 3, sensors);
+            _ga = new GA(3, 3, sensors);
+            _ga.K = 10;
 
-            fis = new FIS();
             FirstInference = true;
-            pbRobot.Top = pbTerrain.Bottom - 50;
-            pbRobot.Left = pbTerrain.Left + 60;
+            pbRobot.Top = pbTerrain.Bottom - 70;
+            pbRobot.Left = pbTerrain.Left + 80;
             InitialPos = pbRobot.Location;
             RunLabel = btnRun.Text;
         }
@@ -142,7 +182,6 @@ namespace FuzzyAGV
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.pbTerrain = new System.Windows.Forms.PictureBox();
             this.btnStep = new System.Windows.Forms.Button();
             this.btnRun = new System.Windows.Forms.Button();
             this.txtInterval = new System.Windows.Forms.TextBox();
@@ -179,40 +218,50 @@ namespace FuzzyAGV
             this.label3 = new System.Windows.Forms.Label();
             this.txtAngle = new System.Windows.Forms.Label();
             this.gbComandos = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.cbTrajeto = new System.Windows.Forms.CheckBox();
             this.btnReset = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.pbRobot = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.lstFalha = new System.Windows.Forms.CheckedListBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.lblFitness4 = new System.Windows.Forms.Label();
+            this.lblGeneration = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.pbLimiar3 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar2 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar1 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar4 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar5 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar0 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar6 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar7 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).BeginInit();
+            this.pbRobot = new System.Windows.Forms.PictureBox();
+            this.pbTerrain = new System.Windows.Forms.PictureBox();
+            this.txtGeneAgv = new System.Windows.Forms.TextBox();
+            this.lblGeneCircuito = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbComandos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pbTerrain
-            // 
-            this.pbTerrain.BackColor = System.Drawing.SystemColors.ControlText;
-            this.pbTerrain.ErrorImage = null;
-            this.pbTerrain.Image = ((System.Drawing.Image)(resources.GetObject("pbTerrain.Image")));
-            this.pbTerrain.InitialImage = null;
-            this.pbTerrain.Location = new System.Drawing.Point(581, 8);
-            this.pbTerrain.Name = "pbTerrain";
-            this.pbTerrain.Size = new System.Drawing.Size(500, 500);
-            this.pbTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbTerrain.TabIndex = 10;
-            this.pbTerrain.TabStop = false;
-            this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
-            this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
             // 
             // btnStep
             // 
@@ -540,7 +589,7 @@ namespace FuzzyAGV
             this.txtSpeed.Name = "txtSpeed";
             this.txtSpeed.Size = new System.Drawing.Size(40, 16);
             this.txtSpeed.TabIndex = 31;
-            this.txtSpeed.Text = "30,00";
+            this.txtSpeed.Text = "12,0";
             this.txtSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
@@ -588,6 +637,30 @@ namespace FuzzyAGV
             this.gbComandos.TabStop = false;
             this.gbComandos.Text = "Tools:";
             // 
+            // label21
+            // 
+            this.label21.Location = new System.Drawing.Point(87, 114);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(30, 13);
+            this.label21.TabIndex = 20;
+            this.label21.Text = "O";
+            // 
+            // label23
+            // 
+            this.label23.Location = new System.Drawing.Point(87, 172);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(30, 13);
+            this.label23.TabIndex = 22;
+            this.label23.Text = "A";
+            // 
+            // label22
+            // 
+            this.label22.Location = new System.Drawing.Point(87, 143);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(30, 13);
+            this.label22.TabIndex = 21;
+            this.label22.Text = "R";
+            // 
             // cbTrajeto
             // 
             this.cbTrajeto.Location = new System.Drawing.Point(8, 16);
@@ -613,16 +686,6 @@ namespace FuzzyAGV
             this.label4.Size = new System.Drawing.Size(125, 13);
             this.label4.TabIndex = 18;
             this.label4.Text = "Move Interval (ms):";
-            // 
-            // pbRobot
-            // 
-            this.pbRobot.BackColor = System.Drawing.Color.Transparent;
-            this.pbRobot.Image = ((System.Drawing.Image)(resources.GetObject("pbRobot.Image")));
-            this.pbRobot.Location = new System.Drawing.Point(640, 450);
-            this.pbRobot.Name = "pbRobot";
-            this.pbRobot.Size = new System.Drawing.Size(10, 10);
-            this.pbRobot.TabIndex = 11;
-            this.pbRobot.TabStop = false;
             // 
             // timer
             // 
@@ -655,6 +718,137 @@ namespace FuzzyAGV
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Falha sensor";
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.lblFitness4);
+            this.groupBox6.Controls.Add(this.lblGeneration);
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.label24);
+            this.groupBox6.Location = new System.Drawing.Point(310, 308);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(145, 101);
+            this.groupBox6.TabIndex = 60;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Melhor Cromossomo:";
+            // 
+            // lblFitness4
+            // 
+            this.lblFitness4.AutoSize = true;
+            this.lblFitness4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFitness4.Location = new System.Drawing.Point(20, 71);
+            this.lblFitness4.Name = "lblFitness4";
+            this.lblFitness4.Size = new System.Drawing.Size(14, 13);
+            this.lblFitness4.TabIndex = 3;
+            this.lblFitness4.Text = "?";
+            // 
+            // lblGeneration
+            // 
+            this.lblGeneration.AutoSize = true;
+            this.lblGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGeneration.Location = new System.Drawing.Point(20, 29);
+            this.lblGeneration.Name = "lblGeneration";
+            this.lblGeneration.Size = new System.Drawing.Size(14, 13);
+            this.lblGeneration.TabIndex = 61;
+            this.lblGeneration.Text = "0";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 58);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(111, 13);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "Função de Avaliação:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(6, 16);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(56, 13);
+            this.label24.TabIndex = 60;
+            this.label24.Text = "Gerações:";
+            // 
+            // pbLimiar3
+            // 
+            this.pbLimiar3.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar3.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar3.Location = new System.Drawing.Point(474, 56);
+            this.pbLimiar3.Name = "pbLimiar3";
+            this.pbLimiar3.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar3.TabIndex = 68;
+            this.pbLimiar3.TabStop = false;
+            // 
+            // pbLimiar2
+            // 
+            this.pbLimiar2.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar2.Location = new System.Drawing.Point(398, 56);
+            this.pbLimiar2.Name = "pbLimiar2";
+            this.pbLimiar2.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar2.TabIndex = 67;
+            this.pbLimiar2.TabStop = false;
+            // 
+            // pbLimiar1
+            // 
+            this.pbLimiar1.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar1.Location = new System.Drawing.Point(372, 66);
+            this.pbLimiar1.Name = "pbLimiar1";
+            this.pbLimiar1.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar1.TabIndex = 66;
+            this.pbLimiar1.TabStop = false;
+            // 
+            // pbLimiar4
+            // 
+            this.pbLimiar4.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar4.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar4.Location = new System.Drawing.Point(498, 66);
+            this.pbLimiar4.Name = "pbLimiar4";
+            this.pbLimiar4.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar4.TabIndex = 65;
+            this.pbLimiar4.TabStop = false;
+            // 
+            // pbLimiar5
+            // 
+            this.pbLimiar5.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar5.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar5.Location = new System.Drawing.Point(517, 87);
+            this.pbLimiar5.Name = "pbLimiar5";
+            this.pbLimiar5.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar5.TabIndex = 64;
+            this.pbLimiar5.TabStop = false;
+            // 
+            // pbLimiar0
+            // 
+            this.pbLimiar0.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar0.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar0.Location = new System.Drawing.Point(362, 87);
+            this.pbLimiar0.Name = "pbLimiar0";
+            this.pbLimiar0.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar0.TabIndex = 63;
+            this.pbLimiar0.TabStop = false;
+            // 
+            // pbLimiar6
+            // 
+            this.pbLimiar6.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar6.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar6.Location = new System.Drawing.Point(474, 222);
+            this.pbLimiar6.Name = "pbLimiar6";
+            this.pbLimiar6.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar6.TabIndex = 62;
+            this.pbLimiar6.TabStop = false;
+            // 
+            // pbLimiar7
+            // 
+            this.pbLimiar7.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar7.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar7.Location = new System.Drawing.Point(398, 222);
+            this.pbLimiar7.Name = "pbLimiar7";
+            this.pbLimiar7.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar7.TabIndex = 61;
+            this.pbLimiar7.TabStop = false;
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
@@ -664,34 +858,65 @@ namespace FuzzyAGV
             this.pictureBox2.TabIndex = 30;
             this.pictureBox2.TabStop = false;
             // 
-            // label21
+            // pbRobot
             // 
-            this.label21.Location = new System.Drawing.Point(87, 114);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(30, 13);
-            this.label21.TabIndex = 20;
-            this.label21.Text = "O";
+            this.pbRobot.BackColor = System.Drawing.Color.Transparent;
+            this.pbRobot.Image = ((System.Drawing.Image)(resources.GetObject("pbRobot.Image")));
+            this.pbRobot.Location = new System.Drawing.Point(660, 411);
+            this.pbRobot.Name = "pbRobot";
+            this.pbRobot.Size = new System.Drawing.Size(10, 10);
+            this.pbRobot.TabIndex = 11;
+            this.pbRobot.TabStop = false;
             // 
-            // label22
+            // pbTerrain
             // 
-            this.label22.Location = new System.Drawing.Point(87, 143);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(30, 13);
-            this.label22.TabIndex = 21;
-            this.label22.Text = "R";
+            this.pbTerrain.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pbTerrain.ErrorImage = null;
+            this.pbTerrain.Image = global::FaultTolerantAGV.Properties.Resources.Mapa2;
+            this.pbTerrain.InitialImage = null;
+            this.pbTerrain.Location = new System.Drawing.Point(581, 8);
+            this.pbTerrain.Name = "pbTerrain";
+            this.pbTerrain.Size = new System.Drawing.Size(498, 501);
+            this.pbTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbTerrain.TabIndex = 10;
+            this.pbTerrain.TabStop = false;
+            this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
+            this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
             // 
-            // label23
+            // txtGeneAgv
             // 
-            this.label23.Location = new System.Drawing.Point(87, 172);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(30, 13);
-            this.label23.TabIndex = 22;
-            this.label23.Text = "A";
+            this.txtGeneAgv.Location = new System.Drawing.Point(8, 411);
+            this.txtGeneAgv.MaxLength = 1000;
+            this.txtGeneAgv.Multiline = true;
+            this.txtGeneAgv.Name = "txtGeneAgv";
+            this.txtGeneAgv.Size = new System.Drawing.Size(567, 98);
+            this.txtGeneAgv.TabIndex = 128;
+            this.txtGeneAgv.Text = resources.GetString("txtGeneAgv.Text");
+            // 
+            // lblGeneCircuito
+            // 
+            this.lblGeneCircuito.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGeneCircuito.Location = new System.Drawing.Point(12, 393);
+            this.lblGeneCircuito.Name = "lblGeneCircuito";
+            this.lblGeneCircuito.Size = new System.Drawing.Size(129, 16);
+            this.lblGeneCircuito.TabIndex = 129;
+            this.lblGeneCircuito.Text = "Gene do Circuito:";
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(1186, 557);
+            this.ClientSize = new System.Drawing.Size(1089, 510);
+            this.Controls.Add(this.lblGeneCircuito);
+            this.Controls.Add(this.txtGeneAgv);
+            this.Controls.Add(this.pbLimiar3);
+            this.Controls.Add(this.pbLimiar2);
+            this.Controls.Add(this.pbLimiar1);
+            this.Controls.Add(this.pbLimiar4);
+            this.Controls.Add(this.pbLimiar5);
+            this.Controls.Add(this.pbLimiar0);
+            this.Controls.Add(this.pbLimiar6);
+            this.Controls.Add(this.pbLimiar7);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.gbComandos);
@@ -705,15 +930,25 @@ namespace FuzzyAGV
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fault Tolerant AGV";
-            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.gbComandos.ResumeLayout(false);
             this.gbComandos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -724,16 +959,129 @@ namespace FuzzyAGV
         // Run one epoch of the Fuzzy Inference System 
         private void DoInference()
         {
+            //double NewAngle;
+            ////Direita
+            //fis.DoInference(Convert.ToDouble(txtFront5.Text),
+            //    //Esquerda
+            //    Convert.ToDouble(txtFront0.Text),
+            //    //Frente
+            //    ((Convert.ToDouble(txtFront2.Text) + Convert.ToDouble(txtFront3.Text)) / 2),
+            //    out NewAngle, out Speed);
+            //txtAngle.Text = NewAngle.ToString("##0.#0");
+            //Angle += NewAngle;
+        }
+
+        private void DoInferenceGA(int distance)
+        {
+            //Considerando a distancia de 50 = 0.5m
+            //1000 = 40mm (0.04)
+            //Value algorithm       x       m
+            //------------------------------------
+            //1000                          0.04
+            //12500                         0.5
+
+            //Se o contador "ctControleParent" atingir o tamanho da população de pais estabelecido no Algoritimo Genético, deve ser resetado
+            //Se avaiou todos os país, e todos os clones do último pai
+            if ((ctControleParent == _ga.PopulationSize) && (ctControleClones == (_ga.Clonepopulation + 2)))
+            {
+                //Fazer o processo de seleção
+                //Manter apenas o melhor individuo (População de Pais)
+                _ga.FindSolution();
+
+                ctControleParent = 0;
+            }
+
+
+            //Se o contador "ctControleClones" atingir o número de clones estabelecido no Algoritimo Genético, deve ser resetado
+            if (ctControleClones == (_ga.Clonepopulation + 2))
+                ctControleClones = 0;
+
+
+
+            CircuitoChromosome current = null;
+
+            ///WARNING:
+            //Se o contador de clones esta em 0, significa que o primeiro circuito da população de PAIS SERÁ
+
+            //Se o contador de clones esta em 1, significa que o primeiro circuito da população de PAIS foi avaliado por 140 ms
+            //e agora, é possível atribuir seu fitness, e a partir disto
+            //iniciar o processo de clonagem e avaliação da popuação de clones
+            if (ctControleClones == 0)
+                //A primeira vez, é necesário atribuir para "current" apenas para o proposito de as informações do gene
+                //e atualizar as saídas do atuador para as saídas do circuito
+                current = _ga.GetCurrentChromosome(ctControleParent);
+
+            if (ctControleClones == 1)
+            {
+                //Atribuir os valores medidos para o circuito
+                _ga.GetCurrentChromosome((ctControleParent)).Distance = distance;
+                _ga.GetCurrentChromosome((ctControleParent)).Time = 140;
+                //current = _ga.GetCurrentChromosome((ctControleParent));
+
+                //Inicializa população de clones para o determinado pai (Levando-se em consideração o fitness do pai)
+                _ga.InitializeClones(ctControleParent, sensors);
+                //Atribuir o primeiro clone para avaliação                
+                current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
+
+            }
+            //Se o contador de clones é maior que 1, significa que o primeiro circuito da população de CLONES foi avaliado por 140 ms
+            if (ctControleClones > 1)
+            {
+                _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Distance = distance;
+                _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Time = 140;
+
+                //Atribuir o clone seguinte para avaliação clone para avaliação
+                if ((ctControleClones - 1) < 3)
+                    current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
+            }
+
+            if (current != null)
+            {
+                //{Cartesian genetic programming”,
+                ShowChromosome(current, lblFitness4);
+                lblGeneration.Text = _ga.Generation.ToString();
+                AtualizaDirecao(current);
+
+            }
+
+            ctControleClones++;
+
+            //Se terminou de avaliar os cloenes de determinado pai
+            if (ctControleClones == (_ga.Clonepopulation + 2))
+            {
+                ctControleParent++;
+            }
+        }
+
+        public void AtualizaDirecao(CircuitoChromosome chromoRobo)
+        {
             double NewAngle;
-            //Direita
-            fis.DoInference(Convert.ToDouble(txtFront5.Text),
-                //Esquerda
-                Convert.ToDouble(txtFront0.Text),
-                //Frente
-                ((Convert.ToDouble(txtFront2.Text) + Convert.ToDouble(txtFront3.Text)) / 2),
-                out NewAngle, out Speed);
-            txtAngle.Text = NewAngle.ToString("##0.#0");
+            NewAngle = -1;
+            //bool traz = false;
+            _traz = false;
+            //if (intSaida == 0)
+            if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == false)
+            {
+                NewAngle = 0;
+
+            }
+            //else if (intSaida == 1)
+            //vira esquerda
+            else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == false)
+                NewAngle = -8;
+            //else if (intSaida == 2)
+            //vira direita
+            else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
+                NewAngle = +8;
+            //else if (intSaida == 3)
+            else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true)
+            {
+                _traz = true;
+                NewAngle = 0;
+            }
+
             Angle += NewAngle;
+
         }
 
         // AGV's terrain drawing
@@ -786,7 +1134,8 @@ namespace FuzzyAGV
                 {
                     btnRun_Click(btnRun, null);
                 }
-                string Msg = "The vehicle is on the solid area!";
+                //string Msg = "The vehicle is on the solid area!";
+                string Msg = "O veiculo atingiu uma barreira!";
                 MessageBox.Show(Msg, "Error!");
                 throw new Exception(Msg);
             }
@@ -811,7 +1160,7 @@ namespace FuzzyAGV
             if (cbLasers.Checked)
             {
                 //Adicionando retas
-                //Forntais
+                //Frontais
                 //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPos);
                 g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
                 //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPos);
@@ -844,22 +1193,53 @@ namespace FuzzyAGV
             // Updating distances texts
             //Esquerda
             txtFront0.Text = GetDistance(pPos, pLeftObstacle).ToString();
+            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 55);
+            pbLimiar0.Visible = sensors[0];
             //Esquerda 45
             txtFront1.Text = GetDistance(pPos, pLeft45Obstacle).ToString();
+            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 55);
+            pbLimiar1.Visible = sensors[1];
             //Frente
             txtFront2.Text = GetDistance(pPos, pFrontObstacle1).ToString();
+            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 55);
+            pbLimiar2.Visible = sensors[2];
             txtFront3.Text = GetDistance(pPos, pFrontObstacle2).ToString();
+            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 55);
+            pbLimiar3.Visible = sensors[3];
             //Direita 45
             txtFront4.Text = GetDistance(pPos, pRight45Obstacle).ToString();
+            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 55);
+            pbLimiar4.Visible = sensors[4];
             //Direita
             txtFront5.Text = GetDistance(pPos, pRightObstacle).ToString();
+            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 55);
+            pbLimiar5.Visible = sensors[5];
             //Trazeiro
             txtFront6.Text = GetDistance(pPos, pBehindObstacle1).ToString();
+            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 55);
+            pbLimiar6.Visible = sensors[6];
             txtFront7.Text = GetDistance(pPos, pBehindObstacle2).ToString();
+            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 55);
+            pbLimiar7.Visible = sensors[7];
 
-            //txtFront0.Text = GetDistance(pPos, pFrontObstacle).ToString();
-            //txtLeft.Text = GetDistance(pPos, pLeftObstacle).ToString();
-            //txtRight.Text = GetDistance(pPos, pRightObstacle).ToString();
+
+
+
+            //A velocidade é determinada em tempo real de acordo com a distancia dos obstaculos
+            //Se um dos sensores atingiu o valor da limiar diminui a velocidade
+            //if (!(sensors[0] || sensors[1] || sensors[2] || sensors[3] || sensors[4] || sensors[5] || sensors[6] || sensors[7]))
+            //Utilizar doi sensores proximos para determinar qundo esta p´rximo de um obstaculo
+            if (!((sensors[0] && sensors[1]) || (sensors[2] && sensors[3]) || (sensors[4] && sensors[5]) || (sensors[6] && sensors[7])))
+            {
+                txtSpeed.Text = "12,0";
+                Speed = 12;
+            }
+            else
+            {
+                txtSpeed.Text = "5,0";
+                Speed = 5;
+            }
+
         }
 
         // Calculating distances
@@ -902,6 +1282,21 @@ namespace FuzzyAGV
         // Restarting the AGVs simulation
         private void btnReset_Click(object sender, System.EventArgs e)
         {
+            ctControleParent = 0;
+            //_ga = new GA(4, 3, sensors);
+            _ga = new GA(3, 3, sensors);
+            _ga.K = 10;
+
+            _bCiclo = false;
+            pbLimiar0.Visible = false;
+            pbLimiar1.Visible = false;
+            pbLimiar2.Visible = false;
+            pbLimiar3.Visible = false;
+            pbLimiar4.Visible = false;
+            pbLimiar5.Visible = false;
+            pbLimiar6.Visible = false;
+            pbLimiar7.Visible = false;
+
             Angle = 0;
             pbTerrain.Image = new Bitmap(InitialMap);
             OriginalMap = new Bitmap(InitialMap);
@@ -924,13 +1319,57 @@ namespace FuzzyAGV
         // Moving the AGV
         private void MoveAGV()
         {
+            //Passado 140 milisegundos, coletar a distancia percorrida pelo robo
+            if (_bCiclo)
+            {
+                _ponto1 = true;
+                //_ponto2 = false;
+                p2 = new Point(pbRobot.Left - pbTerrain.Left + pbRobot.Width / 2, pbRobot.Top - pbTerrain.Top + pbRobot.Height / 2);
+                //int distancia = GetDistance(p1, p2);
+                //lstDist.Add(GetDistance(p1, p2));
+
+                _bCiclo = false;
+                //Passa a distancia ao controle para avaliação do mesmo
+                DoInferenceGA(GetDistance(p1, p2));
+            }
+
+
+            Speed = Convert.ToDouble(txtSpeed.Text);
+
+            if (_traz)//Se for p/ traz;
+            {
+                Speed = Speed * -1;
+                txtSpeed.Text = Speed.ToString();
+            }
+            else if (Speed < 0)
+            {
+                //Volta para velocidade positiva
+                Speed = Speed * -1;
+                txtSpeed.Text = Speed.ToString();
+            }
+
             double rad = ((Angle + 90) * Math.PI) / 180;
             int Offset = 0;
-            int Inc = -Convert.ToInt32(Speed / 10);
+            //int Inc = -Convert.ToInt32(Speed / 10);
+            int Inc = -Convert.ToInt32(Speed / 5);
 
             Offset += Inc;
             int IncX = Convert.ToInt32(Offset * Math.Cos(rad));
+            if (_traz)
+                IncX = -1 * IncX;
+
             int IncY = Convert.ToInt32(Offset * Math.Sin(rad));
+            if (_traz)
+                IncY = -1 * IncY;
+
+            if (_ponto1)
+            {
+                p1 = new Point(pbRobot.Left - pbTerrain.Left + pbRobot.Width / 2, pbRobot.Top - pbTerrain.Top + pbRobot.Height / 2);
+                _ponto1 = false;
+            }
+            //if (_ponto2)
+            //{                
+            //}
 
             // Leaving the track 
             if (cbTrajeto.Checked)
@@ -943,6 +1382,8 @@ namespace FuzzyAGV
                 g.Dispose();
             }
 
+
+
             pbRobot.Top = pbRobot.Top + IncY;
             pbRobot.Left = pbRobot.Left + IncX;
         }
@@ -950,10 +1391,20 @@ namespace FuzzyAGV
         // Starting and stopping the AGV's moviment a
         private void btnRun_Click(object sender, System.EventArgs e)
         {
+
             Button b = (sender as Button);
 
             if (b.Text == RunLabel)
             {
+                //Atribuições iniciais                
+                //_ga.Time = 140;
+                //QSChromosome current = _ga.GetCurrentChromosome(0, 0);
+                ////if (solution != null)
+                ////{Cartesian genetic programming”,
+                //ShowChromosome(current, lblFitness4);
+                //lblGeneration.Text = _ga.Generation.ToString();
+                //AtualizaDirecao(current);
+
                 b.Text = "&Stop";
                 btnStep.Enabled = false;
                 btnReset.Enabled = false;
@@ -1002,18 +1453,34 @@ namespace FuzzyAGV
         // Thread main cycle
         private void MoveCycle()
         {
+            TimeSpan tInicio = new TimeSpan();
+            TimeSpan tFim = new TimeSpan();
+            tInicio = DateTime.Now.TimeOfDay;
+            lstDist = new List<int>();
+
             try
             {
                 while (Thread.CurrentThread.IsAlive)
                 {
+                    tFim = DateTime.Now.TimeOfDay;
+                    //tInicio = new TimeSpan();
                     MethodInvoker mi = new MethodInvoker(AGVStep);
                     this.BeginInvoke(mi);
                     Thread.Sleep(Convert.ToInt32(txtInterval.Text));
+                    //tFim = new TimeSpan();
+
+                    //TimeSpan tresult = tFim.Subtract(tInicio);
+                    if (tFim.Subtract(tInicio).Milliseconds > 10)
+                    {
+                        _bCiclo = true;
+                        tInicio = DateTime.Now.TimeOfDay;
+                    }
                 }
             }
             catch (ThreadInterruptedException)
             {
             }
+
         }
 
         // One step of the AGV
@@ -1023,9 +1490,8 @@ namespace FuzzyAGV
 
             try
             {
-                DoInference();
-                MoveAGV();
                 GetMeasures();
+                MoveAGV();
             }
             catch (Exception ex)
             {
@@ -1047,8 +1513,29 @@ namespace FuzzyAGV
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            Time += 100;
+            //Time += 100;
+            //txtTime.Text = (Time / 1000.0).ToString("#0.#0");
+            Time += 70;
             txtTime.Text = (Time / 1000.0).ToString("#0.#0");
+        }
+
+        /// <summary>
+        /// Mostra o fitness e desenha o quadrado resposta (cromossomo)
+        /// </summary>
+        /// <param name="eqc"></param>
+        /// <param name="lFitness"></param>
+        private void ShowChromosome(CircuitoChromosome eqc, Label lFitness)
+        {
+            if (eqc == null) return;
+            lblGeneration.Text = _ga.Generation.ToString();
+            lFitness.Text = eqc.GetFitness().ToString();
+            lblFitness4.Text = eqc.GetFitness().ToString();
+            //DrawTable(eqc.Valores);
+            txtGeneAgv.Text = String.Empty;
+            foreach (int i in eqc.Cgp.Genotype)
+                txtGeneAgv.Text = txtGeneAgv.Text + i + ";";
+            //Remove o ultimo ';'
+            txtGeneAgv.Text = txtGeneAgv.Text.Remove(txtGeneAgv.Text.Length - 1);
         }
 
     }
