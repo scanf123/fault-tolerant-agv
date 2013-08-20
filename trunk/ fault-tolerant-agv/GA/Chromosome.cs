@@ -2,140 +2,220 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//namespace QuadradoSoma
-namespace FuzzyAGV
+namespace AGVFaultTolerant
 {
 
     /// <summary>
-    /// Classe que representa um cromossomo do problema das 8 rainhas
+    /// Classe que representa um cromossomo do controle de navegaçao
     /// </summary>
-    public class QSChromosome : IComparable<QSChromosome>
+    public class CircuitoChromosome : IComparable<CircuitoChromosome>
     {
         // Vetor com os valores do quadrado
-        private int[,] valores = null;
+        byte btest = new byte();
 
-        private int[] totLin = null;
-        private int[] totCol = null;
+        private List<CircuitoChromosome> clones;
 
-        //Valor padrão genérico
-        private static int maxVal = 10000;
-
-
+        private CGP _cgp;
+        double _distance;
+        double _time;
         // Objeto random para geração de números randômicos
-        private static Random random = new Random(DateTime.Now.Millisecond);
+        private static Random _random = new Random(DateTime.Now.Millisecond);
+        private double _fitness;
 
-        private int fitness;
-
-        // Propriedade que expõe o vetor para leitura
-        public int[,] Valores
+        /// <summary>
+        /// Position counter of two motors
+        /// </summary>
+        public double Distance
         {
-            get
-            {
-                return valores;
-            }
+            get { return _distance; }
+            set { _distance = value; }
         }
 
-        public int[] TotCol
+        /// <summary>
+        /// IO period counter
+        /// </summary>
+        public double Time
         {
-            get { return totCol; }
-            set { totCol = value; }
+            get { return _time; }
+            set { _time = value; }
         }
 
-        public int[] TotLin
+        public CGP Cgp
         {
-            get { return totLin; }
-            set { totLin = value; }
+            get { return _cgp; }
+            set { _cgp = value; }
         }
 
-        public int Fitness
+        /// <summary>
+        /// 22 LUTs*16 bits/LUT = 352 bits        
+        /// </summary>
+        public int[] Individual
         {
-            get { return fitness; }
+            get { return Cgp.Genotype; }
+            set { Cgp.Genotype = value; }
         }
 
-        public int MaxVal
+        /// <summary>
+        /// 8 input bits from the sensors
+        /// </summary>
+        public ParameterMolecule[] InputBits
         {
-            get { return maxVal; }
-            set { maxVal = value; }
+            get { return Cgp.Input; }
+            set { Cgp.Input = value; }
         }
 
+        /// <summary>
+        /// Armazena os clones do cromossomo atual
+        /// </summary>
+        public List<CircuitoChromosome> Clones
+        {
+            get { return clones; }
+            set { clones = value; }
+        }
+
+
+        /// <summary>
+        /// 2 output bits to the motors        
+        /// </summary>
+        public ParameterMolecule[] OutputBits
+        {
+            get { return Cgp.Output; }
+            set { Cgp.Output = value; }
+        }
+
+        public double Fitness
+        {
+            get { return _fitness; }
+        }
+
+        private int NormFitness()
+        {
+            //return ((int)Math.Truncate(((double)_fitness / 1400)));
+            return (int)(560 - _fitness);
+        }
 
         // Construtor - recebe o vetor com os valores
-        public QSChromosome(int[,] vals)
+        public CircuitoChromosome(int[] individual, ParameterMolecule[] inputBits, ParameterMolecule[] outputBits)
         {
-            this.valores = vals;
+            //_cgp = new CGP(16, 3, 4, 3, lstInt.ToArray(), lstMolOUTPUT.ToArray(), lstMolINPUT.ToArray());
+            Cgp = new CGP(16, 3, 4, 3, individual, outputBits, inputBits);
+            Cgp.Evaluate();
+            clones = new List<CircuitoChromosome>();
+            //this.Individual = individual;
+            //this.InputBits = inputBits;
+            //this.OutputBits = outputBits;
         }
 
 
         /// <summary>
         /// Método estático que instancia um cromossomo com valores randômicos com um limite para o valor
-        /// </summary>
-        /// <param name="lin">Armazena o total da Linha</param>
-        /// <param name="col">Armazena o total da coluna</param>
-        /// <param name="max">Limite  do Valor para restringir o range do random</param>
+        /// </summary>        
         /// <returns></returns>
-        public static QSChromosome CreateRandomChromosome(int[] lin, int[] col, int max)
+        //public static QSChromosome CreateRandomChromosome()
+        //{
+        //    QSChromosome qSChromosomeRetorno;
+        //    byte[] individual = new byte[9];//9 Bytes são necessários para armazenar 352 bits
+        //    byte[] inputb = new byte[1];//1 Byte para armazenar os 8 bits de entrada dos sensores
+        //    byte[] outputb = new byte[1];////1 Byte para armazenar os 2 bits de sáida
+        //    _random.NextBytes(individual);
+        //    _random.NextBytes(inputb);
+        //    //_random.NextBytes(outputb);
+        //    int itmp = _random.Next(3);
+        //    outputb[0] = Convert.ToByte(itmp);
+
+        //    qSChromosomeRetorno = new QSChromosome(individual, inputb, outputb);
+        //    return qSChromosomeRetorno;
+        //}
+
+        public static CircuitoChromosome CreateRandomChromosome(bool[] senesors)
         {
-            maxVal = max;
+            CircuitoChromosome qSChromosomeRetorno;
 
-            int[,] c = new int[5, 5];
-            for (int i = 0; i < 5; i++)
+            //GENOTIPO
+            List<int> lstInt = new List<int>();
+            //List<int> lstIntBackup = new List<int>();
+            //Gene
+            string strGen = "0;1;2;3;8;4;5;6;7;8;8;9;10;11;8;12;13;14;15;8;16;17;18;19;8;20;21;22;23;8;24;25;26;27;8;28;29;30;31;8;32;33;34;35;8;36;37;38;39;8;40;41;42;43;8;44;45;46;47;8;48;49;50;51;8;52;53;54;55;8;56;57;58;59;8;60;61;62;63;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8";
+
+            //Indices das operações lógicas da LUT lógicas
+            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+
+            foreach (string s in strGen.Split(';'))
+                lstInt.Add(Convert.ToInt32(s));
+
+            //lstIntBackup.AddRange(lstInt.ToArray());
+
+            //INPUT
+            List<ParameterMolecule> lstMolINPUT = new List<ParameterMolecule>();
+            //Molecule moleculeTmmp;
+            for (int i = 0; i < 64; i++)
             {
-                for (int j = 0; j < 5; j++)
-                {
-                    int itmp = random.Next(maxVal);
-                    c[i, j] = itmp;
-                }
-
+                lstMolINPUT.Add(new ParameterMolecule(i, senesors[i % 8]));
             }
 
-            QSChromosome chr = new QSChromosome(c);
-            chr.totLin = lin;
-            chr.totCol = col;
+            //Altera randomicamente 3 portas
+            int portasAlteradas = 3;
+            int indexMutate = -1;
+            Random r = new Random();
 
-            return chr;
-        }
-
-
-        /// <summary>
-        /// Operação de crossover entre dois cromossomos. 
-        /// </summary>
-        /// <param name="pair"> Recebe um cromossomo (par) que "cruzará" como atual.  </param>
-        /// <returns> Retorna um filho com genes do cromossomo atual e do par. </returns>
-        public QSChromosome Crossover(QSChromosome pair)
-        {
-
-            int[,] c = new int[5, 5];
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < portasAlteradas; i++)
             {
-                for (int j = 0; j < 5; j++)
-                {
-                    //Troca linha por coluna se linha mais coluna for par
-                    if ((i + j) % 2 == 0)
-                        c[i, j] = pair.valores[j, i];
-                    else
-                        c[j, i] = pair.valores[i, j];
-                }
+                int indextmp = r.Next(indexes.Length - 1);
+                //Porta a ser alterada
+                indexMutate = indexes[indextmp];
+
+                int novaFuncPorta = 6 + r.Next(3);
+                //Altera a função lógica da porta
+                lstInt[indexMutate] = novaFuncPorta;
             }
+            //string strNovoGene = String.Empty;
+            //Atualiza a string do gene
+            //foreach (int valor in lstInt)
+            //{
+            //    strNovoGene = strNovoGene + valor + ";";
+            //}
+            //strNovoGene = strNovoGene.Substring(0, strNovoGene.Length - 2);
 
-            QSChromosome chr = new QSChromosome(c);
-            //Passa a totalização para o filho
-            chr.totLin = pair.totLin;
-            chr.totCol = pair.totCol;
-            //Passa a aproximação para o filho
-            chr.MaxVal = pair.MaxVal;
+            //OUTPUT
+            List<ParameterMolecule> lstMolOUTPUT = new List<ParameterMolecule>();
+            lstMolOUTPUT.Add(new ParameterMolecule(96, false));
+            lstMolOUTPUT.Add(new ParameterMolecule(97, false));
 
-            return chr;
+            qSChromosomeRetorno = new CircuitoChromosome(lstInt.ToArray(), lstMolINPUT.ToArray(), lstMolOUTPUT.ToArray());
+
+            return qSChromosomeRetorno;
         }
+
 
 
         /// <summary>
         /// Mutação - uma pequena chance de realizar mutação no cromossomo, mudando um de seus genes.
         /// </summary>
-        /// <param name="rate"> Percentual da chance de mutação, número entre 0 e 1. </param>
-        public void Mutate(double rate)
+        /// <param name="k"> Constant to be turned by user</param>
+        /// <param name="norm_fit"> Normalized fitness for parantes population </param>
+        public void Mutate(int k, int norm_fit)
         {
-            if (random.NextDouble() <= rate)
-                this.valores[random.Next(5), random.Next(5)] = random.Next(maxVal);
+            double ntmp = k * (1 - Math.Abs(norm_fit));
+            int n = (int)Math.Truncate(ntmp);
+            int index;
+            List<int> lstIndexs = new List<int>();
+
+            //n - Number of bits to be mutated
+            for (int i = 0; i < n; i++)
+            {
+                do
+                {
+                    index = _random.Next(Individual.Length - 1);
+
+                    //Evita que o mesmo indice seja sorteado mais de uma vez
+                } while (lstIndexs.Contains(index));
+                byte[] b = new byte[1];
+                _random.NextBytes(b);
+                Individual[index] = b[0];
+
+                //Evita que o mesmo indice seja sorteado mais de uma vez
+                lstIndexs.Add(index);
+            }
         }
 
         /// <summary>
@@ -144,36 +224,97 @@ namespace FuzzyAGV
         /// <returns> Retorna a avaliação deste cromossomo. Valor "zero" é o cromossomo ideal, o objetivo da busca. </returns>
         public double GetFitness()
         {
-
-
-            int fit = 0, sumH = 0, sumV = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                sumH = 0;
-                sumV = 0;
-                for (int j = 0; j < 5; j++)
-                {
-                    sumH += this.valores[i, j];
-                    sumV += this.valores[j, i];
-                }
-                fit += Math.Abs(totLin[i] - sumH);
-                fit += Math.Abs(totCol[i] - sumV);
-            }
-
-            fitness = fit;
-            return fit;
-
+            //_fitness = ((_distance * _time) / 1000);
+            return (_fitness = (_time * _distance));
         }
 
-        public int CompareTo(QSChromosome obj)
+        public int CompareTo(CircuitoChromosome obj)
         {
-            if (this.fitness > obj.fitness)
+            if (this._fitness > obj._fitness)
                 return 1;
-            else if (this.fitness < obj.fitness)
+            else if (this._fitness < obj._fitness)
                 return -1;
             else
                 return 0;
+        }
+
+        private void AlteragaGeneAgv(int ctParada, ref string txtGeneAgv, int novoValor)
+        {
+            int ct = 1;
+            List<int> lstInt = new List<int>();
+
+            foreach (string s in txtGeneAgv.Split(';'))
+            {
+                lstInt.Add(Convert.ToInt32(s));
+
+                if (ct == ctParada)
+                    lstInt[lstInt.Count - 1] = novoValor;
+                ct++;
+            }
+            txtGeneAgv = "";
+            foreach (int i in lstInt)
+                txtGeneAgv = txtGeneAgv + i + ";";
+
+            //Remove o ultimo ';'
+            txtGeneAgv = txtGeneAgv.Remove(txtGeneAgv.Length - 1);
+        }
+
+        public static CircuitoChromosome CreateRandomClone(bool[] sensors, double fitnessParent, int[] genotypeParent, int k)
+        {
+            CircuitoChromosome qSChromosomeRetorno;
+
+            //GENOTIPO
+            List<int> lstInt = new List<int>();
+            //Copia do pai
+            lstInt.AddRange(genotypeParent);
+
+            //Indices das operações lógicas da LUT lógicas
+            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+
+            //lstIntBackup.AddRange(lstInt.ToArray());
+
+            //INPUT
+            List<ParameterMolecule> lstMolINPUT = new List<ParameterMolecule>();
+            //Molecule moleculeTmmp;
+            for (int i = 0; i < 64; i++)
+            {
+                lstMolINPUT.Add(new ParameterMolecule(i, sensors[i % 8]));
+            }
+
+            //Altera randomicamente o numero de portas de acordo com o fitness do pai
+            //int fitnessNormalizado = (int)Math.Truncate(Math.Abs(0.56 - fitnessParent));
+            //double fitnessNormalizado = Math.Abs(1 - (fitnessParent - 0.56));
+            //int portasAlteradas = Convert.ToInt32(Math.Truncate((k * (1 - fitnessNormalizado))));
+            //double fitnessNormalizado = fitnessParent / 256;
+            double fitnessNormalizado = fitnessParent;// / 50;
+            int portasAlteradas = Convert.ToInt32(k * (fitnessNormalizado - (2.8)));
+            if (portasAlteradas < 0)
+                portasAlteradas = 0;
+
+
+
+
+            int indexMutate = -1;
+            Random r = new Random();
+
+            for (int i = 0; i < portasAlteradas; i++)
+            {
+                int indextmp = r.Next(indexes.Length - 1);
+                //Porta a ser alterada
+                indexMutate = indexes[indextmp];
+
+                int novaFuncPorta = 6 + r.Next(3);
+                //Altera a função lógica da porta
+                lstInt[indexMutate] = novaFuncPorta;
+            }
+
+            //OUTPUT
+            List<ParameterMolecule> lstMolOUTPUT = new List<ParameterMolecule>();
+            lstMolOUTPUT.Add(new ParameterMolecule(96, false));
+            lstMolOUTPUT.Add(new ParameterMolecule(97, false));
+
+            qSChromosomeRetorno = new CircuitoChromosome(lstInt.ToArray(), lstMolINPUT.ToArray(), lstMolOUTPUT.ToArray());
+            return qSChromosomeRetorno;
         }
     }
 

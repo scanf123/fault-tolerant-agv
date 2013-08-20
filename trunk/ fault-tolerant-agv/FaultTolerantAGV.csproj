@@ -21,7 +21,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>FaultTolerantAGV</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>FuzzyAGV.MainForm</StartupObject>
+    <StartupObject>AGVFaultTolerant.MainForm</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -117,14 +117,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Fuzzy\Clausula.cs" />
-    <Compile Include="Fuzzy\ConjuntoNebuloso.cs" />
-    <Compile Include="Fuzzy\Defuzz.cs" />
-    <Compile Include="Fuzzy\FIS.cs" />
+    <Compile Include="CGP\CGP.cs" />
+    <Compile Include="CGP\Molecule.cs" />
     <Compile Include="GA\Chromosome.cs" />
     <Compile Include="GA\GA.cs" />
-    <Compile Include="Fuzzy\IntReta.cs" />
-    <Compile Include="Fuzzy\Linguistica.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,7 +129,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Fuzzy\Regra.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -161,7 +156,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Resources\bolaVermelha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mapa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mapa2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
