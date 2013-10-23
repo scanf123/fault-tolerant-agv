@@ -38,17 +38,21 @@ namespace FaultTolerantAGV
 
         #region Construtores
 
-        public Reta(double m, Point p)
+        public Reta(double m, Point p, double? angleGraus)
         {
-            this._m = m;
-            this._p1 = p;
+            if (angleGraus == null)
+            {
+                this._m = m;
+                this._p1 = p;
+            }
+            else
+            {
+                this._m = CalculaMPorAngle((double)angleGraus);
+                this._p1 = p;
+            }
         }
 
-        public Reta(double angleGraus, Point p)
-        {
-            this._m = CalculaMPorAngle(angleGraus);
-            this._p1 = p;
-        }
+
 
 
         public Reta(Point p1, Point p2)
