@@ -43,6 +43,7 @@ namespace AGVFaultTolerant
         //private FIS fis;
         private GA _ga;
         private bool[] sensors;
+        CircuitoChromosome bestIndividualLatGeneration;
 
 
         /// <summary>
@@ -142,10 +143,10 @@ namespace AGVFaultTolerant
             sensors[6] = false;
             sensors[7] = false;
             _traz = false;
-            //fis = new FIS();
+
             //_ga = new GA(16, 3, sensors);
-            _ga = new GA(3, 3, sensors);
-            _ga.K = 10;
+            _ga = new GA(4, 3, sensors);
+            _ga.K = 20;
 
             FirstInference = true;
             pbRobot.Top = pbTerrain.Bottom - 70;
@@ -232,6 +233,8 @@ namespace AGVFaultTolerant
             this.lblGeneration = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
+            this.txtGeneAgv = new System.Windows.Forms.TextBox();
+            this.lblGeneCircuito = new System.Windows.Forms.Label();
             this.pbLimiar3 = new System.Windows.Forms.PictureBox();
             this.pbLimiar2 = new System.Windows.Forms.PictureBox();
             this.pbLimiar1 = new System.Windows.Forms.PictureBox();
@@ -243,8 +246,6 @@ namespace AGVFaultTolerant
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbRobot = new System.Windows.Forms.PictureBox();
             this.pbTerrain = new System.Windows.Forms.PictureBox();
-            this.txtGeneAgv = new System.Windows.Forms.TextBox();
-            this.lblGeneCircuito = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbComandos.SuspendLayout();
@@ -749,7 +750,7 @@ namespace AGVFaultTolerant
             this.lblGeneration.Name = "lblGeneration";
             this.lblGeneration.Size = new System.Drawing.Size(14, 13);
             this.lblGeneration.TabIndex = 61;
-            this.lblGeneration.Text = "0";
+            this.lblGeneration.Text = "1";
             // 
             // label19
             // 
@@ -768,6 +769,25 @@ namespace AGVFaultTolerant
             this.label24.Size = new System.Drawing.Size(56, 13);
             this.label24.TabIndex = 60;
             this.label24.Text = "Gerações:";
+            // 
+            // txtGeneAgv
+            // 
+            this.txtGeneAgv.Location = new System.Drawing.Point(8, 411);
+            this.txtGeneAgv.MaxLength = 1000;
+            this.txtGeneAgv.Multiline = true;
+            this.txtGeneAgv.Name = "txtGeneAgv";
+            this.txtGeneAgv.Size = new System.Drawing.Size(567, 98);
+            this.txtGeneAgv.TabIndex = 128;
+            this.txtGeneAgv.Text = resources.GetString("txtGeneAgv.Text");
+            // 
+            // lblGeneCircuito
+            // 
+            this.lblGeneCircuito.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGeneCircuito.Location = new System.Drawing.Point(12, 393);
+            this.lblGeneCircuito.Name = "lblGeneCircuito";
+            this.lblGeneCircuito.Size = new System.Drawing.Size(129, 16);
+            this.lblGeneCircuito.TabIndex = 129;
+            this.lblGeneCircuito.Text = "Gene do Circuito:";
             // 
             // pbLimiar3
             // 
@@ -872,7 +892,7 @@ namespace AGVFaultTolerant
             // 
             this.pbTerrain.BackColor = System.Drawing.SystemColors.ControlText;
             this.pbTerrain.ErrorImage = null;
-            this.pbTerrain.Image = global::FaultTolerantAGV.Properties.Resources.Mapa2;
+            this.pbTerrain.Image = global::FaultTolerantAGV.Properties.Resources.Mapa4;
             this.pbTerrain.InitialImage = null;
             this.pbTerrain.Location = new System.Drawing.Point(581, 8);
             this.pbTerrain.Name = "pbTerrain";
@@ -882,25 +902,6 @@ namespace AGVFaultTolerant
             this.pbTerrain.TabStop = false;
             this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
             this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
-            // 
-            // txtGeneAgv
-            // 
-            this.txtGeneAgv.Location = new System.Drawing.Point(8, 411);
-            this.txtGeneAgv.MaxLength = 1000;
-            this.txtGeneAgv.Multiline = true;
-            this.txtGeneAgv.Name = "txtGeneAgv";
-            this.txtGeneAgv.Size = new System.Drawing.Size(567, 98);
-            this.txtGeneAgv.TabIndex = 128;
-            this.txtGeneAgv.Text = resources.GetString("txtGeneAgv.Text");
-            // 
-            // lblGeneCircuito
-            // 
-            this.lblGeneCircuito.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGeneCircuito.Location = new System.Drawing.Point(12, 393);
-            this.lblGeneCircuito.Name = "lblGeneCircuito";
-            this.lblGeneCircuito.Size = new System.Drawing.Size(129, 16);
-            this.lblGeneCircuito.TabIndex = 129;
-            this.lblGeneCircuito.Text = "Gene do Circuito:";
             // 
             // MainForm
             // 
@@ -987,6 +988,11 @@ namespace AGVFaultTolerant
                 //Fazer o processo de seleção
                 //Manter apenas o melhor individuo (População de Pais)
                 _ga.FindSolution();
+                int intTemp = Convert.ToInt32(lblGeneration.Text);
+                intTemp++;
+                lblGeneration.Text = intTemp.ToString();
+                lblFitness4.Text = _ga.GetBestIndividual().GetFitness().ToString();
+                //bestIndividualLatGeneration = _ga.GetBestIndividual();
 
                 ctControleParent = 0;
             }
@@ -995,8 +1001,6 @@ namespace AGVFaultTolerant
             //Se o contador "ctControleClones" atingir o número de clones estabelecido no Algoritimo Genético, deve ser resetado
             if (ctControleClones == (_ga.Clonepopulation + 2))
                 ctControleClones = 0;
-
-
 
             CircuitoChromosome current = null;
 
@@ -1007,9 +1011,10 @@ namespace AGVFaultTolerant
             //e agora, é possível atribuir seu fitness, e a partir disto
             //iniciar o processo de clonagem e avaliação da popuação de clones
             if (ctControleClones == 0)
-                //A primeira vez, é necesário atribuir para "current" apenas para o proposito de as informações do gene
-                //e atualizar as saídas do atuador para as saídas do circuito
                 current = _ga.GetCurrentChromosome(ctControleParent);
+            //A primeira vez, é necesário atribuir para "current" apenas para o proposito de as informações do gene
+            //e atualizar as saídas do atuador para as saídas do circuito
+
 
             if (ctControleClones == 1)
             {
@@ -1055,8 +1060,7 @@ namespace AGVFaultTolerant
 
         public void AtualizaDirecao(CircuitoChromosome chromoRobo)
         {
-            double NewAngle;
-            NewAngle = -1;
+            double NewAngle = -1;
             //bool traz = false;
             _traz = false;
             //if (intSaida == 0)
@@ -1068,11 +1072,11 @@ namespace AGVFaultTolerant
             //else if (intSaida == 1)
             //vira esquerda
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == false)
-                NewAngle = -8;
+                NewAngle = -10;
             //else if (intSaida == 2)
             //vira direita
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
-                NewAngle = +8;
+                NewAngle = +10;
             //else if (intSaida == 3)
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true)
             {
@@ -1134,15 +1138,25 @@ namespace AGVFaultTolerant
                 {
                     btnRun_Click(btnRun, null);
                 }
-                //string Msg = "The vehicle is on the solid area!";
-                string Msg = "O veiculo atingiu uma barreira!";
-                MessageBox.Show(Msg, "Error!");
-                throw new Exception(Msg);
+                if (btnRun.Enabled)
+                {
+                    string Msg = "O veiculo atingiu uma barreira!";
+                    MessageBox.Show(Msg, "Error!");
+                    btnRun.Enabled = false;
+                }
+                //throw new Exception(Msg);
             }
+            double radAngle = ((Angle + 90) * Math.PI) / 180;
+
 
             // Getting distances
-            Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, -1, 0);
-            Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, -1, 0);
+            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, -1, 0);
+            Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - (5 * ((int)(Math.Cos(radAngle)))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))), b, -1, 0);
+            //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - 5 * (Math.Cos(radAngle)))), pPos.Y + 5 * ((int)(Math.Sin(radAngle)))));
+
+            //Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, -1, 0);
+            Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, -1, 0);
+            //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + 5 * (int)(Math.Cos(radAngle)))), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
 
             Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
             Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
@@ -1151,8 +1165,12 @@ namespace AGVFaultTolerant
             Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
 
 
-            Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, 1, 0);
-            Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, 1, 0);
+            //Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, 1, 0);
+            Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
+            //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5 * (int)(Math.Cos(radAngle)), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
+            //Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, 1, 0);
+            Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
+            //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5 * (int)(Math.Cos(radAngle)), pPos.Y + 5 * (int)(Math.Sin(radAngle))));
 
 
             // Showing beams
@@ -1162,15 +1180,24 @@ namespace AGVFaultTolerant
                 //Adicionando retas
                 //Frontais
                 //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPos);
-                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (Math.Sin(radAngle)))), pPos.Y+((int)(Math.Cos(radAngle)))));
+
+                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (5 * (Math.Cos(radAngle))))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))));
                 //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPos);
-                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(pPos.X + 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(pPos.X + 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (int)(Math.Sin(radAngle)))), pPos.Y+(int)(Math.Cos(radAngle))));
+                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (5 * (int)(Math.Cos(radAngle))))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
 
                 //Traseiras
                 //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPos);
                 //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPos);
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5, pPos.Y));
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5, pPos.Y));
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))));
 
                 //Laterais
                 g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
@@ -1193,33 +1220,33 @@ namespace AGVFaultTolerant
             // Updating distances texts
             //Esquerda
             txtFront0.Text = GetDistance(pPos, pLeftObstacle).ToString();
-            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 55);
+            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 85);
             pbLimiar0.Visible = sensors[0];
             //Esquerda 45
             txtFront1.Text = GetDistance(pPos, pLeft45Obstacle).ToString();
-            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 55);
+            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 85);
             pbLimiar1.Visible = sensors[1];
             //Frente
             txtFront2.Text = GetDistance(pPos, pFrontObstacle1).ToString();
-            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 55);
+            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 85);
             pbLimiar2.Visible = sensors[2];
             txtFront3.Text = GetDistance(pPos, pFrontObstacle2).ToString();
-            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 55);
+            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 85);
             pbLimiar3.Visible = sensors[3];
             //Direita 45
             txtFront4.Text = GetDistance(pPos, pRight45Obstacle).ToString();
-            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 55);
+            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 85);
             pbLimiar4.Visible = sensors[4];
             //Direita
             txtFront5.Text = GetDistance(pPos, pRightObstacle).ToString();
-            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 55);
+            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 85);
             pbLimiar5.Visible = sensors[5];
             //Trazeiro
             txtFront6.Text = GetDistance(pPos, pBehindObstacle1).ToString();
-            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 55);
+            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 85);
             pbLimiar6.Visible = sensors[6];
             txtFront7.Text = GetDistance(pPos, pBehindObstacle2).ToString();
-            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 55);
+            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 85);
             pbLimiar7.Visible = sensors[7];
 
 
@@ -1282,10 +1309,34 @@ namespace AGVFaultTolerant
         // Restarting the AGVs simulation
         private void btnReset_Click(object sender, System.EventArgs e)
         {
+
+            Angle = 0;
+
+            sensors = new bool[8];
+            sensors[0] = false;
+            sensors[1] = false;
+            sensors[2] = false;
+            sensors[3] = false;
+            sensors[4] = false;
+            sensors[5] = false;
+            sensors[6] = false;
+            sensors[7] = false;
+            _traz = false;
+            _ga = new GA(4, 3, sensors);
+            _ga.K = 20;
+
+            FirstInference = true;
+            pbRobot.Top = pbTerrain.Bottom - 70;
+            pbRobot.Left = pbTerrain.Left + 80;
+            InitialPos = pbRobot.Location;
+            RunLabel = btnRun.Text;
+
+            btnRun.Enabled = true;
             ctControleParent = 0;
-            //_ga = new GA(4, 3, sensors);
-            _ga = new GA(3, 3, sensors);
-            _ga.K = 10;
+            ctControleClones = 0;
+
+            lblFitness4.Text = "0";
+            lblGeneration.Text = "1";
 
             _bCiclo = false;
             pbLimiar0.Visible = false;
@@ -1319,6 +1370,7 @@ namespace AGVFaultTolerant
         // Moving the AGV
         private void MoveAGV()
         {
+            bestIndividualLatGeneration = null;
             //Passado 140 milisegundos, coletar a distancia percorrida pelo robo
             if (_bCiclo)
             {
@@ -1362,14 +1414,14 @@ namespace AGVFaultTolerant
             if (_traz)
                 IncY = -1 * IncY;
 
+            pbRobot.Top = pbRobot.Top + IncY;
+            pbRobot.Left = pbRobot.Left + IncX;
+
             if (_ponto1)
             {
                 p1 = new Point(pbRobot.Left - pbTerrain.Left + pbRobot.Width / 2, pbRobot.Top - pbTerrain.Top + pbRobot.Height / 2);
                 _ponto1 = false;
             }
-            //if (_ponto2)
-            //{                
-            //}
 
             // Leaving the track 
             if (cbTrajeto.Checked)
@@ -1384,8 +1436,8 @@ namespace AGVFaultTolerant
 
 
 
-            pbRobot.Top = pbRobot.Top + IncY;
-            pbRobot.Left = pbRobot.Left + IncX;
+            //pbRobot.Top = pbRobot.Top + IncY;
+            //pbRobot.Left = pbRobot.Left + IncX;
         }
 
         // Starting and stopping the AGV's moviment a
@@ -1463,11 +1515,11 @@ namespace AGVFaultTolerant
                 while (Thread.CurrentThread.IsAlive)
                 {
                     tFim = DateTime.Now.TimeOfDay;
-                    //tInicio = new TimeSpan();
+
                     MethodInvoker mi = new MethodInvoker(AGVStep);
                     this.BeginInvoke(mi);
                     Thread.Sleep(Convert.ToInt32(txtInterval.Text));
-                    //tFim = new TimeSpan();
+
 
                     //TimeSpan tresult = tFim.Subtract(tInicio);
                     if (tFim.Subtract(tInicio).Milliseconds > 10)
@@ -1527,7 +1579,7 @@ namespace AGVFaultTolerant
         private void ShowChromosome(CircuitoChromosome eqc, Label lFitness)
         {
             if (eqc == null) return;
-            lblGeneration.Text = _ga.Generation.ToString();
+            lblGeneration.Text = (_ga.Generation + 1).ToString();
             lFitness.Text = eqc.GetFitness().ToString();
             lblFitness4.Text = eqc.GetFitness().ToString();
             //DrawTable(eqc.Valores);
