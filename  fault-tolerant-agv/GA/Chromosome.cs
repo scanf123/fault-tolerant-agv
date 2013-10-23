@@ -100,6 +100,10 @@ namespace AGVFaultTolerant
             //_cgp = new CGP(16, 3, 4, 3, lstInt.ToArray(), lstMolOUTPUT.ToArray(), lstMolINPUT.ToArray());
             Cgp = new CGP(16, 3, 4, 3, individual, outputBits, inputBits);
             Cgp.Evaluate();
+            bool viraEsq = false;
+            if (Cgp.Output[0].Output == true && Cgp.Output[0].Output == false)
+                viraEsq = true;
+
             clones = new List<CircuitoChromosome>();
             //this.Individual = individual;
             //this.InputBits = inputBits;
@@ -138,6 +142,7 @@ namespace AGVFaultTolerant
             string strGen = "0;1;2;3;8;4;5;6;7;8;8;9;10;11;8;12;13;14;15;8;16;17;18;19;8;20;21;22;23;8;24;25;26;27;8;28;29;30;31;8;32;33;34;35;8;36;37;38;39;8;40;41;42;43;8;44;45;46;47;8;48;49;50;51;8;52;53;54;55;8;56;57;58;59;8;60;61;62;63;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;64;65;66;67;8;68;69;70;71;8;72;73;74;75;8;76;77;78;79;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8;80;81;82;83;8";
 
             //Indices das operações lógicas da LUT lógicas
+            //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
             int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
 
             foreach (string s in strGen.Split(';'))
@@ -160,7 +165,7 @@ namespace AGVFaultTolerant
 
             for (int i = 0; i < portasAlteradas; i++)
             {
-                int indextmp = r.Next(indexes.Length - 1);
+                int indextmp = r.Next((indexes.Length - 1));
                 //Porta a ser alterada
                 indexMutate = indexes[indextmp];
 
@@ -287,11 +292,12 @@ namespace AGVFaultTolerant
             //int portasAlteradas = Convert.ToInt32(Math.Truncate((k * (1 - fitnessNormalizado))));
             //double fitnessNormalizado = fitnessParent / 256;
             double fitnessNormalizado = fitnessParent;// / 50;
-            int portasAlteradas = Convert.ToInt32(k * (fitnessNormalizado - (2.8)));
-            if (portasAlteradas < 0)
-                portasAlteradas = 0;
-
-
+            //int portasAlteradas = Convert.ToInt32(k * (fitnessNormalizado - (2.8)));
+            //if (portasAlteradas < 0)
+            //    portasAlteradas = 0;
+            int portasAlteradas = k;
+            if (k != 10)
+                k = k;
 
 
             int indexMutate = -1;
@@ -299,7 +305,7 @@ namespace AGVFaultTolerant
 
             for (int i = 0; i < portasAlteradas; i++)
             {
-                int indextmp = r.Next(indexes.Length - 1);
+                int indextmp = r.Next((indexes.Length - 1));
                 //Porta a ser alterada
                 indexMutate = indexes[indextmp];
 

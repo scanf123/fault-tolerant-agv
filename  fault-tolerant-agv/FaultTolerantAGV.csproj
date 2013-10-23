@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="CGP\CGP.cs" />
     <Compile Include="CGP\Molecule.cs" />
+    <Compile Include="Circulo.cs" />
     <Compile Include="GA\Chromosome.cs" />
     <Compile Include="GA\GA.cs" />
     <Compile Include="MainForm.cs">
@@ -129,6 +130,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reta.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -165,6 +167,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Mapa2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mapa3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mapa4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

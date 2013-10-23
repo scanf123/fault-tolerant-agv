@@ -141,9 +141,41 @@ namespace AGVFaultTolerant
             //QSChromosome c = GetBestIndividual();           
 
             //Apenas o melhor individuo será mantido
-            Selection(populationSize - 1);
+            Selecao();
+            //Selection(populationSize - 1);
             //Atribui ao Pai, os melhores individuos dos clones (se houverem mudanças para melhor no circuito)
             //return GetBestIndividual();
+        }
+
+        private void Selecao()
+        {
+
+            AvaliatePopulation();
+
+            //ordena clones
+            foreach (CircuitoChromosome c in chromosomes)
+            {
+                c.Clones.Sort();
+            }
+            chromosomes.Sort();
+
+            //seleciona apenas os melhores para compor a proxima geração de pais
+            List<CircuitoChromosome> lstTmp = new List<CircuitoChromosome>();
+            foreach (CircuitoChromosome c in chromosomes)
+            {
+                lstTmp.Add(c.Clones[0]);
+            }
+            lstTmp.Add(chromosomes[0]);
+
+            lstTmp.Sort();
+            for (int i = 0; i < populationSize; i++)
+            {
+                //Apenas o melhor individuo será usado como modelo para a proxima geraçãos
+                //Utilização de eletismos
+                chromosomes[i] = lstTmp[0];
+            }
+
+
         }
 
         private void Evaluate()
@@ -340,7 +372,6 @@ namespace AGVFaultTolerant
         /// <returns></returns>
         private CircuitoChromosome MetodoDaRoleta()
         {
-
             Hashtable htLista = new Hashtable();
 
             //Cada item sera adicionado a lista "fitness" vezes, p/ que tenha maior chance de ser sorteado
@@ -384,7 +415,6 @@ namespace AGVFaultTolerant
 
         public void InitializeClones(int ctControleParent, bool[] sensors)
         {
-
             for (int i = 0; i < clonepopulation; i++)
                 this.chromosomes[ctControleParent].Clones.Add(CircuitoChromosome.CreateRandomClone(sensors, this.chromosomes[ctControleParent].GetFitness(), this.chromosomes[ctControleParent].Cgp.Genotype, this._k));
 
