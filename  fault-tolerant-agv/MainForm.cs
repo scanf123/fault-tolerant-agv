@@ -906,7 +906,7 @@ namespace AGVFaultTolerant
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(1089, 510);
+            this.ClientSize = new System.Drawing.Size(1238, 616);
             this.Controls.Add(this.lblGeneCircuito);
             this.Controls.Add(this.txtGeneAgv);
             this.Controls.Add(this.pbLimiar3);
@@ -1149,14 +1149,31 @@ namespace AGVFaultTolerant
             double radAngle = ((Angle + 90) * Math.PI) / 180;
 
 
-            // Getting distances
-            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, -1, 0);
-            Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - (5 * ((int)(Math.Cos(radAngle)))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))), b, -1, 0);
-            //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - 5 * (Math.Cos(radAngle)))), pPos.Y + 5 * ((int)(Math.Sin(radAngle)))));
+            #region Nova logica retas
 
-            //Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, -1, 0);
-            Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, -1, 0);
-            //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + 5 * (int)(Math.Cos(radAngle)))), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
+            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
+            Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
+            Reta rPrincipal = new Reta(pPos, pFront);
+            double mPerpendicularPrincipal = rPrincipal.CalculaMPerpendicularAReta();
+            Reta rPerpendicularPrincipal = new Reta(mPerpendicularPrincipal, pPos, null);
+            //Circulo cRobo = new Circulo(pPos, 5.0);
+            Circulo cRobo = new Circulo(pPos, 5);
+            double[] xSecantes = cRobo.CalculaValorXSecanteCircuferencia(rPerpendicularPrincipal);
+            double[] ySecantes = new double[2];
+            if (xSecantes.Length == 2)
+            {
+                ySecantes[0] = rPerpendicularPrincipal.CalculaValorY(xSecantes[0]);
+                ySecantes[1] = rPerpendicularPrincipal.CalculaValorY(xSecantes[1]);
+            }
+            Point pPrincipalParalela1 = new Point((int)xSecantes[0], (int)ySecantes[0]);
+            Point pPrincipalParalela2 = new Point((int)xSecantes[1], (int)ySecantes[1]);
+            Reta rPrincipalParalela1 = new Reta(rPrincipal.M, pPrincipalParalela1, null);
+            Reta rPrincipalParalela2 = new Reta(rPrincipal.M, pPrincipalParalela2, null);
+
+            //Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X - 5, pPrincipalParalela1.Y), b, -1, 0);
+            //Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X - 5, pPrincipalParalela2.Y), b, -1, 0);
+            Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, -1, 0);
+            Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, -1, 0);
 
             Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
             Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
@@ -1164,14 +1181,87 @@ namespace AGVFaultTolerant
             Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
             Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
 
+            //Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X + 5, pPrincipalParalela1.Y), b, 1, 0);
+            //Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X - 5, pPrincipalParalela2.Y), b, 1, 0);
+            Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, 1, 0);
+            Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, 1, 0);
 
-            //Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, 1, 0);
-            Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
-            //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5 * (int)(Math.Cos(radAngle)), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
-            //Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, 1, 0);
-            Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
-            //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5 * (int)(Math.Cos(radAngle)), pPos.Y + 5 * (int)(Math.Sin(radAngle))));
 
+
+
+            #endregion
+
+            #region Logica antiga
+
+            //// Getting distances
+            ////Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, -1, 0);
+            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - (5 * ((int)(Math.Cos(radAngle)))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))), b, -1, 0);
+            ////g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - 5 * (Math.Cos(radAngle)))), pPos.Y + 5 * ((int)(Math.Sin(radAngle)))));
+
+            ////Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, -1, 0);
+            //Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, -1, 0);
+            ////g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + 5 * (int)(Math.Cos(radAngle)))), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
+
+            //Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
+            //Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
+
+            //Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
+            //Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
+
+
+            ////Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, 1, 0);
+            //Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
+            ////g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5 * (int)(Math.Cos(radAngle)), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
+            ////Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, 1, 0);
+            //Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
+            ////g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5 * (int)(Math.Cos(radAngle)), pPos.Y + 5 * (int)(Math.Sin(radAngle))));
+
+
+            //// Showing beams
+            //Graphics g = Graphics.FromImage(b);
+            //if (cbLasers.Checked)
+            //{
+            //    //Adicionando retas
+            //    //Frontais
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPos);
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (Math.Sin(radAngle)))), pPos.Y+((int)(Math.Cos(radAngle)))));
+
+            //    g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (5 * (Math.Cos(radAngle))))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPos);
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(pPos.X + 5, pPos.Y));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (int)(Math.Sin(radAngle)))), pPos.Y+(int)(Math.Cos(radAngle))));
+            //    g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (5 * (int)(Math.Cos(radAngle))))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
+
+            //    //Traseiras
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPos);
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPos);
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5, pPos.Y));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5, pPos.Y));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
+            //    g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
+            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
+            //    g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))));
+
+            //    //Laterais
+            //    g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
+            //    g.DrawLine(new Pen(Color.Red, 1), pRightObstacle, pPos);
+            //    g.DrawLine(new Pen(Color.Red, 1), pLeft45Obstacle, pPos);
+            //    g.DrawLine(new Pen(Color.Red, 1), pRight45Obstacle, pPos);
+            //}
+
+            //// Drawing AGV
+            //if (btnRun.Text != RunLabel)
+            //{
+            //    g.FillEllipse(new SolidBrush(Color.Navy), pPos.X - 5, pPos.Y - 5, 10, 10);
+            //}
+
+            //g.DrawImage(b, 0, 0);
+            //g.Dispose();
+
+            //pbTerrain.Refresh();
+
+            #endregion
 
             // Showing beams
             Graphics g = Graphics.FromImage(b);
@@ -1179,25 +1269,12 @@ namespace AGVFaultTolerant
             {
                 //Adicionando retas
                 //Frontais
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPos);
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (Math.Sin(radAngle)))), pPos.Y+((int)(Math.Cos(radAngle)))));
-
-                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (5 * (Math.Cos(radAngle))))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))));
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPos);
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(pPos.X + 5, pPos.Y));
-                //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (int)(Math.Sin(radAngle)))), pPos.Y+(int)(Math.Cos(radAngle))));
-                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (5 * (int)(Math.Cos(radAngle))))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
+                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPrincipalParalela1);
+                g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPrincipalParalela2);
 
                 //Traseiras
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPos);
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPos);
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5, pPos.Y));
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5, pPos.Y));
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))));
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
 
                 //Laterais
                 g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
@@ -1217,36 +1294,42 @@ namespace AGVFaultTolerant
 
             pbTerrain.Refresh();
 
+
+
             // Updating distances texts
             //Esquerda
             txtFront0.Text = GetDistance(pPos, pLeftObstacle).ToString();
-            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 85);
+            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 95);
             pbLimiar0.Visible = sensors[0];
             //Esquerda 45
             txtFront1.Text = GetDistance(pPos, pLeft45Obstacle).ToString();
-            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 85);
+            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 95);
             pbLimiar1.Visible = sensors[1];
             //Frente
-            txtFront2.Text = GetDistance(pPos, pFrontObstacle1).ToString();
-            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 85);
+            //txtFront2.Text = GetDistance(pPos, pFrontObstacle1).ToString();
+            txtFront2.Text = GetDistance(pPrincipalParalela1, pFrontObstacle1).ToString();
+            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 95);
             pbLimiar2.Visible = sensors[2];
-            txtFront3.Text = GetDistance(pPos, pFrontObstacle2).ToString();
-            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 85);
+            //txtFront3.Text = GetDistance(pPos, pFrontObstacle2).ToString();
+            txtFront3.Text = GetDistance(pPrincipalParalela2, pFrontObstacle2).ToString();
+            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 95);
             pbLimiar3.Visible = sensors[3];
             //Direita 45
             txtFront4.Text = GetDistance(pPos, pRight45Obstacle).ToString();
-            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 85);
+            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 95);
             pbLimiar4.Visible = sensors[4];
             //Direita
             txtFront5.Text = GetDistance(pPos, pRightObstacle).ToString();
-            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 85);
+            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 95);
             pbLimiar5.Visible = sensors[5];
             //Trazeiro
-            txtFront6.Text = GetDistance(pPos, pBehindObstacle1).ToString();
-            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 85);
+            //txtFront6.Text = GetDistance(pPos, pBehindObstacle1).ToString();
+            txtFront6.Text = GetDistance(pPrincipalParalela1, pBehindObstacle1).ToString();
+            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 95);
             pbLimiar6.Visible = sensors[6];
-            txtFront7.Text = GetDistance(pPos, pBehindObstacle2).ToString();
-            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 85);
+            //txtFront7.Text = GetDistance(pPos, pBehindObstacle2).ToString();
+            txtFront7.Text = GetDistance(pPrincipalParalela2, pBehindObstacle2).ToString();
+            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 95);
             pbLimiar7.Visible = sensors[7];
 
 
