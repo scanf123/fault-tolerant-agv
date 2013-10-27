@@ -12,16 +12,24 @@ namespace AGVFaultTolerant
 
         private bool _retaVertical;
         private double _m;
+        private double _b;
+
         private Point _p1, _p2;
 
         #endregion
 
         #region Propriedades
 
+        public double B
+        {
+            get { return _b; }
+            set { SetaB(value); }
+        }
+
         public double M
         {
             get { return _m; }
-            set { _m = value; }
+            set { SetaA(value); }
         }
 
         public Point P2
@@ -53,11 +61,13 @@ namespace AGVFaultTolerant
             {
                 this._m = (double)m;
                 this._p1 = p;
+                this._b = this._p1.Y - (this._m * this._p1.X);
             }
             if (angleGraus != null)
             {
                 this._m = CalculaMPorAngle((double)angleGraus);
                 this._p1 = p;
+                this._b = this._p1.Y - (this._m * this._p1.X);
             }
         }
 
@@ -68,11 +78,25 @@ namespace AGVFaultTolerant
             this._p1 = p1;
             this._p1 = p2;
             this._m = CalculaM(p1, p2);
+            this._b = this._p1.Y - (this._m * this._p1.X);
         }
 
         #endregion
 
         #region Métodos
+
+        private void SetaB(double value)
+        {
+            this._b = value;
+            //this._m = -1 * ((this._b - this._p1.Y) / this._p1.X);
+        }
+
+        private void SetaA(double value)
+        {
+            this._m = value;
+            //this._b = this._p1.Y - (this._m * this._p1.X);
+        }
+
 
         private double CalculaMPorAngle(double angle)
         {
@@ -113,7 +137,8 @@ namespace AGVFaultTolerant
         {
             double y = 0;
             if (!_retaVertical)
-                y = (_m * (_p2.X - _p1.X)) + P1.Y;
+                y = ((this._m * x) + this._b);
+            //y = (_m * (x - _p1.X)) + P1.Y;
 
             return y;
         }
@@ -122,7 +147,8 @@ namespace AGVFaultTolerant
         {
             double x = 0;
             if (!_retaVertical)
-                x = ((_p2.Y - P1.Y) / _m) + P1.X;
+                x = ((y - this._b) / this._m);
+            //x = ((y - P1.Y) / _m) + P1.X;
             else
                 x = P1.X;
 

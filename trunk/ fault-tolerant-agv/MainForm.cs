@@ -1154,6 +1154,7 @@ namespace AGVFaultTolerant
             //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
             Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
             Reta rPrincipal = new Reta(pPos, pFront);
+
             double mPerpendicularPrincipal = rPrincipal.CalculaMPerpendicularAReta();
             Reta rPerpendicularPrincipal = new Reta(mPerpendicularPrincipal, pPos, null);
             //Circulo cRobo = new Circulo(pPos, 5.0);
@@ -1170,10 +1171,62 @@ namespace AGVFaultTolerant
             Reta rPrincipalParalela1 = new Reta(rPrincipal.M, pPrincipalParalela1, null);
             Reta rPrincipalParalela2 = new Reta(rPrincipal.M, pPrincipalParalela2, null);
 
+
+            //Reta rPrincipalParalela1 = new Reta(pPos, pFront);//Mesmo que a preincipal
+            //rPrincipalParalela1.B = rPrincipalParalela1.B + 5;
+            //Reta rPrincipalParalela2 = new Reta(pPos, pFront);//Mesmo que a preincipal
+            //rPrincipalParalela2.B = rPrincipalParalela2.B - 5;
+
+            //double xTemp = rPrincipalParalela1.CalculaValorX(pPos.Y);
+            //if (xTemp == 0)
+            //    xTemp = pPos.X + 5;
+            //Point pPrincipalParalela1 = new Point((int)xTemp, pPos.Y);
+            //rPrincipalParalela1.P1 = pPrincipalParalela1;
+
+            //xTemp = rPrincipalParalela2.CalculaValorX(pPos.Y);
+            //if (xTemp == 0)
+            //    xTemp = pPos.X - 5;
+            //Point pPrincipalParalela2 = new Point((int)xTemp, pPos.Y);
+            //rPrincipalParalela2.P1 = pPrincipalParalela2;
+
+            //Circulo cRobo = new Circulo(pPos, 5);
+            //double[] xSecantes = cRobo.CalculaValorXSecanteCircuferencia(rPrincipalParalela1);
+            //double[] ySecantes = new double[2];
+            //if (xSecantes.Length == 2)
+            //{
+            //    ySecantes[0] = rPrincipalParalela1.CalculaValorY(xSecantes[0]);
+            //    ySecantes[1] = rPrincipalParalela1.CalculaValorY(xSecantes[1]);
+            //}
+
+            //double[] xSecantes2 = cRobo.CalculaValorXSecanteCircuferencia(rPrincipalParalela2);
+            //double[] ySecantes2 = new double[2];
+            //if (xSecantes.Length == 2)
+            //{
+            //    ySecantes2[0] = rPrincipalParalela2.CalculaValorY(xSecantes[0]);
+            //    ySecantes2[1] = rPrincipalParalela2.CalculaValorY(xSecantes[1]);
+            //}
+
+
+
+
+
+
+
+
+
+
+            System.Diagnostics.Debug.WriteLine(string.Format("XpPos={0} ; YpPos={1} ;M={2} ", pPos.X, pPos.Y, rPrincipal.M));
+            System.Diagnostics.Debug.WriteLine(string.Format("XpPrincipalParalela1={0} ; YpPrincipalParalela1={1} ;M={2} ", pPrincipalParalela1.X, pPrincipalParalela1.Y, rPrincipalParalela1.M));
+            System.Diagnostics.Debug.WriteLine(string.Format("XpPrincipalParalela2={0} ; YpPrincipalParalela2={1} ;M={2} ", pPrincipalParalela2.X, pPrincipalParalela2.Y, rPrincipalParalela2.M));
+
             //Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X - 5, pPrincipalParalela1.Y), b, -1, 0);
             //Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X - 5, pPrincipalParalela2.Y), b, -1, 0);
             Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, -1, 0);
             Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, -1, 0);
+
+            System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo1={0} ; YObstaculo4={1}", pFrontObstacle1.X, pFrontObstacle1.Y));
+            System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo2={0} ; YObstaculo3={1}", pFrontObstacle2.X, pFrontObstacle2.Y));
+            System.Diagnostics.Debug.WriteLine(string.Format("-------------------------------------------------------------------------------------------------------------"));
 
             Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
             Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
@@ -1271,10 +1324,14 @@ namespace AGVFaultTolerant
                 //Frontais
                 g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPrincipalParalela1);
                 g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPrincipalParalela2);
+                g.DrawLine(new Pen(Color.Green, 1), pFront, pPos);
+
+
+
 
                 //Traseiras
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
 
                 //Laterais
                 g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
