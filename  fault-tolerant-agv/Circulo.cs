@@ -35,11 +35,12 @@ namespace AGVFaultTolerant
             x1 = x2 = 0;
 
             //TODO: Implementar calculo de Secantes
+            //double a = (1 + Math.Pow(r1.M, 2));
             double a = (1 + Math.Pow(r1.M, 2));
-            //double b = (2 * r1.P1.Y * r1.M) - (2 * _c.X) - (2 * r1.M * r1.P1.X) - (2 * r1.M * _c.Y) - (2 * _c.X);
-            double b = (2 * r1.P1.Y * r1.M) - (2 * _c.X) - (2 * (Math.Pow(r1.M, 2)) * r1.P1.X) - (2 * r1.P1.Y * r1.M);
-            //double c = (Math.Pow(r1.M, 2) * Math.Pow(r1.P1.X, 2)) - (2 * r1.P1.Y * r1.M * r1.P1.X) + (Math.Pow(r1.P1.Y, 2)) + (2 * r1.M * r1.P1.X * _c.Y) - (2 * r1.P1.Y * _c.Y) - (Math.Pow(_r, 2));
-            double c = (Math.Pow(_c.X, 2)) + (Math.Pow(r1.P1.Y, 2)) - (2 * r1.P1.Y * r1.P1.X * r1.M) + (r1.P1.X * (Math.Pow(r1.M, 2))) - (2 * (Math.Pow(r1.P1.Y, 2))) + (2 * r1.P1.Y * r1.P1.X * r1.M) + (Math.Pow(_c.Y, 2)) - (Math.Pow(_r, 2));
+            //double b = (2 * r1.P1.Y * r1.M) - (2 * _c.X) - (2 * (Math.Pow(r1.M, 2)) * r1.P1.X) - (2 * r1.P1.Y * r1.M);
+            double b = (2 * r1.M * r1.B) - (2 * r1.M * this._c.Y) - (2 * this._c.X);
+            //double c = (Math.Pow(_c.X, 2)) + (Math.Pow(r1.P1.Y, 2)) - (2 * r1.P1.Y * r1.P1.X * r1.M) + (r1.P1.X * (Math.Pow(r1.M, 2))) - (2 * (Math.Pow(r1.P1.Y, 2))) + (2 * r1.P1.Y * r1.P1.X * r1.M) + (Math.Pow(_c.Y, 2)) - (Math.Pow(_r, 2));
+            double c = (Math.Pow(this._c.X, 2)) + (Math.Pow(r1.B, 2)) + (Math.Pow(this._c.Y, 2)) - (2 * r1.B * this._c.Y) - (Math.Pow(this._r, 2));
             double delta = Math.Pow(b, 2) - (4 * a * c);
             if (delta > 0)
             {
