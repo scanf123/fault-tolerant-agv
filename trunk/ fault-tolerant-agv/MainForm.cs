@@ -1,5 +1,5 @@
 //Fault Tolerant AGV
-//Utilizado como matriz:
+//Utilizado como projeto matriz:
 //      Fuzzy Auto Guided Vehicle Sample
 //      AForge.NET framework
 //      http://www.aforgenet.com/framework/
@@ -31,7 +31,6 @@ namespace AGVFaultTolerant
 
         private string RunLabel;
         private bool _traz;
-        //private TimeSpan _IoPeriodCounter = new TimeSpan(0, 0, 0);
         private Point InitialPos;
         private bool FirstInference;
         private int LastX;
@@ -40,7 +39,6 @@ namespace AGVFaultTolerant
         private double Angle, Speed;
         private Bitmap OriginalMap, InitialMap;
         private Thread thMovement;
-        //private FIS fis;
         private GA _ga;
         private bool[] sensors;
         CircuitoChromosome bestIndividualLatGeneration;
@@ -112,6 +110,11 @@ namespace AGVFaultTolerant
         private PictureBox pbLimiar3;
         private TextBox txtGeneAgv;
         private Label lblGeneCircuito;
+        private GroupBox groupBox4;
+        private PictureBox pbMotor2;
+        private PictureBox pbMotor1;
+        private Label label27;
+        private Label label28;
         private System.Windows.Forms.CheckBox cbTrajeto;
         #endregion
 
@@ -246,6 +249,11 @@ namespace AGVFaultTolerant
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbRobot = new System.Windows.Forms.PictureBox();
             this.pbTerrain = new System.Windows.Forms.PictureBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.pbMotor1 = new System.Windows.Forms.PictureBox();
+            this.pbMotor2 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbComandos.SuspendLayout();
@@ -262,6 +270,9 @@ namespace AGVFaultTolerant
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStep
@@ -896,17 +907,69 @@ namespace AGVFaultTolerant
             this.pbTerrain.InitialImage = null;
             this.pbTerrain.Location = new System.Drawing.Point(581, 8);
             this.pbTerrain.Name = "pbTerrain";
-            this.pbTerrain.Size = new System.Drawing.Size(498, 501);
+            this.pbTerrain.Size = new System.Drawing.Size(654, 570);
             this.pbTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbTerrain.TabIndex = 10;
             this.pbTerrain.TabStop = false;
             this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
             this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.pbMotor2);
+            this.groupBox4.Controls.Add(this.pbMotor1);
+            this.groupBox4.Controls.Add(this.label27);
+            this.groupBox4.Controls.Add(this.label28);
+            this.groupBox4.Location = new System.Drawing.Point(461, 308);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(114, 101);
+            this.groupBox4.TabIndex = 130;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Atuadores:";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(6, 58);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(43, 13);
+            this.label27.TabIndex = 2;
+            this.label27.Text = "Motor2:";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(6, 16);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(43, 13);
+            this.label28.TabIndex = 60;
+            this.label28.Text = "Motor1:";
+            // 
+            // pbMotor1
+            // 
+            this.pbMotor1.BackColor = System.Drawing.Color.Transparent;
+            this.pbMotor1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbMotor1.Location = new System.Drawing.Point(56, 19);
+            this.pbMotor1.Name = "pbMotor1";
+            this.pbMotor1.Size = new System.Drawing.Size(10, 10);
+            this.pbMotor1.TabIndex = 68;
+            this.pbMotor1.TabStop = false;
+            // 
+            // pbMotor2
+            // 
+            this.pbMotor2.BackColor = System.Drawing.Color.Transparent;
+            this.pbMotor2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbMotor2.Location = new System.Drawing.Point(56, 61);
+            this.pbMotor2.Name = "pbMotor2";
+            this.pbMotor2.Size = new System.Drawing.Size(10, 10);
+            this.pbMotor2.TabIndex = 69;
+            this.pbMotor2.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(1238, 616);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblGeneCircuito);
             this.Controls.Add(this.txtGeneAgv);
             this.Controls.Add(this.pbLimiar3);
@@ -950,27 +1013,16 @@ namespace AGVFaultTolerant
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
         #endregion
 
-
-        // Run one epoch of the Fuzzy Inference System 
-        private void DoInference()
-        {
-            //double NewAngle;
-            ////Direita
-            //fis.DoInference(Convert.ToDouble(txtFront5.Text),
-            //    //Esquerda
-            //    Convert.ToDouble(txtFront0.Text),
-            //    //Frente
-            //    ((Convert.ToDouble(txtFront2.Text) + Convert.ToDouble(txtFront3.Text)) / 2),
-            //    out NewAngle, out Speed);
-            //txtAngle.Text = NewAngle.ToString("##0.#0");
-            //Angle += NewAngle;
-        }
 
         private void DoInferenceGA(int distance)
         {
@@ -1063,6 +1115,11 @@ namespace AGVFaultTolerant
             double NewAngle = -1;
             //bool traz = false;
             _traz = false;
+
+            pbMotor1.Visible = !chromoRobo.OutputBits[0].Output;
+            pbMotor2.Visible = !chromoRobo.OutputBits[1].Output;
+
+
             //if (intSaida == 0)
             if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == false)
             {
@@ -1129,6 +1186,7 @@ namespace AGVFaultTolerant
             // Getting AGV's position
             pbTerrain.Image = CopyImage(OriginalMap);
             Bitmap b = pbTerrain.Image as Bitmap;
+
             Point pPos = new Point(pbRobot.Left - pbTerrain.Left + 5, pbRobot.Top - pbTerrain.Top + 5);
 
             // AGV on the wall
@@ -1144,86 +1202,53 @@ namespace AGVFaultTolerant
                     MessageBox.Show(Msg, "Error!");
                     btnRun.Enabled = false;
                 }
-                //throw new Exception(Msg);
             }
             double radAngle = ((Angle + 90) * Math.PI) / 180;
 
 
             #region Nova logica retas
 
-            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
             Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
             Reta rPrincipal = new Reta(pPos, pFront);
 
-            double mPerpendicularPrincipal = rPrincipal.CalculaMPerpendicularAReta();
-            Reta rPerpendicularPrincipal = new Reta(mPerpendicularPrincipal, pPos, null);
-            //Circulo cRobo = new Circulo(pPos, 5.0);
-            Circulo cRobo = new Circulo(pPos, 5);
-            double[] xSecantes = cRobo.CalculaValorXSecanteCircuferencia(rPerpendicularPrincipal);
-            double[] ySecantes = new double[2];
-            if (xSecantes.Length == 2)
+
+            double mperpendicularprincipal = rPrincipal.CalculaMPerpendicularAReta();
+            Reta rperpendicularprincipal = new Reta(mperpendicularprincipal, pPos, null);
+
+            Circulo crobo = new Circulo(pPos, 5);
+            double[] xsecantes = crobo.CalculaValorXSecanteCircuferencia(rperpendicularprincipal);
+            double[] ysecantes = new double[2];
+            if (xsecantes.Length == 2)
             {
-                ySecantes[0] = rPerpendicularPrincipal.CalculaValorY(xSecantes[0]);
-                ySecantes[1] = rPerpendicularPrincipal.CalculaValorY(xSecantes[1]);
+                if (rperpendicularprincipal.RetaVertical)
+                {
+                    //Caso a reta perpendicular a principal seja uma reta vertical, utilizar o circulo para determinar a posião dos Y, pois, a equação da reta estara definida como "x = k"
+                    ysecantes = crobo.CalculaValorY(xsecantes[0]);
+                }
+                else
+                {
+                    ysecantes[0] = rperpendicularprincipal.CalculaValorY(xsecantes[0]);
+                    ysecantes[1] = rperpendicularprincipal.CalculaValorY(xsecantes[1]);
+                }
             }
-            Point pPrincipalParalela1 = new Point((int)xSecantes[0], (int)ySecantes[0]);
-            Point pPrincipalParalela2 = new Point((int)xSecantes[1], (int)ySecantes[1]);
+            Point pPrincipalParalela1 = new Point((int)xsecantes[0], (int)ysecantes[0]);
+            Point pPrincipalParalela2 = new Point((int)xsecantes[1], (int)ysecantes[1]);
             Reta rPrincipalParalela1 = new Reta(rPrincipal.M, pPrincipalParalela1, null);
             Reta rPrincipalParalela2 = new Reta(rPrincipal.M, pPrincipalParalela2, null);
 
 
-            //Reta rPrincipalParalela1 = new Reta(pPos, pFront);//Mesmo que a preincipal
-            //rPrincipalParalela1.B = rPrincipalParalela1.B + 5;
-            //Reta rPrincipalParalela2 = new Reta(pPos, pFront);//Mesmo que a preincipal
-            //rPrincipalParalela2.B = rPrincipalParalela2.B - 5;
-
-            //double xTemp = rPrincipalParalela1.CalculaValorX(pPos.Y);
-            //if (xTemp == 0)
-            //    xTemp = pPos.X + 5;
-            //Point pPrincipalParalela1 = new Point((int)xTemp, pPos.Y);
-            //rPrincipalParalela1.P1 = pPrincipalParalela1;
-
-            //xTemp = rPrincipalParalela2.CalculaValorX(pPos.Y);
-            //if (xTemp == 0)
-            //    xTemp = pPos.X - 5;
-            //Point pPrincipalParalela2 = new Point((int)xTemp, pPos.Y);
-            //rPrincipalParalela2.P1 = pPrincipalParalela2;
-
-            //Circulo cRobo = new Circulo(pPos, 5);
-            //double[] xSecantes = cRobo.CalculaValorXSecanteCircuferencia(rPrincipalParalela1);
-            //double[] ySecantes = new double[2];
-            //if (xSecantes.Length == 2)
-            //{
-            //    ySecantes[0] = rPrincipalParalela1.CalculaValorY(xSecantes[0]);
-            //    ySecantes[1] = rPrincipalParalela1.CalculaValorY(xSecantes[1]);
-            //}
-
-            //double[] xSecantes2 = cRobo.CalculaValorXSecanteCircuferencia(rPrincipalParalela2);
-            //double[] ySecantes2 = new double[2];
-            //if (xSecantes.Length == 2)
-            //{
-            //    ySecantes2[0] = rPrincipalParalela2.CalculaValorY(xSecantes[0]);
-            //    ySecantes2[1] = rPrincipalParalela2.CalculaValorY(xSecantes[1]);
-            //}
 
 
 
-
-
-
-
-
-
-
-            System.Diagnostics.Debug.WriteLine(string.Format("XpPos={0} ; YpPos={1} ;M={2} ", pPos.X, pPos.Y, rPrincipal.M));
-            System.Diagnostics.Debug.WriteLine(string.Format("XpPrincipalParalela1={0} ; YpPrincipalParalela1={1} ;M={2} ", pPrincipalParalela1.X, pPrincipalParalela1.Y, rPrincipalParalela1.M));
-            System.Diagnostics.Debug.WriteLine(string.Format("XpPrincipalParalela2={0} ; YpPrincipalParalela2={1} ;M={2} ", pPrincipalParalela2.X, pPrincipalParalela2.Y, rPrincipalParalela2.M));
-
-            //Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X - 5, pPrincipalParalela1.Y), b, -1, 0);
-            //Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X - 5, pPrincipalParalela2.Y), b, -1, 0);
             Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, -1, 0);
             Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, -1, 0);
 
+            System.Diagnostics.Debug.WriteLine(string.Format("XpFront={0} ; YpFront={1} ; Angle={2} ; radAngle={3} ", pFront.X, pFront.Y, Angle, radAngle));
+            System.Diagnostics.Debug.WriteLine(string.Format("XpPos={0} ; YpPos={1} ; Angle={2} ; radAngle={3} ", pPos.X, pPos.Y, Angle, radAngle));
+            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipal.M={0} ; rPrincipal.B={1} ; rPrincipal.P1.X={2} ; rPrincipal.P1.Y={3} ; ", rPrincipal.M, rPrincipal.B, rPrincipal.P1.X, rPrincipal.P1.Y));
+            System.Diagnostics.Debug.WriteLine(string.Format("rperpendicularprincipal.M={0} ; rperpendicularprincipal.B={1} ; rperpendicularprincipal.P1.X={2} ; rperpendicularprincipal.P1.Y={3} ; ", rperpendicularprincipal.M, rperpendicularprincipal.B, rperpendicularprincipal.P1.X, rperpendicularprincipal.P1.Y));
+            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela1.M={0} ; rPrincipalParalela1.B={1} ; rPrincipalParalela1.P1.X={2} ; rPrincipalParalela1.P1.Y={3} ; ", rPrincipalParalela1.M, rPrincipalParalela1.B, rPrincipalParalela1.P1.X, rPrincipalParalela1.P1.Y));
+            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela2.M={0} ; rPrincipalParalela2.B={1} ; rPrincipalParalela2.P1.X={2} ; rPrincipalParalela2.P1.Y={3} ; ", rPrincipalParalela2.M, rPrincipalParalela2.B, rPrincipalParalela2.P1.X, rPrincipalParalela2.P1.Y));
             System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo1={0} ; YObstaculo4={1}", pFrontObstacle1.X, pFrontObstacle1.Y));
             System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo2={0} ; YObstaculo3={1}", pFrontObstacle2.X, pFrontObstacle2.Y));
             System.Diagnostics.Debug.WriteLine(string.Format("-------------------------------------------------------------------------------------------------------------"));
@@ -1234,12 +1259,8 @@ namespace AGVFaultTolerant
             Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
             Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
 
-            //Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X + 5, pPrincipalParalela1.Y), b, 1, 0);
-            //Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X - 5, pPrincipalParalela2.Y), b, 1, 0);
             Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, 1, 0);
             Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, 1, 0);
-
-
 
 
             #endregion
@@ -1324,14 +1345,12 @@ namespace AGVFaultTolerant
                 //Frontais
                 g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPrincipalParalela1);
                 g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPrincipalParalela2);
-                g.DrawLine(new Pen(Color.Green, 1), pFront, pPos);
-
-
-
+                //Utilizado para desenhar a reta principal, apenas para testes
+                //g.DrawLine(new Pen(Color.Green, 1), pFront, pPos);
 
                 //Traseiras
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
-                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
+                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
 
                 //Laterais
                 g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
@@ -1393,9 +1412,8 @@ namespace AGVFaultTolerant
 
 
             //A velocidade é determinada em tempo real de acordo com a distancia dos obstaculos
-            //Se um dos sensores atingiu o valor da limiar diminui a velocidade
-            //if (!(sensors[0] || sensors[1] || sensors[2] || sensors[3] || sensors[4] || sensors[5] || sensors[6] || sensors[7]))
-            //Utilizar doi sensores proximos para determinar qundo esta p´rximo de um obstaculo
+            //Se um dos sensores atingiu o valor da limiar diminui a velocidade            
+            //Utilizar dois sensores proximos para determinar qundo esta p´rximo de um obstaculo
             if (!((sensors[0] && sensors[1]) || (sensors[2] && sensors[3]) || (sensors[4] && sensors[5]) || (sensors[6] && sensors[7])))
             {
                 txtSpeed.Text = "12,0";
@@ -1406,6 +1424,7 @@ namespace AGVFaultTolerant
                 txtSpeed.Text = "5,0";
                 Speed = 5;
             }
+            txtAngle.Text = Angle.ToString();
 
         }
 
@@ -1502,8 +1521,6 @@ namespace AGVFaultTolerant
             txtFront6.Text = "0";
             txtFront7.Text = "0";
 
-            //txtLeft.Text = "0";
-            //txtRight.Text = "0";
             txtAngle.Text = "0,00";
         }
 
@@ -1515,10 +1532,7 @@ namespace AGVFaultTolerant
             if (_bCiclo)
             {
                 _ponto1 = true;
-                //_ponto2 = false;
                 p2 = new Point(pbRobot.Left - pbTerrain.Left + pbRobot.Width / 2, pbRobot.Top - pbTerrain.Top + pbRobot.Height / 2);
-                //int distancia = GetDistance(p1, p2);
-                //lstDist.Add(GetDistance(p1, p2));
 
                 _bCiclo = false;
                 //Passa a distancia ao controle para avaliação do mesmo
@@ -1543,16 +1557,20 @@ namespace AGVFaultTolerant
             double rad = ((Angle + 90) * Math.PI) / 180;
             int Offset = 0;
             //int Inc = -Convert.ToInt32(Speed / 10);
-            int Inc = -Convert.ToInt32(Speed / 5);
+            //int Inc = -Convert.ToInt32(Speed / 5);
+            int Inc = (-1 * Convert.ToInt32(Speed / 5));
 
             Offset += Inc;
             int IncX = Convert.ToInt32(Offset * Math.Cos(rad));
             if (_traz)
-                IncX = -1 * IncX;
+                IncX = (-1 * IncX);
+            //IncX = -1; // (-1 * IncX);
+
 
             int IncY = Convert.ToInt32(Offset * Math.Sin(rad));
             if (_traz)
-                IncY = -1 * IncY;
+                IncY = (-1 * IncY);
+            //IncY = -1;// (-1 * IncY);
 
             pbRobot.Top = pbRobot.Top + IncY;
             pbRobot.Left = pbRobot.Left + IncX;
@@ -1573,11 +1591,6 @@ namespace AGVFaultTolerant
                 g.DrawImage(OriginalMap, 0, 0);
                 g.Dispose();
             }
-
-
-
-            //pbRobot.Top = pbRobot.Top + IncY;
-            //pbRobot.Left = pbRobot.Left + IncX;
         }
 
         // Starting and stopping the AGV's moviment a
@@ -1705,8 +1718,6 @@ namespace AGVFaultTolerant
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            //Time += 100;
-            //txtTime.Text = (Time / 1000.0).ToString("#0.#0");
             Time += 70;
             txtTime.Text = (Time / 1000.0).ToString("#0.#0");
         }

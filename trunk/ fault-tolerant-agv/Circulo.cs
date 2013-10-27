@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-//namespace FaultTolerantAGV
 namespace AGVFaultTolerant
 {
     public class Circulo
@@ -33,21 +32,23 @@ namespace AGVFaultTolerant
         {
             double x1, x2;
             x1 = x2 = 0;
-
-            //TODO: Implementar calculo de Secantes
-            //double a = (1 + Math.Pow(r1.M, 2));
-            double a = (1 + Math.Pow(r1.M, 2));
-            //double b = (2 * r1.P1.Y * r1.M) - (2 * _c.X) - (2 * (Math.Pow(r1.M, 2)) * r1.P1.X) - (2 * r1.P1.Y * r1.M);
-            double b = (2 * r1.M * r1.B) - (2 * r1.M * this._c.Y) - (2 * this._c.X);
-            //double c = (Math.Pow(_c.X, 2)) + (Math.Pow(r1.P1.Y, 2)) - (2 * r1.P1.Y * r1.P1.X * r1.M) + (r1.P1.X * (Math.Pow(r1.M, 2))) - (2 * (Math.Pow(r1.P1.Y, 2))) + (2 * r1.P1.Y * r1.P1.X * r1.M) + (Math.Pow(_c.Y, 2)) - (Math.Pow(_r, 2));
-            double c = (Math.Pow(this._c.X, 2)) + (Math.Pow(r1.B, 2)) + (Math.Pow(this._c.Y, 2)) - (2 * r1.B * this._c.Y) - (Math.Pow(this._r, 2));
-            double delta = Math.Pow(b, 2) - (4 * a * c);
-            if (delta > 0)
+            if (r1.RetaVertical)
             {
-                if (a != 0)
+                x1 = x2 = r1.P1.X;
+            }
+            else
+            {
+                double a = (1 + Math.Pow(r1.M, 2));
+                double b = (2 * r1.M * r1.B) - (2 * r1.M * this._c.Y) - (2 * this._c.X);
+                double c = (Math.Pow(this._c.X, 2)) + (Math.Pow(r1.B, 2)) + (Math.Pow(this._c.Y, 2)) - (2 * r1.B * this._c.Y) - (Math.Pow(this._r, 2));
+                double delta = Math.Pow(b, 2) - (4 * a * c);
+                if (delta > 0)
                 {
-                    x1 = (((-1 * b) + (Math.Sqrt(delta))) / (2 * a));
-                    x2 = (((-1 * b) - (Math.Sqrt(delta))) / (2 * a));
+                    if (a != 0)
+                    {
+                        x1 = (((-1 * b) + (Math.Sqrt(delta))) / (2 * a));
+                        x2 = (((-1 * b) - (Math.Sqrt(delta))) / (2 * a));
+                    }
                 }
             }
 
@@ -58,5 +59,30 @@ namespace AGVFaultTolerant
             return arrRetorno;
         }
 
+
+        internal double[] CalculaValorY(double x)
+        {
+            double y1, y2;
+            y1 = y2 = 0;
+
+            double a = 1;
+            double b = -2 * _c.Y;
+            double c = Math.Pow(_c.Y, 2) + (Math.Pow(x, 2) - (2 * x * _c.X) + Math.Pow(_c.X, 2)) - Math.Pow(_r, 2);
+            double delta = Math.Pow(b, 2) - (4 * a * c);
+            if (delta > 0)
+            {
+                if (a != 0)
+                {
+                    y1 = (((-1 * b) + (Math.Sqrt(delta))) / (2 * a));
+                    y2 = (((-1 * b) - (Math.Sqrt(delta))) / (2 * a));
+                }
+            }
+
+            double[] arrRetorno = new double[2];
+            arrRetorno[0] = y1;
+            arrRetorno[1] = y2;
+
+            return arrRetorno;
+        }
     }
 }
