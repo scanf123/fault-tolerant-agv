@@ -143,7 +143,9 @@ namespace AGVFaultTolerant
 
             //Indices das operações lógicas da LUT lógicas
             //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
-            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+            //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+            //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 169, 174 };
 
             foreach (string s in strGen.Split(';'))
                 lstInt.Add(Convert.ToInt32(s));
@@ -230,7 +232,14 @@ namespace AGVFaultTolerant
         public double GetFitness()
         {
             //_fitness = ((_distance * _time) / 1000);
-            return (_fitness = (_time * _distance));
+            //return (_fitness = (_time * _distance));
+            //Melhor caso "_fitness = 1"
+            //Pior caso "_fitness = 0"
+            System.Diagnostics.Debug.WriteLine(string.Format("_fitness={0} ; _time={1} ; _distance={2} ; ", ((_time * _distance) / 280), _time, _distance));
+            return (_fitness = ((_time * _distance) / 280));
+
+            //return (_fitness = (_time * _distance));
+
         }
 
         public int CompareTo(CircuitoChromosome obj)
@@ -296,6 +305,9 @@ namespace AGVFaultTolerant
             //if (portasAlteradas < 0)
             //    portasAlteradas = 0;
             int portasAlteradas = k;
+            System.Diagnostics.Debug.WriteLine(string.Format("-----------------------------------------------------------------------"));
+            System.Diagnostics.Debug.WriteLine(string.Format("portasAlteradas={0} ; ", portasAlteradas));
+            System.Diagnostics.Debug.WriteLine(string.Format("-----------------------------------------------------------------------"));
             if (k != 10)
                 k = k;
 

@@ -115,23 +115,7 @@ namespace AGVFaultTolerant
             InitializePopulation(sensors);
         }
 
-        /// <summary>
-        /// Busca a solução, criando as sucessivas gerações da população. 
-        /// </summary>
-        //public CircuitoChromosome FindSolution()
-        //{
-        //    generation++;
-        //    //GenerateChildren();
-        //    //Os Clones são cridos e avaliados dinamicamente (cda qual é implementado por 140 ms)
-        //    //QSChromosome c = GetBestIndividual();           
 
-        //    //Apenas o melhor individuo será mantido
-        //    Selection(populationSize - 1);
-        //    //Atribui ao Pai, os melhores individuos dos clones (se houverem mudanças para melhor no circuito)
-        //    return GetBestIndividual();
-        //}
-
-        //public CircuitoChromosome FindSolution()
         public void FindSolution()
         {
             generation++;
@@ -174,7 +158,6 @@ namespace AGVFaultTolerant
                 //Utilização de eletismos
                 chromosomes[i] = lstTmp[0];
             }
-
 
         }
 
