@@ -31,6 +31,7 @@ namespace AGVFaultTolerant
 
         private string RunLabel;
         private bool _traz;
+        private bool _virou;
         private Point InitialPos;
         private bool FirstInference;
         private int LastX;
@@ -68,7 +69,6 @@ namespace AGVFaultTolerant
         private System.Windows.Forms.Timer timer;
         private Label txtTime;
         private Label label8;
-        private CheckedListBox lstFalha;
         private GroupBox groupBox3;
         private Label txtFront7;
         private Label label20;
@@ -115,6 +115,15 @@ namespace AGVFaultTolerant
         private PictureBox pbMotor1;
         private Label label27;
         private Label label28;
+        private GroupBox groupBox5;
+        private Label label25;
+        private TextBox txtLimiarDistancia;
+        private CheckBox chkFalhaSensorFrontal5;
+        private CheckBox chkFalhaSensorFrontal3;
+        private CheckBox chkFalhaSensorFrontal2;
+        private CheckBox chkFalhaSensorFrontal1;
+        private CheckBox chkFalhaSensorFrontal4;
+        private CheckBox chkFalhaSensorFrontal0;
         private System.Windows.Forms.CheckBox cbTrajeto;
         #endregion
 
@@ -149,11 +158,11 @@ namespace AGVFaultTolerant
 
             //_ga = new GA(16, 3, sensors);
             _ga = new GA(4, 3, sensors);
-            _ga.K = 20;
+            _ga.K = 18;
 
             FirstInference = true;
-            pbRobot.Top = pbTerrain.Bottom - 70;
-            pbRobot.Left = pbTerrain.Left + 80;
+            pbRobot.Top = pbTerrain.Bottom - 100;
+            pbRobot.Left = pbTerrain.Left + 100;
             InitialPos = pbRobot.Location;
             RunLabel = btnRun.Text;
         }
@@ -229,7 +238,6 @@ namespace AGVFaultTolerant
             this.btnReset = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.lstFalha = new System.Windows.Forms.CheckedListBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lblFitness4 = new System.Windows.Forms.Label();
@@ -250,10 +258,19 @@ namespace AGVFaultTolerant
             this.pbRobot = new System.Windows.Forms.PictureBox();
             this.pbTerrain = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.pbMotor2 = new System.Windows.Forms.PictureBox();
+            this.pbMotor1 = new System.Windows.Forms.PictureBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.pbMotor1 = new System.Windows.Forms.PictureBox();
-            this.pbMotor2 = new System.Windows.Forms.PictureBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtLimiarDistancia = new System.Windows.Forms.TextBox();
+            this.chkFalhaSensorFrontal0 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal4 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal1 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal2 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal3 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal5 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbComandos.SuspendLayout();
@@ -271,8 +288,9 @@ namespace AGVFaultTolerant
             ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).BeginInit();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStep
@@ -703,29 +721,17 @@ namespace AGVFaultTolerant
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // lstFalha
-            // 
-            this.lstFalha.FormattingEnabled = true;
-            this.lstFalha.Items.AddRange(new object[] {
-            "Sensor frontal - 0",
-            "Sensor frontal - 1",
-            "Sensor frontal - 2",
-            "Sensor frontal - 3",
-            "Sensor frontal - 4",
-            "Sensor frontal - 5",
-            "Sensor traseiro - 6",
-            "Sensor traseiro - 7"});
-            this.lstFalha.Location = new System.Drawing.Point(6, 19);
-            this.lstFalha.Name = "lstFalha";
-            this.lstFalha.Size = new System.Drawing.Size(128, 124);
-            this.lstFalha.TabIndex = 27;
-            // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.lstFalha);
-            this.groupBox3.Location = new System.Drawing.Point(160, 218);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal5);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal3);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal2);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal1);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal4);
+            this.groupBox3.Controls.Add(this.chkFalhaSensorFrontal0);
+            this.groupBox3.Location = new System.Drawing.Point(160, 212);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(144, 153);
+            this.groupBox3.Size = new System.Drawing.Size(144, 167);
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Falha sensor";
@@ -869,6 +875,7 @@ namespace AGVFaultTolerant
             this.pbLimiar6.Size = new System.Drawing.Size(10, 10);
             this.pbLimiar6.TabIndex = 62;
             this.pbLimiar6.TabStop = false;
+            this.pbLimiar6.Visible = false;
             // 
             // pbLimiar7
             // 
@@ -879,6 +886,7 @@ namespace AGVFaultTolerant
             this.pbLimiar7.Size = new System.Drawing.Size(10, 10);
             this.pbLimiar7.TabIndex = 61;
             this.pbLimiar7.TabStop = false;
+            this.pbLimiar7.Visible = false;
             // 
             // pictureBox2
             // 
@@ -927,6 +935,26 @@ namespace AGVFaultTolerant
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Atuadores:";
             // 
+            // pbMotor2
+            // 
+            this.pbMotor2.BackColor = System.Drawing.Color.Transparent;
+            this.pbMotor2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbMotor2.Location = new System.Drawing.Point(56, 61);
+            this.pbMotor2.Name = "pbMotor2";
+            this.pbMotor2.Size = new System.Drawing.Size(10, 10);
+            this.pbMotor2.TabIndex = 69;
+            this.pbMotor2.TabStop = false;
+            // 
+            // pbMotor1
+            // 
+            this.pbMotor1.BackColor = System.Drawing.Color.Transparent;
+            this.pbMotor1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbMotor1.Location = new System.Drawing.Point(56, 19);
+            this.pbMotor1.Name = "pbMotor1";
+            this.pbMotor1.Size = new System.Drawing.Size(10, 10);
+            this.pbMotor1.TabIndex = 68;
+            this.pbMotor1.TabStop = false;
+            // 
             // label27
             // 
             this.label27.AutoSize = true;
@@ -945,30 +973,93 @@ namespace AGVFaultTolerant
             this.label28.TabIndex = 60;
             this.label28.Text = "Motor1:";
             // 
-            // pbMotor1
+            // groupBox5
             // 
-            this.pbMotor1.BackColor = System.Drawing.Color.Transparent;
-            this.pbMotor1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbMotor1.Location = new System.Drawing.Point(56, 19);
-            this.pbMotor1.Name = "pbMotor1";
-            this.pbMotor1.Size = new System.Drawing.Size(10, 10);
-            this.pbMotor1.TabIndex = 68;
-            this.pbMotor1.TabStop = false;
+            this.groupBox5.Controls.Add(this.label25);
+            this.groupBox5.Controls.Add(this.txtLimiarDistancia);
+            this.groupBox5.Location = new System.Drawing.Point(7, 515);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(145, 101);
+            this.groupBox5.TabIndex = 131;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Limiar Distancia Sensor:";
             // 
-            // pbMotor2
+            // label25
             // 
-            this.pbMotor2.BackColor = System.Drawing.Color.Transparent;
-            this.pbMotor2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbMotor2.Location = new System.Drawing.Point(56, 61);
-            this.pbMotor2.Name = "pbMotor2";
-            this.pbMotor2.Size = new System.Drawing.Size(10, 10);
-            this.pbMotor2.TabIndex = 69;
-            this.pbMotor2.TabStop = false;
+            this.label25.Location = new System.Drawing.Point(10, 16);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(125, 13);
+            this.label25.TabIndex = 20;
+            this.label25.Text = "Distancia Limiar:";
+            // 
+            // txtLimiarDistancia
+            // 
+            this.txtLimiarDistancia.Location = new System.Drawing.Point(10, 32);
+            this.txtLimiarDistancia.Name = "txtLimiarDistancia";
+            this.txtLimiarDistancia.Size = new System.Drawing.Size(72, 20);
+            this.txtLimiarDistancia.TabIndex = 19;
+            this.txtLimiarDistancia.Text = "90";
+            this.txtLimiarDistancia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // chkFalhaSensorFrontal0
+            // 
+            this.chkFalhaSensorFrontal0.Location = new System.Drawing.Point(6, 19);
+            this.chkFalhaSensorFrontal0.Name = "chkFalhaSensorFrontal0";
+            this.chkFalhaSensorFrontal0.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal0.TabIndex = 20;
+            this.chkFalhaSensorFrontal0.Text = "Falha sensor 0";
+            this.chkFalhaSensorFrontal0.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal0_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal4
+            // 
+            this.chkFalhaSensorFrontal4.Location = new System.Drawing.Point(6, 119);
+            this.chkFalhaSensorFrontal4.Name = "chkFalhaSensorFrontal4";
+            this.chkFalhaSensorFrontal4.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal4.TabIndex = 20;
+            this.chkFalhaSensorFrontal4.Text = "Falha sensor 4";
+            this.chkFalhaSensorFrontal4.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal4_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal1
+            // 
+            this.chkFalhaSensorFrontal1.Location = new System.Drawing.Point(6, 42);
+            this.chkFalhaSensorFrontal1.Name = "chkFalhaSensorFrontal1";
+            this.chkFalhaSensorFrontal1.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal1.TabIndex = 20;
+            this.chkFalhaSensorFrontal1.Text = "Falha sensor 1";
+            this.chkFalhaSensorFrontal1.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal1_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal2
+            // 
+            this.chkFalhaSensorFrontal2.Location = new System.Drawing.Point(6, 68);
+            this.chkFalhaSensorFrontal2.Name = "chkFalhaSensorFrontal2";
+            this.chkFalhaSensorFrontal2.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal2.TabIndex = 20;
+            this.chkFalhaSensorFrontal2.Text = "Falha sensor 2";
+            this.chkFalhaSensorFrontal2.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal2_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal3
+            // 
+            this.chkFalhaSensorFrontal3.Location = new System.Drawing.Point(6, 93);
+            this.chkFalhaSensorFrontal3.Name = "chkFalhaSensorFrontal3";
+            this.chkFalhaSensorFrontal3.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal3.TabIndex = 20;
+            this.chkFalhaSensorFrontal3.Text = "Falha sensor 3";
+            this.chkFalhaSensorFrontal3.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal3_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal5
+            // 
+            this.chkFalhaSensorFrontal5.Location = new System.Drawing.Point(6, 141);
+            this.chkFalhaSensorFrontal5.Name = "chkFalhaSensorFrontal5";
+            this.chkFalhaSensorFrontal5.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal5.TabIndex = 21;
+            this.chkFalhaSensorFrontal5.Text = "Falha sensor 5";
+            this.chkFalhaSensorFrontal5.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal5_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(1238, 616);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblGeneCircuito);
             this.Controls.Add(this.txtGeneAgv);
@@ -1015,8 +1106,10 @@ namespace AGVFaultTolerant
             ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1113,32 +1206,42 @@ namespace AGVFaultTolerant
         public void AtualizaDirecao(CircuitoChromosome chromoRobo)
         {
             double NewAngle = -1;
-            //bool traz = false;
-            _traz = false;
+            //_traz = false;
+            _virou = false;
 
             pbMotor1.Visible = !chromoRobo.OutputBits[0].Output;
             pbMotor2.Visible = !chromoRobo.OutputBits[1].Output;
 
 
-            //if (intSaida == 0)
             if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == false)
             {
+                //NewAngle = 0;
+                //_traz = true;
                 NewAngle = 0;
-
+                _traz = false;
             }
-            //else if (intSaida == 1)
             //vira esquerda
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == false)
-                NewAngle = -10;
-            //else if (intSaida == 2)
-            //vira direita
+            {
+                //NewAngle = -10;
+                NewAngle = -5;
+                _virou = true;
+            }
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
-                NewAngle = +10;
-            //else if (intSaida == 3)
+            {
+                //NewAngle = +10;
+                NewAngle = +5;
+                _virou = true;
+
+            }
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true)
             {
-                _traz = true;
+                //_traz = false;
+                //NewAngle = 0;
                 NewAngle = 0;
+                //_traz = true;
+                //TODO: Arrumar lógica de andar para traz
+                _traz = false;
             }
 
             Angle += NewAngle;
@@ -1183,6 +1286,7 @@ namespace AGVFaultTolerant
         // Getting sensors measures
         private void GetMeasures()
         {
+            bool blVirou = false;
             // Getting AGV's position
             pbTerrain.Image = CopyImage(OriginalMap);
             Bitmap b = pbTerrain.Image as Bitmap;
@@ -1243,15 +1347,16 @@ namespace AGVFaultTolerant
             Point pFrontObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, -1, 0);
             Point pFrontObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, -1, 0);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("XpFront={0} ; YpFront={1} ; Angle={2} ; radAngle={3} ", pFront.X, pFront.Y, Angle, radAngle));
-            System.Diagnostics.Debug.WriteLine(string.Format("XpPos={0} ; YpPos={1} ; Angle={2} ; radAngle={3} ", pPos.X, pPos.Y, Angle, radAngle));
-            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipal.M={0} ; rPrincipal.B={1} ; rPrincipal.P1.X={2} ; rPrincipal.P1.Y={3} ; ", rPrincipal.M, rPrincipal.B, rPrincipal.P1.X, rPrincipal.P1.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("rperpendicularprincipal.M={0} ; rperpendicularprincipal.B={1} ; rperpendicularprincipal.P1.X={2} ; rperpendicularprincipal.P1.Y={3} ; ", rperpendicularprincipal.M, rperpendicularprincipal.B, rperpendicularprincipal.P1.X, rperpendicularprincipal.P1.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela1.M={0} ; rPrincipalParalela1.B={1} ; rPrincipalParalela1.P1.X={2} ; rPrincipalParalela1.P1.Y={3} ; ", rPrincipalParalela1.M, rPrincipalParalela1.B, rPrincipalParalela1.P1.X, rPrincipalParalela1.P1.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela2.M={0} ; rPrincipalParalela2.B={1} ; rPrincipalParalela2.P1.X={2} ; rPrincipalParalela2.P1.Y={3} ; ", rPrincipalParalela2.M, rPrincipalParalela2.B, rPrincipalParalela2.P1.X, rPrincipalParalela2.P1.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo1={0} ; YObstaculo4={1}", pFrontObstacle1.X, pFrontObstacle1.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo2={0} ; YObstaculo3={1}", pFrontObstacle2.X, pFrontObstacle2.Y));
-            System.Diagnostics.Debug.WriteLine(string.Format("-------------------------------------------------------------------------------------------------------------"));
+            //Usado para teste
+            //System.Diagnostics.Debug.WriteLine(string.Format("XpFront={0} ; YpFront={1} ; Angle={2} ; radAngle={3} ", pFront.X, pFront.Y, Angle, radAngle));
+            //System.Diagnostics.Debug.WriteLine(string.Format("XpPos={0} ; YpPos={1} ; Angle={2} ; radAngle={3} ", pPos.X, pPos.Y, Angle, radAngle));
+            //System.Diagnostics.Debug.WriteLine(string.Format("rPrincipal.M={0} ; rPrincipal.B={1} ; rPrincipal.P1.X={2} ; rPrincipal.P1.Y={3} ; ", rPrincipal.M, rPrincipal.B, rPrincipal.P1.X, rPrincipal.P1.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("rperpendicularprincipal.M={0} ; rperpendicularprincipal.B={1} ; rperpendicularprincipal.P1.X={2} ; rperpendicularprincipal.P1.Y={3} ; ", rperpendicularprincipal.M, rperpendicularprincipal.B, rperpendicularprincipal.P1.X, rperpendicularprincipal.P1.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela1.M={0} ; rPrincipalParalela1.B={1} ; rPrincipalParalela1.P1.X={2} ; rPrincipalParalela1.P1.Y={3} ; ", rPrincipalParalela1.M, rPrincipalParalela1.B, rPrincipalParalela1.P1.X, rPrincipalParalela1.P1.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("rPrincipalParalela2.M={0} ; rPrincipalParalela2.B={1} ; rPrincipalParalela2.P1.X={2} ; rPrincipalParalela2.P1.Y={3} ; ", rPrincipalParalela2.M, rPrincipalParalela2.B, rPrincipalParalela2.P1.X, rPrincipalParalela2.P1.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo1={0} ; YObstaculo4={1}", pFrontObstacle1.X, pFrontObstacle1.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo2={0} ; YObstaculo3={1}", pFrontObstacle2.X, pFrontObstacle2.Y));
+            //System.Diagnostics.Debug.WriteLine(string.Format("-------------------------------------------------------------------------------------------------------------"));
 
             Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
             Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
@@ -1259,83 +1364,12 @@ namespace AGVFaultTolerant
             Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
             Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
 
-            Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, 1, 0);
-            Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, 1, 0);
+            //Point pBehindObstacle1 = GetObstacle(new Point(pPrincipalParalela1.X, pPrincipalParalela1.Y), b, 1, 0);
+            //Point pBehindObstacle2 = GetObstacle(new Point(pPrincipalParalela2.X, pPrincipalParalela2.Y), b, 1, 0);
 
 
             #endregion
 
-            #region Logica antiga
-
-            //// Getting distances
-            ////Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, -1, 0);
-            //Point pFrontObstacle1 = GetObstacle(new Point(pPos.X - (5 * ((int)(Math.Cos(radAngle)))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))), b, -1, 0);
-            ////g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - 5 * (Math.Cos(radAngle)))), pPos.Y + 5 * ((int)(Math.Sin(radAngle)))));
-
-            ////Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, -1, 0);
-            //Point pFrontObstacle2 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, -1, 0);
-            ////g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + 5 * (int)(Math.Cos(radAngle)))), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
-
-            //Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
-            //Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
-
-            //Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
-            //Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
-
-
-            ////Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + 5, pPos.Y), b, 1, 0);
-            //Point pBehindObstacle1 = GetObstacle(new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
-            ////g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5 * (int)(Math.Cos(radAngle)), pPos.Y - 5 * (int)(Math.Sin(radAngle))));
-            ////Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - 5, pPos.Y), b, 1, 0);
-            //Point pBehindObstacle2 = GetObstacle(new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))), b, 1, 0);
-            ////g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5 * (int)(Math.Cos(radAngle)), pPos.Y + 5 * (int)(Math.Sin(radAngle))));
-
-
-            //// Showing beams
-            //Graphics g = Graphics.FromImage(b);
-            //if (cbLasers.Checked)
-            //{
-            //    //Adicionando retas
-            //    //Frontais
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, pPos);
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(pPos.X - 5, pPos.Y));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (Math.Sin(radAngle)))), pPos.Y+((int)(Math.Cos(radAngle)))));
-
-            //    g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle1, new Point(((int)(pPos.X - (5 * (Math.Cos(radAngle))))), pPos.Y + (5 * ((int)(Math.Sin(radAngle))))));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, pPos);
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(pPos.X + 5, pPos.Y));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (int)(Math.Sin(radAngle)))), pPos.Y+(int)(Math.Cos(radAngle))));
-            //    g.DrawLine(new Pen(Color.Green, 1), pFrontObstacle2, new Point(((int)(pPos.X + (5 * (int)(Math.Cos(radAngle))))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
-
-            //    //Traseiras
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPos);
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPos);
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + 5, pPos.Y));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - 5, pPos.Y));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
-            //    g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, new Point(pPos.X + (5 * (int)(Math.Cos(radAngle))), pPos.Y - (5 * (int)(Math.Sin(radAngle)))));
-            //    //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (int)(Math.Sin(radAngle)), pPos.Y+(int)(Math.Cos(radAngle))));
-            //    g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, new Point(pPos.X - (5 * (int)(Math.Cos(radAngle))), pPos.Y + (5 * (int)(Math.Sin(radAngle)))));
-
-            //    //Laterais
-            //    g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
-            //    g.DrawLine(new Pen(Color.Red, 1), pRightObstacle, pPos);
-            //    g.DrawLine(new Pen(Color.Red, 1), pLeft45Obstacle, pPos);
-            //    g.DrawLine(new Pen(Color.Red, 1), pRight45Obstacle, pPos);
-            //}
-
-            //// Drawing AGV
-            //if (btnRun.Text != RunLabel)
-            //{
-            //    g.FillEllipse(new SolidBrush(Color.Navy), pPos.X - 5, pPos.Y - 5, 10, 10);
-            //}
-
-            //g.DrawImage(b, 0, 0);
-            //g.Dispose();
-
-            //pbTerrain.Refresh();
-
-            #endregion
 
             // Showing beams
             Graphics g = Graphics.FromImage(b);
@@ -1349,8 +1383,8 @@ namespace AGVFaultTolerant
                 //g.DrawLine(new Pen(Color.Green, 1), pFront, pPos);
 
                 //Traseiras
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
-                g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle1, pPrincipalParalela1);
+                //g.DrawLine(new Pen(Color.Green, 1), pBehindObstacle2, pPrincipalParalela2);
 
                 //Laterais
                 g.DrawLine(new Pen(Color.Red, 1), pLeftObstacle, pPos);
@@ -1372,41 +1406,58 @@ namespace AGVFaultTolerant
 
 
 
+            double VlLimiarDistancia = Convert.ToDouble(txtLimiarDistancia.Text);
             // Updating distances texts
             //Esquerda
-            txtFront0.Text = GetDistance(pPos, pLeftObstacle).ToString();
-            sensors[0] = !(Convert.ToDouble(txtFront0.Text) > 95);
-            pbLimiar0.Visible = sensors[0];
+            if (!chkFalhaSensorFrontal0.Checked)
+            {
+                txtFront0.Text = GetDistance(pPos, pLeftObstacle).ToString();
+                sensors[0] = !(Convert.ToDouble(txtFront0.Text) > VlLimiarDistancia);
+                pbLimiar0.Visible = sensors[0];
+            }
             //Esquerda 45
-            txtFront1.Text = GetDistance(pPos, pLeft45Obstacle).ToString();
-            sensors[1] = !(Convert.ToDouble(txtFront1.Text) > 95);
-            pbLimiar1.Visible = sensors[1];
+            if (!chkFalhaSensorFrontal1.Checked)
+            {
+                txtFront1.Text = GetDistance(pPos, pLeft45Obstacle).ToString();
+                sensors[1] = !(Convert.ToDouble(txtFront1.Text) > VlLimiarDistancia);
+                pbLimiar1.Visible = sensors[1];
+            }
             //Frente
-            //txtFront2.Text = GetDistance(pPos, pFrontObstacle1).ToString();
-            txtFront2.Text = GetDistance(pPrincipalParalela1, pFrontObstacle1).ToString();
-            sensors[2] = !(Convert.ToDouble(txtFront2.Text) > 95);
-            pbLimiar2.Visible = sensors[2];
-            //txtFront3.Text = GetDistance(pPos, pFrontObstacle2).ToString();
-            txtFront3.Text = GetDistance(pPrincipalParalela2, pFrontObstacle2).ToString();
-            sensors[3] = !(Convert.ToDouble(txtFront3.Text) > 95);
-            pbLimiar3.Visible = sensors[3];
+            if (!chkFalhaSensorFrontal2.Checked)
+            {
+                txtFront2.Text = GetDistance(pPrincipalParalela1, pFrontObstacle1).ToString();
+                sensors[2] = !(Convert.ToDouble(txtFront2.Text) > VlLimiarDistancia);
+                pbLimiar2.Visible = sensors[2];
+            }
+            if (!chkFalhaSensorFrontal3.Checked)
+            {
+                txtFront3.Text = GetDistance(pPrincipalParalela2, pFrontObstacle2).ToString();
+                sensors[3] = !(Convert.ToDouble(txtFront3.Text) > VlLimiarDistancia);
+                pbLimiar3.Visible = sensors[3];
+            }
             //Direita 45
-            txtFront4.Text = GetDistance(pPos, pRight45Obstacle).ToString();
-            sensors[4] = !(Convert.ToDouble(txtFront4.Text) > 95);
-            pbLimiar4.Visible = sensors[4];
+            if (!chkFalhaSensorFrontal4.Checked)
+            {
+                txtFront4.Text = GetDistance(pPos, pRight45Obstacle).ToString();
+                sensors[4] = !(Convert.ToDouble(txtFront4.Text) > VlLimiarDistancia);
+                pbLimiar4.Visible = sensors[4];
+            }
             //Direita
-            txtFront5.Text = GetDistance(pPos, pRightObstacle).ToString();
-            sensors[5] = !(Convert.ToDouble(txtFront5.Text) > 95);
-            pbLimiar5.Visible = sensors[5];
+            if (!chkFalhaSensorFrontal5.Checked)
+            {
+                txtFront5.Text = GetDistance(pPos, pRightObstacle).ToString();
+                sensors[5] = !(Convert.ToDouble(txtFront5.Text) > VlLimiarDistancia);
+                pbLimiar5.Visible = sensors[5];
+            }
+
+
             //Trazeiro
-            //txtFront6.Text = GetDistance(pPos, pBehindObstacle1).ToString();
-            txtFront6.Text = GetDistance(pPrincipalParalela1, pBehindObstacle1).ToString();
-            sensors[6] = !(Convert.ToDouble(txtFront6.Text) > 95);
-            pbLimiar6.Visible = sensors[6];
-            //txtFront7.Text = GetDistance(pPos, pBehindObstacle2).ToString();
-            txtFront7.Text = GetDistance(pPrincipalParalela2, pBehindObstacle2).ToString();
-            sensors[7] = !(Convert.ToDouble(txtFront7.Text) > 95);
-            pbLimiar7.Visible = sensors[7];
+            //txtFront6.Text = GetDistance(pPrincipalParalela1, pBehindObstacle1).ToString();
+            //sensors[6] = !(Convert.ToDouble(txtFront6.Text) > VlLimiarDistancia);
+            //pbLimiar6.Visible = sensors[6];
+            //txtFront7.Text = GetDistance(pPrincipalParalela2, pBehindObstacle2).ToString();
+            //sensors[7] = !(Convert.ToDouble(txtFront7.Text) > VlLimiarDistancia);
+            //pbLimiar7.Visible = sensors[7];
 
 
 
@@ -1416,16 +1467,24 @@ namespace AGVFaultTolerant
             //Utilizar dois sensores proximos para determinar qundo esta p´rximo de um obstaculo
             if (!((sensors[0] && sensors[1]) || (sensors[2] && sensors[3]) || (sensors[4] && sensors[5]) || (sensors[6] && sensors[7])))
             {
-                txtSpeed.Text = "12,0";
-                Speed = 12;
+                //txtSpeed.Text = "12,0";
+                if (Speed < 14)
+                    Speed += 1;
+                if (_virou)
+                    Speed = 0;
             }
             else
             {
-                txtSpeed.Text = "5,0";
-                Speed = 5;
-            }
-            txtAngle.Text = Angle.ToString();
+                //txtSpeed.Text = "5,0";
+                //Speed = 5;
+                if (Speed > 3)
+                    Speed -= 1;
 
+                if (_virou)
+                    Speed = 0;
+            }
+            txtSpeed.Text = Speed.ToString();
+            txtAngle.Text = Angle.ToString();
         }
 
         // Calculating distances
@@ -1469,6 +1528,13 @@ namespace AGVFaultTolerant
         private void btnReset_Click(object sender, System.EventArgs e)
         {
 
+            chkFalhaSensorFrontal0.Checked = false;
+            chkFalhaSensorFrontal1.Checked = false;
+            chkFalhaSensorFrontal2.Checked = false;
+            chkFalhaSensorFrontal3.Checked = false;
+            chkFalhaSensorFrontal4.Checked = false;
+            chkFalhaSensorFrontal5.Checked = false;
+
             Angle = 0;
 
             sensors = new bool[8];
@@ -1482,11 +1548,11 @@ namespace AGVFaultTolerant
             sensors[7] = false;
             _traz = false;
             _ga = new GA(4, 3, sensors);
-            _ga.K = 20;
+            _ga.K = 18;
 
             FirstInference = true;
-            pbRobot.Top = pbTerrain.Bottom - 70;
-            pbRobot.Left = pbTerrain.Left + 80;
+            pbRobot.Top = pbTerrain.Bottom - 100;
+            pbRobot.Left = pbTerrain.Left + 100;
             InitialPos = pbRobot.Location;
             RunLabel = btnRun.Text;
 
@@ -1544,36 +1610,42 @@ namespace AGVFaultTolerant
 
             if (_traz)//Se for p/ traz;
             {
-                Speed = Speed * -1;
+                if (Speed > 0)
+                    Speed = Speed * -1;
+
                 txtSpeed.Text = Speed.ToString();
             }
-            else if (Speed < 0)
+            else
             {
                 //Volta para velocidade positiva
-                Speed = Speed * -1;
+                if (Speed < 0)
+                    Speed = Speed * -1;
+
                 txtSpeed.Text = Speed.ToString();
             }
 
             double rad = ((Angle + 90) * Math.PI) / 180;
             int Offset = 0;
-            //int Inc = -Convert.ToInt32(Speed / 10);
-            //int Inc = -Convert.ToInt32(Speed / 5);
             int Inc = (-1 * Convert.ToInt32(Speed / 5));
 
             Offset += Inc;
             int IncX = Convert.ToInt32(Offset * Math.Cos(rad));
-            if (_traz)
-                IncX = (-1 * IncX);
-            //IncX = -1; // (-1 * IncX);
-
-
             int IncY = Convert.ToInt32(Offset * Math.Sin(rad));
-            if (_traz)
-                IncY = (-1 * IncY);
-            //IncY = -1;// (-1 * IncY);
 
-            pbRobot.Top = pbRobot.Top + IncY;
-            pbRobot.Left = pbRobot.Left + IncX;
+            //pbRobot.Top = pbRobot.Top + IncY;
+            //pbRobot.Left = pbRobot.Left + IncX;
+
+            if (_traz)
+            {
+                pbRobot.Top = (int)(pbRobot.Top - IncY);
+                pbRobot.Left = (int)(pbRobot.Left - IncX);
+            }
+            else
+            {
+                pbRobot.Top = (int)(pbRobot.Top + IncY);
+                pbRobot.Left = (int)(pbRobot.Left + IncX);
+            }
+
 
             if (_ponto1)
             {
@@ -1614,9 +1686,10 @@ namespace AGVFaultTolerant
                 btnStep.Enabled = false;
                 btnReset.Enabled = false;
                 txtInterval.Enabled = false;
+                txtLimiarDistancia.Enabled = false;
                 cbLasers.Enabled = false;
                 cbTrajeto.Enabled = false;
-                lstFalha.Enabled = false;
+
                 pbRobot.Hide();
                 StartMovement();
             }
@@ -1624,10 +1697,11 @@ namespace AGVFaultTolerant
             {
                 StopMovement();
                 b.Text = RunLabel;
-                lstFalha.Enabled = true;
+
                 btnReset.Enabled = true;
                 btnStep.Enabled = true;
                 txtInterval.Enabled = true;
+                txtLimiarDistancia.Enabled = true;
                 cbLasers.Enabled = true;
                 cbTrajeto.Enabled = true;
                 pbRobot.Show();
@@ -1739,6 +1813,100 @@ namespace AGVFaultTolerant
                 txtGeneAgv.Text = txtGeneAgv.Text + i + ";";
             //Remove o ultimo ';'
             txtGeneAgv.Text = txtGeneAgv.Text.Remove(txtGeneAgv.Text.Length - 1);
+        }
+
+
+        private void lstFalha_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+
+
+            //for (int i = 0; i < ((ListBox)sender).SelectedItems.Count; i++)
+            //{
+            //    string strIndice = ((ListBox)sender).SelectedItems[i].ToString().Trim().Split('-')[1].Trim();
+            //    switch (strIndice)
+            //    {
+            //        case "0":
+            //            txtFront0.Text = "0";
+            //            break;
+            //        case "1":
+            //            txtFront1.Text = "0";
+            //            break;
+            //        case "2":
+            //            txtFront2.Text = "0";
+            //            break;
+            //        case "3":
+            //            txtFront3.Text = "0";
+            //            break;
+            //        case "4":
+            //            txtFront4.Text = "0";
+            //            break;
+            //        case "5":
+            //            txtFront5.Text = "0";
+            //            break;
+            //        default:
+            //            break;
+
+
+            //    }
+
+            //    //string strNomeComponente = "txtFront" + strIndice;
+
+            //    //Form currentForm = Form.ActiveForm;
+            //    //Control[] controles = currentForm.Controls.Find("strNomeComponente", true);
+            //    //if (controles != null)
+            //    //    if (controles.Length > 0)
+            //    //        ((TextBox)controles[0]).Text = "0";
+            //}
+
+
+
+        }
+
+
+
+
+
+        private void chkFalhaSensorFrontal0_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar0.Visible = true;
+            txtFront0.Text = "0";
+            sensors[0] = true;
+        }
+
+        private void chkFalhaSensorFrontal1_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar1.Visible = true;
+            txtFront1.Text = "0";
+            sensors[1] = true;
+        }
+
+        private void chkFalhaSensorFrontal2_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar2.Visible = true;
+            txtFront2.Text = "0";
+            sensors[2] = true;
+        }
+
+        private void chkFalhaSensorFrontal3_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar3.Visible = true;
+            txtFront3.Text = "0";
+            sensors[3] = true;
+        }
+
+        private void chkFalhaSensorFrontal4_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar4.Visible = true;
+            txtFront4.Text = "0";
+            sensors[4] = true;
+        }
+
+        private void chkFalhaSensorFrontal5_CheckedChanged(object sender, EventArgs e)
+        {
+            pbLimiar5.Visible = true;
+            txtFront5.Text = "0";
+            sensors[5] = true;
         }
 
     }

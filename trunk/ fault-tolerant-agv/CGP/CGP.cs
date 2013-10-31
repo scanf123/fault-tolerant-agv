@@ -157,7 +157,6 @@ namespace AGVFaultTolerant
                         //5 - INV,  6 - AND,  7 - XOR , 8 - OR, 9 - ADD, 10 - INPUT, 11 - OUTPUT</param>
                         //case 5:
                         //    //INV
-                        //    //TODO: verificar necessidade de inv de 4 input
                         //    return !EvaluateMolecule(m.Input[0]);//Inverte a primeira entrada 
                         //    break;
                         case 6:
