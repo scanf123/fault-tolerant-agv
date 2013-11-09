@@ -6,68 +6,116 @@
   <MessageClass Name="Error" Label="Error" Option="Show errors" />
   <MessageClass Name="Property" Label="Property" Option="Show metadata" />
   <MessageClass Name="Diagnostic" Label="Message" Option="Show diagnostic messages" />
-  <Message Timestamp="2013-06-24T20:16:21" Importance="High" Text="Reverse Engineering Started." />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Boolean' -  (PrimitiveType)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Integer' -  (PrimitiveType)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant' -  (Package)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Medium" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP' -  (Class)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::_digitalCircuit' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::_genotype' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::_input' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::_output' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::AvaliarGene' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::BuilCircuitFromGene' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::genotype' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::input' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::m' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::n' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::output' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::p' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::CGP::w' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::coluna' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::DigitalCircuit' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::Evaluate' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::EvaluateMolecule' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::EvaluateMolecule::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::Genotype' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::Input' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::InputContains' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::InputContains::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::InputId' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::InputId::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::linha' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::Output' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::OutPutContains' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::OutPutContains::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::OutputId' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::OutputId::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::OutputId::value' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP::palavra' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule' -  (Class)   (partially reverse engineered - definition not updated) " />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::_function' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::_input' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::_levelsBack' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::_output' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Function' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Input' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::LevelsBack' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Molecule' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Molecule::entrada' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Molecule::funcao' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Molecule::saida' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::Molecule::Output' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Medium" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule' -  (Class)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule::Id' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule::Output' -  (Property)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule::ParameterMolecule' -  (Operation)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule::ParameterMolecule::id' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule::ParameterMolecule::output' -  (Parameter)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CGP to Modelagem::AGVFaultTolerant::Molecule (Association)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CGP to Modelagem::AGVFaultTolerant::ParameterMolecule (Association)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CGP to Modelagem::AGVFaultTolerant::ParameterMolecule (Association)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::Molecule to Modelagem::AGVFaultTolerant::ParameterMolecule (Association)" />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="High" Text="(2) type(s) fully reverse engineered." />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="High" Text="(1) type(s) partially reverse engineered.  These types were not included in the original selection so their full definitions are not reverse engineered.  Instead, this shallow operation has simply ensured these types exist in the UML model because they are needed in order to fully describe other elements." />
-  <Message Timestamp="2013-06-24T20:16:24" Importance="High" Text="The reverse engineering operation completed with (0) error(s), and (0) warning(s)." />
+  <Message Timestamp="2013-11-03T10:28:58" Importance="High" Text="Reverse Engineering Started." />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: '483b58f1-1f89-492b-bd38-c36412b99c9c' -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: '4c546fdd-c81e-4d9e-9967-3924b984b10a' -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Boolean' -  (PrimitiveType)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Integer' -  (PrimitiveType)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant' -  (Package)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CGP' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Medium" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome' -  (Class)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::_cgp' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::_distance' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::_fitness' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::_random' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::_time' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::AlteragaGeneAgv' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::AlteragaGeneAgv::ctParada' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::AlteragaGeneAgv::novoValor' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::AlteragaGeneAgv::txtGeneAgv' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::btest' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Cgp' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CircuitoChromosome' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CircuitoChromosome::individual' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CircuitoChromosome::inputBits' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CircuitoChromosome::outputBits' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::clones' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Clones' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CompareTo' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CompareTo::obj' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomChromosome' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomChromosome::senesors' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomClone' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomClone::fitnessParent' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomClone::genotypeParent' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomClone::k' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::CreateRandomClone::sensors' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Distance' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Fitness' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::GetFitness' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Individual' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::InputBits' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Mutate' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Mutate::k' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Mutate::norm_fit' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::NormFitness' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::OutputBits' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::CircuitoChromosome::Time' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Medium" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA' -  (Class)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::_distance' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::_k' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::_time' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::AvaliatePopulation' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::chromosomes' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::clonepopulation' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Clonepopulation' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Distance' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::EA' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::EA::clones' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::EA::populationSize' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::EA::sensors' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Evaluate' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::FindSolution' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GenerateChildren' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::generation' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Generation' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetBestIndividual' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetCurrentChromosome' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetCurrentChromosome::parent' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetCurrentCloneChromosome' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetCurrentCloneChromosome::ctControleClones' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::GetCurrentCloneChromosome::ctControleParent' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::InitializeClones' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::InitializeClones::ctControleParent' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::InitializeClones::sensors' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::InitializePopulation' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::InitializePopulation::sensors' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::K' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::killnumber' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::MetodoDaRoleta' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::MetodoDoTorneio' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::populationSize' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::PopulationSize' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::random' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Selecao' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Selection' -  (Operation)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Selection::killnumber' -  (Parameter)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::solucao' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Solucao' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::EA::Time' -  (Property)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::AGVFaultTolerant::ParameterMolecule' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System' -  (Package)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Byte' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Collections' -  (Package)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Collections::Generic' -  (Package)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Collections::Generic::List' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Collections::Generic::List&lt;CircuitoChromosome‎&gt;' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Double' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::IComparable' -  (Interface)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::IComparable&lt;CircuitoChromosome‎&gt;' -  (Interface)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Modelagem::System::Random' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'String' -  (PrimitiveType)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::AGVFaultTolerant::CGP (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::System::Collections::Generic::List&lt;CircuitoChromosome‎&gt; (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::System::Double (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::System::Double (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::AGVFaultTolerant::ParameterMolecule (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::AGVFaultTolerant::ParameterMolecule (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::System::Double (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::CircuitoChromosome to Modelagem::System::IComparable&lt;CircuitoChromosome‎&gt; (InterfaceRealization)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::EA to Modelagem::System::Double (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: Modelagem::AGVFaultTolerant::EA to Modelagem::System::Double (Association)" />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="High" Text="(2) type(s) fully reverse engineered." />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="High" Text="(9) type(s) partially reverse engineered.  These types were not included in the original selection so their full definitions are not reverse engineered.  Instead, this shallow operation has simply ensured these types exist in the UML model because they are needed in order to fully describe other elements." />
+  <Message Timestamp="2013-11-03T10:29:02" Importance="High" Text="The reverse engineering operation completed with (0) error(s), and (0) warning(s)." />
 </Log>

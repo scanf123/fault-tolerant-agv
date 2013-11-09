@@ -21,6 +21,33 @@ namespace AGVFaultTolerant
         // Objeto random para geração de números randômicos
         private static Random _random = new Random(DateTime.Now.Millisecond);
         private double _fitness;
+        private double _normFitness;
+        private int _n;
+
+        public int N
+        {
+            get { return _n; }
+            set { _n = value; }
+        }
+        //private static int _n;
+
+        //public static int N
+        //{
+        //    get { return _n; }
+        //    set { _n = value; }
+        //}
+
+        //public int RetornaValorN()
+        //{
+        //    return _n;
+        //}
+
+
+        public double NormFitness
+        {
+            get { return _normFitness; }
+            set { _normFitness = value; }
+        }
 
         /// <summary>
         /// Position counter of two motors
@@ -88,11 +115,11 @@ namespace AGVFaultTolerant
             get { return _fitness; }
         }
 
-        private int NormFitness()
-        {
-            //return ((int)Math.Truncate(((double)_fitness / 1400)));
-            return (int)(560 - _fitness);
-        }
+        //private int NormFitness()
+        //{
+        //    //return ((int)Math.Truncate(((double)_fitness / 1400)));
+        //    return (int)(560 - _fitness);
+        //}
 
         // Construtor - recebe o vetor com os valores
         public CircuitoChromosome(int[] individual, ParameterMolecule[] inputBits, ParameterMolecule[] outputBits)
@@ -105,6 +132,7 @@ namespace AGVFaultTolerant
                 viraEsq = true;
 
             clones = new List<CircuitoChromosome>();
+            _n = -1;
             //this.Individual = individual;
             //this.InputBits = inputBits;
             //this.OutputBits = outputBits;
@@ -145,10 +173,22 @@ namespace AGVFaultTolerant
             //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
             //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
             //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
-            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 169, 174 };
+            //int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 169, 174 };
+            int[] indexes = new int[] { 4, 10, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
 
             foreach (string s in strGen.Split(';'))
                 lstInt.Add(Convert.ToInt32(s));
+
+            int index = 0;
+            List<int> lstIndexToMuatate = new List<int>();
+            foreach (int item in lstInt)
+            {
+                if (item == 8)
+                    lstIndexToMuatate.Add(index);
+
+                index++;
+            }
+
 
             //lstIntBackup.AddRange(lstInt.ToArray());
 
@@ -160,28 +200,23 @@ namespace AGVFaultTolerant
                 lstMolINPUT.Add(new ParameterMolecule(i, senesors[i % 8]));
             }
 
+            //Primeiramente, nao ocorrera nenhuma mutação, esta estará diretamente relacionada ao fitness
             //Altera randomicamente 3 portas
-            int portasAlteradas = 3;
-            int indexMutate = -1;
-            Random r = new Random();
+            //int portasAlteradas = 3;
+            //int indexMutate = -1;
+            //Random r = new Random();
 
-            for (int i = 0; i < portasAlteradas; i++)
-            {
-                int indextmp = r.Next((indexes.Length - 1));
-                //Porta a ser alterada
-                indexMutate = indexes[indextmp];
-
-                int novaFuncPorta = 6 + r.Next(3);
-                //Altera a função lógica da porta
-                lstInt[indexMutate] = novaFuncPorta;
-            }
-            //string strNovoGene = String.Empty;
-            //Atualiza a string do gene
-            //foreach (int valor in lstInt)
+            //for (int i = 0; i < portasAlteradas; i++)
             //{
-            //    strNovoGene = strNovoGene + valor + ";";
+            //    int indextmp = r.Next((indexes.Length - 1));
+            //    //Porta a ser alterada
+            //    indexMutate = indexes[indextmp];
+
+            //    int novaFuncPorta = 6 + r.Next(3);
+            //    //Altera a função lógica da porta
+            //    lstInt[indexMutate] = novaFuncPorta;
             //}
-            //strNovoGene = strNovoGene.Substring(0, strNovoGene.Length - 2);
+
 
             //OUTPUT
             List<ParameterMolecule> lstMolOUTPUT = new List<ParameterMolecule>();
@@ -235,19 +270,31 @@ namespace AGVFaultTolerant
             //return (_fitness = (_time * _distance));
             //Melhor caso "_fitness = 1"
             //Pior caso "_fitness = 0"
-            System.Diagnostics.Debug.WriteLine(string.Format("_fitness={0} ; _time={1} ; _distance={2} ; ", ((_time * _distance) / 280), _time, _distance));
-            return (_fitness = ((_time * _distance) / 280));
+            System.Diagnostics.Debug.WriteLine(string.Format("_fitness={0} ; _time={1} ; _distance={2} ; ", ((_time * _distance) / 140), _time, _distance));
+            //return (_fitness = ((_time * _distance) / 280));
+            return (_fitness = ((_time * _distance) / 140));
 
             //return (_fitness = (_time * _distance));
 
         }
 
+        //public int CompareTo(CircuitoChromosome obj)
+        //{
+        //    if (this._fitness > obj._fitness)
+        //        return 1;
+        //    else if (this._fitness < obj._fitness)
+        //        return -1;
+        //    else
+        //        return 0;
+        //}
+
+        //Alterado para retornar o maior fitness
         public int CompareTo(CircuitoChromosome obj)
         {
             if (this._fitness > obj._fitness)
-                return 1;
-            else if (this._fitness < obj._fitness)
                 return -1;
+            else if (this._fitness < obj._fitness)
+                return 1;
             else
                 return 0;
         }
@@ -273,7 +320,7 @@ namespace AGVFaultTolerant
             txtGeneAgv = txtGeneAgv.Remove(txtGeneAgv.Length - 1);
         }
 
-        public static CircuitoChromosome CreateRandomClone(bool[] sensors, double fitnessParent, int[] genotypeParent, int k)
+        public static CircuitoChromosome CreateRandomClone(bool[] sensors, double normFitnessParent, int[] genotypeParent, int k)
         {
             CircuitoChromosome qSChromosomeRetorno;
 
@@ -283,7 +330,7 @@ namespace AGVFaultTolerant
             lstInt.AddRange(genotypeParent);
 
             //Indices das operações lógicas da LUT lógicas
-            int[] indexes = new int[] { 4, 9, 14, 19, 24, 29, 34, 39, 44, 59, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
+            int[] indexes = new int[] { 4, 10, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 164, 169 };
 
             //lstIntBackup.AddRange(lstInt.ToArray());
 
@@ -300,17 +347,23 @@ namespace AGVFaultTolerant
             //double fitnessNormalizado = Math.Abs(1 - (fitnessParent - 0.56));
             //int portasAlteradas = Convert.ToInt32(Math.Truncate((k * (1 - fitnessNormalizado))));
             //double fitnessNormalizado = fitnessParent / 256;
-            double fitnessNormalizado = fitnessParent;// / 50;
+            //double fitnessNormalizado = normFitnessParent;// / 50;
             //int portasAlteradas = Convert.ToInt32(k * (fitnessNormalizado - (2.8)));
             //if (portasAlteradas < 0)
             //    portasAlteradas = 0;
-            int portasAlteradas = k;
-            System.Diagnostics.Debug.WriteLine(string.Format("-----------------------------------------------------------------------"));
-            System.Diagnostics.Debug.WriteLine(string.Format("portasAlteradas={0} ; ", portasAlteradas));
-            System.Diagnostics.Debug.WriteLine(string.Format("-----------------------------------------------------------------------"));
-            if (k != 10)
-                k = k;
+            //int portasAlteradas = k;
+            int portasAlteradas = 0;
 
+
+            portasAlteradas = (int)(k * (1 - Math.Abs(normFitnessParent)));
+            portasAlteradas = (portasAlteradas < 0) ? 0 : portasAlteradas;
+
+            //(_n == null)?_n= new int():0;
+            //_n = portasAlteradas;
+            //_n = portasAlteradas;
+            //int n = (int)Math.Truncate(portasAlteradas);
+            int index;
+            List<int> lstIndexs = new List<int>();
 
             int indexMutate = -1;
             Random r = new Random();
@@ -321,7 +374,7 @@ namespace AGVFaultTolerant
                 //Porta a ser alterada
                 indexMutate = indexes[indextmp];
 
-                int novaFuncPorta = 6 + r.Next(3);
+                int novaFuncPorta = 5 + r.Next(4);
                 //Altera a função lógica da porta
                 lstInt[indexMutate] = novaFuncPorta;
             }
@@ -332,7 +385,16 @@ namespace AGVFaultTolerant
             lstMolOUTPUT.Add(new ParameterMolecule(97, false));
 
             qSChromosomeRetorno = new CircuitoChromosome(lstInt.ToArray(), lstMolINPUT.ToArray(), lstMolOUTPUT.ToArray());
+            qSChromosomeRetorno._n = portasAlteradas;
             return qSChromosomeRetorno;
+        }
+
+        internal void GetNormFitness(double fitTotalPopulacao)
+        {
+            if (fitTotalPopulacao == 0)
+                _normFitness = 0;
+            else
+                _normFitness = _fitness / fitTotalPopulacao;
         }
     }
 

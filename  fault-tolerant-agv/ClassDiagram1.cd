@@ -25,28 +25,28 @@
     <Position X="2.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AEAgAgAkIAAiIAQAAAgBAAAAAQEAAABACAAAEAAAIRM=</HashCode>
-      <FileName>GA\Chromosome.cs</FileName>
+      <FileName>EA\Chromosome.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AGVFaultTolerant.GA">
+  <Class Name="AGVFaultTolerant.EA">
     <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQIAIIAIAAAgAAAgIAAgABAAAAIQIABKIQQIEoAAYTA=</HashCode>
-      <FileName>GA\GA.cs</FileName>
+      <HashCode>AQIAIIAIAAAgACAgIAAgAhAAAAIQIABKIQQIEoAAYTA=</HashCode>
+      <FileName>EA\EA.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AGVFaultTolerant.MainForm" Collapsed="true">
     <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>/xREAQBwhSCJCTAAEEDoIDAjCoEACWBIwHASBIFAgTA=</HashCode>
+      <HashCode>/1xEAUBwhSCJAzAAEFHoIDAjCsEAnWdIoHASRIFSgTA=</HashCode>
       <FileName>MainForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FaultTolerantAGV.Properties.Resources" Collapsed="true">
     <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAIAAIAIA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEBAEAQAAAAACAAAAIAAKAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

@@ -155,10 +155,10 @@ namespace AGVFaultTolerant
                     switch (m.Function)
                     {
                         //5 - INV,  6 - AND,  7 - XOR , 8 - OR, 9 - ADD, 10 - INPUT, 11 - OUTPUT</param>
-                        //case 5:
-                        //    //INV
-                        //    return !EvaluateMolecule(m.Input[0]);//Inverte a primeira entrada 
-                        //    break;
+                        case 5:
+                            //INV
+                            return !EvaluateMolecule(m.Input[0]) && EvaluateMolecule(m.Input[1]) && !EvaluateMolecule(m.Input[2]) && EvaluateMolecule(m.Input[3]);
+                            break;
                         case 6:
                             //AND
                             return EvaluateMolecule(m.Input[0]) && EvaluateMolecule(m.Input[1]) && EvaluateMolecule(m.Input[2]) && EvaluateMolecule(m.Input[3]);
