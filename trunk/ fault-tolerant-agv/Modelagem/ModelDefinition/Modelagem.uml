@@ -25,8 +25,20 @@
   </profileInstances>
   <packagedElements>
     <packageHasNamedElement>
+      <packageMoniker
+        Id="867ee8a1-7282-4dab-b8ae-2fb4642b156f"
+        LastKnownName="AGVFaultTolerant"
+        LastKnownLocation="Package_2016.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="cebbff14-dbbd-4abf-a581-e26ff9100a1a"
+        LastKnownName="Package1"
+        LastKnownLocation="Package_0028.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
       <class
-        Id="f5249b97-d701-48a4-88da-96ef394a659b"
+        Id="b94b9945-85cb-4e81-82b7-d7b3a08d2e31"
         name="Class1"
         isAbstract="false"
         isLeaf="false"
@@ -34,9 +46,9 @@
     </packageHasNamedElement>
     <packageHasNamedElement>
       <packageMoniker
-        Id="867ee8a1-7282-4dab-b8ae-2fb4642b156f"
-        LastKnownName="AGVFaultTolerant"
-        LastKnownLocation="Package_2016.uml" />
+        Id="0b05469c-a44d-4c60-b767-0a0171c847d9"
+        LastKnownName="System"
+        LastKnownLocation="Package_1029.uml" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

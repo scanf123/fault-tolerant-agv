@@ -15,14 +15,19 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+
 namespace AGVFaultTolerant
 {
     public class MainForm : System.Windows.Forms.Form
     {
 
         #region Private members
+
+
+        DataTable dtResultados;
         int ctControleParent = 0;
         int ctControleClones = 0;
+        int ctPaisDecrescente = 3;
         private bool _bCiclo = false;
         private bool _ponto1 = true;
         private bool _ponto2 = false;
@@ -40,7 +45,7 @@ namespace AGVFaultTolerant
         private double Angle, Speed;
         private Bitmap OriginalMap, InitialMap;
         private Thread thMovement;
-        private GA _ga;
+        private EA _ga;
         private bool[] sensors;
         CircuitoChromosome bestIndividualLatGeneration;
 
@@ -55,7 +60,6 @@ namespace AGVFaultTolerant
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label txtFront0;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label txtAngle;
         private System.Windows.Forms.Button btnStep;
@@ -70,10 +74,6 @@ namespace AGVFaultTolerant
         private Label txtTime;
         private Label label8;
         private GroupBox groupBox3;
-        private Label txtFront7;
-        private Label label20;
-        private Label txtFront6;
-        private Label label18;
         private Label txtFront5;
         private Label label16;
         private Label txtFront4;
@@ -87,10 +87,6 @@ namespace AGVFaultTolerant
         private Label label9;
         private Label label5;
         private Label label2;
-        private Label label15;
-        private Label label17;
-        private Label label11;
-        private Label label13;
         private PictureBox pictureBox2;
         private Label label23;
         private Label label22;
@@ -100,8 +96,6 @@ namespace AGVFaultTolerant
         private Label lblGeneration;
         private Label label19;
         private Label label24;
-        private PictureBox pbLimiar7;
-        private PictureBox pbLimiar6;
         private PictureBox pbLimiar0;
         private PictureBox pbLimiar5;
         private PictureBox pbLimiar4;
@@ -124,6 +118,18 @@ namespace AGVFaultTolerant
         private CheckBox chkFalhaSensorFrontal1;
         private CheckBox chkFalhaSensorFrontal4;
         private CheckBox chkFalhaSensorFrontal0;
+        private Label lblNumeroPortasAlteradas;
+        private Label label17;
+        private TextBox txtk;
+        private Label label11;
+        private Label label13;
+        private TextBox txtTempoImplementacao;
+        private Label label15;
+        private Label label18;
+        private Label lblCtViraEsq;
+        private Label lblCtViraDir;
+        private TextBox txtVelFim;
+        private Label label20;
         private System.Windows.Forms.CheckBox cbTrajeto;
         #endregion
 
@@ -157,8 +163,20 @@ namespace AGVFaultTolerant
             _traz = false;
 
             //_ga = new GA(16, 3, sensors);
-            _ga = new GA(4, 3, sensors);
-            _ga.K = 18;
+            //_ga = new EA(4, 3, sensors);
+            //_ga = new EA(3, 3, sensors);
+            _ga = new EA(3, 2, sensors);
+            ctPaisDecrescente = 3;
+            //_ga.K = 13;
+            //_ga.K = 13;
+            //_ga.K = 13;
+            _ga.K = Convert.ToInt32(txtk.Text);
+            dtResultados = new DataTable();
+            dtResultados.Columns.Add("geracao", typeof(int));
+            dtResultados.Columns.Add("Bestfitness", typeof(int));
+            dtResultados.Columns.Add("Averagefitness", typeof(int));
+
+
 
             FirstInference = true;
             pbRobot.Top = pbTerrain.Bottom - 100;
@@ -203,10 +221,6 @@ namespace AGVFaultTolerant
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtFront7 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txtFront6 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
             this.txtFront5 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.txtFront4 = new System.Windows.Forms.Label();
@@ -219,11 +233,6 @@ namespace AGVFaultTolerant
             this.label7 = new System.Windows.Forms.Label();
             this.txtFront0 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.txtTime = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txtSpeed = new System.Windows.Forms.Label();
@@ -239,68 +248,77 @@ namespace AGVFaultTolerant
             this.label4 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkFalhaSensorFrontal5 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal3 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal2 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal1 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal4 = new System.Windows.Forms.CheckBox();
+            this.chkFalhaSensorFrontal0 = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.lblNumeroPortasAlteradas = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.lblFitness4 = new System.Windows.Forms.Label();
             this.lblGeneration = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.txtGeneAgv = new System.Windows.Forms.TextBox();
             this.lblGeneCircuito = new System.Windows.Forms.Label();
-            this.pbLimiar3 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar2 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar1 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar4 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar5 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar0 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar6 = new System.Windows.Forms.PictureBox();
-            this.pbLimiar7 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pbRobot = new System.Windows.Forms.PictureBox();
-            this.pbTerrain = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.pbMotor2 = new System.Windows.Forms.PictureBox();
             this.pbMotor1 = new System.Windows.Forms.PictureBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtTempoImplementacao = new System.Windows.Forms.TextBox();
+            this.txtk = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.txtLimiarDistancia = new System.Windows.Forms.TextBox();
-            this.chkFalhaSensorFrontal0 = new System.Windows.Forms.CheckBox();
-            this.chkFalhaSensorFrontal4 = new System.Windows.Forms.CheckBox();
-            this.chkFalhaSensorFrontal1 = new System.Windows.Forms.CheckBox();
-            this.chkFalhaSensorFrontal2 = new System.Windows.Forms.CheckBox();
-            this.chkFalhaSensorFrontal3 = new System.Windows.Forms.CheckBox();
-            this.chkFalhaSensorFrontal5 = new System.Windows.Forms.CheckBox();
+            this.pbLimiar3 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar2 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar1 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar4 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar5 = new System.Windows.Forms.PictureBox();
+            this.pbLimiar0 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pbRobot = new System.Windows.Forms.PictureBox();
+            this.pbTerrain = new System.Windows.Forms.PictureBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lblCtViraEsq = new System.Windows.Forms.Label();
+            this.lblCtViraDir = new System.Windows.Forms.Label();
+            this.txtVelFim = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.gbComandos.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).BeginInit();
+            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimiar0)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).BeginInit();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStep
             // 
+            this.btnStep.Enabled = false;
             this.btnStep.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStep.Location = new System.Drawing.Point(6, 109);
             this.btnStep.Name = "btnStep";
             this.btnStep.Size = new System.Drawing.Size(75, 23);
             this.btnStep.TabIndex = 14;
             this.btnStep.Text = "&One Step";
+            this.btnStep.Visible = false;
             this.btnStep.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnRun
@@ -321,6 +339,7 @@ namespace AGVFaultTolerant
             this.txtInterval.TabIndex = 16;
             this.txtInterval.Text = "10";
             this.txtInterval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
             // cbLasers
             // 
@@ -337,10 +356,6 @@ namespace AGVFaultTolerant
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.txtFront7);
-            this.groupBox1.Controls.Add(this.label20);
-            this.groupBox1.Controls.Add(this.txtFront6);
-            this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.txtFront5);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.txtFront4);
@@ -355,7 +370,7 @@ namespace AGVFaultTolerant
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(144, 245);
+            this.groupBox1.Size = new System.Drawing.Size(144, 204);
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Sensor reading:";
@@ -386,44 +401,6 @@ namespace AGVFaultTolerant
             this.label2.Size = new System.Drawing.Size(115, 13);
             this.label2.TabIndex = 44;
             this.label2.Text = "------------------------------------";
-            // 
-            // txtFront7
-            // 
-            this.txtFront7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFront7.Location = new System.Drawing.Point(104, 204);
-            this.txtFront7.Name = "txtFront7";
-            this.txtFront7.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtFront7.Size = new System.Drawing.Size(32, 16);
-            this.txtFront7.TabIndex = 43;
-            this.txtFront7.Text = "0";
-            this.txtFront7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label20
-            // 
-            this.label20.Location = new System.Drawing.Point(8, 204);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(88, 16);
-            this.label20.TabIndex = 42;
-            this.label20.Text = "Traseiro 7:";
-            // 
-            // txtFront6
-            // 
-            this.txtFront6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFront6.Location = new System.Drawing.Point(104, 188);
-            this.txtFront6.Name = "txtFront6";
-            this.txtFront6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtFront6.Size = new System.Drawing.Size(32, 16);
-            this.txtFront6.TabIndex = 41;
-            this.txtFront6.Text = "0";
-            this.txtFront6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label18
-            // 
-            this.label18.Location = new System.Drawing.Point(8, 188);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(88, 16);
-            this.label18.TabIndex = 40;
-            this.label18.Text = "Traseiro 6:";
             // 
             // txtFront5
             // 
@@ -539,111 +516,56 @@ namespace AGVFaultTolerant
             this.label1.TabIndex = 24;
             this.label1.Text = "Frontal 0:";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.label17);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.txtTime);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.txtSpeed);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.txtAngle);
-            this.groupBox2.Location = new System.Drawing.Point(8, 260);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(144, 112);
-            this.groupBox2.TabIndex = 25;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Output:";
-            // 
-            // label15
-            // 
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(96, 77);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 16);
-            this.label15.TabIndex = 37;
-            this.label15.Text = "0";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label17
-            // 
-            this.label17.Location = new System.Drawing.Point(8, 77);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(88, 16);
-            this.label17.TabIndex = 36;
-            this.label17.Text = "Roda Esq:";
-            // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(96, 93);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(40, 16);
-            this.label11.TabIndex = 35;
-            this.label11.Text = "0";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label13
-            // 
-            this.label13.Location = new System.Drawing.Point(8, 93);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(88, 16);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "Roda Dir:";
-            // 
             // txtTime
             // 
             this.txtTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTime.Location = new System.Drawing.Point(94, 48);
+            this.txtTime.Location = new System.Drawing.Point(219, 66);
             this.txtTime.Name = "txtTime";
-            this.txtTime.Size = new System.Drawing.Size(40, 16);
+            this.txtTime.Size = new System.Drawing.Size(40, 18);
             this.txtTime.TabIndex = 33;
             this.txtTime.Text = "0";
             this.txtTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(6, 48);
+            this.label8.Location = new System.Drawing.Point(123, 68);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 16);
             this.label8.TabIndex = 32;
-            this.label8.Text = "Time (s):";
+            this.label8.Text = "Tempo (s):";
             // 
             // txtSpeed
             // 
             this.txtSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSpeed.Location = new System.Drawing.Point(94, 32);
+            this.txtSpeed.Location = new System.Drawing.Point(89, 66);
             this.txtSpeed.Name = "txtSpeed";
-            this.txtSpeed.Size = new System.Drawing.Size(40, 16);
+            this.txtSpeed.Size = new System.Drawing.Size(28, 16);
             this.txtSpeed.TabIndex = 31;
             this.txtSpeed.Text = "12,0";
             this.txtSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(6, 32);
+            this.label6.Location = new System.Drawing.Point(6, 68);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(88, 16);
             this.label6.TabIndex = 30;
-            this.label6.Text = "Speed (%):";
+            this.label6.Text = "Velocidade:";
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(6, 16);
+            this.label3.Location = new System.Drawing.Point(121, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 16);
             this.label3.TabIndex = 10;
-            this.label3.Text = "Angle (degrees):";
+            this.label3.Text = "Angulo (graus):";
             // 
             // txtAngle
             // 
             this.txtAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAngle.Location = new System.Drawing.Point(94, 16);
+            this.txtAngle.Location = new System.Drawing.Point(219, 38);
             this.txtAngle.Name = "txtAngle";
-            this.txtAngle.Size = new System.Drawing.Size(40, 16);
+            this.txtAngle.Size = new System.Drawing.Size(40, 17);
             this.txtAngle.TabIndex = 29;
             this.txtAngle.Text = "0,00";
             this.txtAngle.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -669,11 +591,13 @@ namespace AGVFaultTolerant
             // 
             // label21
             // 
+            this.label21.Enabled = false;
             this.label21.Location = new System.Drawing.Point(87, 114);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(30, 13);
             this.label21.TabIndex = 20;
             this.label21.Text = "O";
+            this.label21.Visible = false;
             // 
             // label23
             // 
@@ -736,34 +660,115 @@ namespace AGVFaultTolerant
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Falha sensor";
             // 
+            // chkFalhaSensorFrontal5
+            // 
+            this.chkFalhaSensorFrontal5.Location = new System.Drawing.Point(6, 141);
+            this.chkFalhaSensorFrontal5.Name = "chkFalhaSensorFrontal5";
+            this.chkFalhaSensorFrontal5.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal5.TabIndex = 21;
+            this.chkFalhaSensorFrontal5.Text = "Falha sensor 5";
+            this.chkFalhaSensorFrontal5.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal5_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal3
+            // 
+            this.chkFalhaSensorFrontal3.Location = new System.Drawing.Point(6, 93);
+            this.chkFalhaSensorFrontal3.Name = "chkFalhaSensorFrontal3";
+            this.chkFalhaSensorFrontal3.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal3.TabIndex = 20;
+            this.chkFalhaSensorFrontal3.Text = "Falha sensor 3";
+            this.chkFalhaSensorFrontal3.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal3_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal2
+            // 
+            this.chkFalhaSensorFrontal2.Location = new System.Drawing.Point(6, 68);
+            this.chkFalhaSensorFrontal2.Name = "chkFalhaSensorFrontal2";
+            this.chkFalhaSensorFrontal2.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal2.TabIndex = 20;
+            this.chkFalhaSensorFrontal2.Text = "Falha sensor 2";
+            this.chkFalhaSensorFrontal2.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal2_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal1
+            // 
+            this.chkFalhaSensorFrontal1.Location = new System.Drawing.Point(6, 42);
+            this.chkFalhaSensorFrontal1.Name = "chkFalhaSensorFrontal1";
+            this.chkFalhaSensorFrontal1.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal1.TabIndex = 20;
+            this.chkFalhaSensorFrontal1.Text = "Falha sensor 1";
+            this.chkFalhaSensorFrontal1.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal1_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal4
+            // 
+            this.chkFalhaSensorFrontal4.Location = new System.Drawing.Point(6, 119);
+            this.chkFalhaSensorFrontal4.Name = "chkFalhaSensorFrontal4";
+            this.chkFalhaSensorFrontal4.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal4.TabIndex = 20;
+            this.chkFalhaSensorFrontal4.Text = "Falha sensor 4";
+            this.chkFalhaSensorFrontal4.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal4_CheckedChanged);
+            // 
+            // chkFalhaSensorFrontal0
+            // 
+            this.chkFalhaSensorFrontal0.Location = new System.Drawing.Point(6, 19);
+            this.chkFalhaSensorFrontal0.Name = "chkFalhaSensorFrontal0";
+            this.chkFalhaSensorFrontal0.Size = new System.Drawing.Size(120, 26);
+            this.chkFalhaSensorFrontal0.TabIndex = 20;
+            this.chkFalhaSensorFrontal0.Text = "Falha sensor 0";
+            this.chkFalhaSensorFrontal0.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal0_CheckedChanged);
+            // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.txtTime);
+            this.groupBox6.Controls.Add(this.lblNumeroPortasAlteradas);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.label17);
+            this.groupBox6.Controls.Add(this.label3);
+            this.groupBox6.Controls.Add(this.txtAngle);
+            this.groupBox6.Controls.Add(this.txtSpeed);
             this.groupBox6.Controls.Add(this.lblFitness4);
+            this.groupBox6.Controls.Add(this.label6);
             this.groupBox6.Controls.Add(this.lblGeneration);
             this.groupBox6.Controls.Add(this.label19);
             this.groupBox6.Controls.Add(this.label24);
             this.groupBox6.Location = new System.Drawing.Point(310, 308);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(145, 101);
+            this.groupBox6.Size = new System.Drawing.Size(265, 101);
             this.groupBox6.TabIndex = 60;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Melhor Cromossomo:";
+            // 
+            // lblNumeroPortasAlteradas
+            // 
+            this.lblNumeroPortasAlteradas.AutoSize = true;
+            this.lblNumeroPortasAlteradas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumeroPortasAlteradas.Location = new System.Drawing.Point(219, 16);
+            this.lblNumeroPortasAlteradas.Name = "lblNumeroPortasAlteradas";
+            this.lblNumeroPortasAlteradas.Size = new System.Drawing.Size(14, 13);
+            this.lblNumeroPortasAlteradas.TabIndex = 63;
+            this.lblNumeroPortasAlteradas.Text = "?";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(121, 16);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(103, 13);
+            this.label17.TabIndex = 62;
+            this.label17.Text = "Num.  de Portas alt.:";
             // 
             // lblFitness4
             // 
             this.lblFitness4.AutoSize = true;
             this.lblFitness4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFitness4.Location = new System.Drawing.Point(20, 71);
+            this.lblFitness4.Location = new System.Drawing.Point(94, 42);
             this.lblFitness4.Name = "lblFitness4";
-            this.lblFitness4.Size = new System.Drawing.Size(14, 13);
+            this.lblFitness4.Size = new System.Drawing.Size(21, 13);
             this.lblFitness4.TabIndex = 3;
-            this.lblFitness4.Text = "?";
+            this.lblFitness4.Text = "12";
             // 
             // lblGeneration
             // 
             this.lblGeneration.AutoSize = true;
             this.lblGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGeneration.Location = new System.Drawing.Point(20, 29);
+            this.lblGeneration.Location = new System.Drawing.Point(94, 16);
             this.lblGeneration.Name = "lblGeneration";
             this.lblGeneration.Size = new System.Drawing.Size(14, 13);
             this.lblGeneration.TabIndex = 61;
@@ -772,11 +777,11 @@ namespace AGVFaultTolerant
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 58);
+            this.label19.Location = new System.Drawing.Point(6, 42);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(111, 13);
+            this.label19.Size = new System.Drawing.Size(77, 13);
             this.label19.TabIndex = 2;
-            this.label19.Text = "Função de Avaliação:";
+            this.label19.Text = "Func. de Ava.:";
             // 
             // label24
             // 
@@ -806,131 +811,15 @@ namespace AGVFaultTolerant
             this.lblGeneCircuito.TabIndex = 129;
             this.lblGeneCircuito.Text = "Gene do Circuito:";
             // 
-            // pbLimiar3
-            // 
-            this.pbLimiar3.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar3.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar3.Location = new System.Drawing.Point(474, 56);
-            this.pbLimiar3.Name = "pbLimiar3";
-            this.pbLimiar3.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar3.TabIndex = 68;
-            this.pbLimiar3.TabStop = false;
-            // 
-            // pbLimiar2
-            // 
-            this.pbLimiar2.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar2.Location = new System.Drawing.Point(398, 56);
-            this.pbLimiar2.Name = "pbLimiar2";
-            this.pbLimiar2.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar2.TabIndex = 67;
-            this.pbLimiar2.TabStop = false;
-            // 
-            // pbLimiar1
-            // 
-            this.pbLimiar1.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar1.Location = new System.Drawing.Point(372, 66);
-            this.pbLimiar1.Name = "pbLimiar1";
-            this.pbLimiar1.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar1.TabIndex = 66;
-            this.pbLimiar1.TabStop = false;
-            // 
-            // pbLimiar4
-            // 
-            this.pbLimiar4.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar4.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar4.Location = new System.Drawing.Point(498, 66);
-            this.pbLimiar4.Name = "pbLimiar4";
-            this.pbLimiar4.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar4.TabIndex = 65;
-            this.pbLimiar4.TabStop = false;
-            // 
-            // pbLimiar5
-            // 
-            this.pbLimiar5.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar5.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar5.Location = new System.Drawing.Point(517, 87);
-            this.pbLimiar5.Name = "pbLimiar5";
-            this.pbLimiar5.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar5.TabIndex = 64;
-            this.pbLimiar5.TabStop = false;
-            // 
-            // pbLimiar0
-            // 
-            this.pbLimiar0.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar0.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar0.Location = new System.Drawing.Point(362, 87);
-            this.pbLimiar0.Name = "pbLimiar0";
-            this.pbLimiar0.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar0.TabIndex = 63;
-            this.pbLimiar0.TabStop = false;
-            // 
-            // pbLimiar6
-            // 
-            this.pbLimiar6.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar6.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar6.Location = new System.Drawing.Point(474, 222);
-            this.pbLimiar6.Name = "pbLimiar6";
-            this.pbLimiar6.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar6.TabIndex = 62;
-            this.pbLimiar6.TabStop = false;
-            this.pbLimiar6.Visible = false;
-            // 
-            // pbLimiar7
-            // 
-            this.pbLimiar7.BackColor = System.Drawing.Color.Transparent;
-            this.pbLimiar7.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
-            this.pbLimiar7.Location = new System.Drawing.Point(398, 222);
-            this.pbLimiar7.Name = "pbLimiar7";
-            this.pbLimiar7.Size = new System.Drawing.Size(10, 10);
-            this.pbLimiar7.TabIndex = 61;
-            this.pbLimiar7.TabStop = false;
-            this.pbLimiar7.Visible = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(310, 12);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(265, 296);
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pbRobot
-            // 
-            this.pbRobot.BackColor = System.Drawing.Color.Transparent;
-            this.pbRobot.Image = ((System.Drawing.Image)(resources.GetObject("pbRobot.Image")));
-            this.pbRobot.Location = new System.Drawing.Point(660, 411);
-            this.pbRobot.Name = "pbRobot";
-            this.pbRobot.Size = new System.Drawing.Size(10, 10);
-            this.pbRobot.TabIndex = 11;
-            this.pbRobot.TabStop = false;
-            // 
-            // pbTerrain
-            // 
-            this.pbTerrain.BackColor = System.Drawing.SystemColors.ControlText;
-            this.pbTerrain.ErrorImage = null;
-            this.pbTerrain.Image = global::FaultTolerantAGV.Properties.Resources.Mapa4;
-            this.pbTerrain.InitialImage = null;
-            this.pbTerrain.Location = new System.Drawing.Point(581, 8);
-            this.pbTerrain.Name = "pbTerrain";
-            this.pbTerrain.Size = new System.Drawing.Size(654, 570);
-            this.pbTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbTerrain.TabIndex = 10;
-            this.pbTerrain.TabStop = false;
-            this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
-            this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.pbMotor2);
             this.groupBox4.Controls.Add(this.pbMotor1);
             this.groupBox4.Controls.Add(this.label27);
             this.groupBox4.Controls.Add(this.label28);
-            this.groupBox4.Location = new System.Drawing.Point(461, 308);
+            this.groupBox4.Location = new System.Drawing.Point(7, 218);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(114, 101);
+            this.groupBox4.Size = new System.Drawing.Size(146, 101);
             this.groupBox4.TabIndex = 130;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Atuadores:";
@@ -975,14 +864,56 @@ namespace AGVFaultTolerant
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.txtVelFim);
+            this.groupBox5.Controls.Add(this.label20);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.txtTempoImplementacao);
+            this.groupBox5.Controls.Add(this.txtk);
+            this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.label25);
             this.groupBox5.Controls.Add(this.txtLimiarDistancia);
             this.groupBox5.Location = new System.Drawing.Point(7, 515);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(145, 101);
+            this.groupBox5.Size = new System.Drawing.Size(297, 101);
             this.groupBox5.TabIndex = 131;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Limiar Distancia Sensor:";
+            // 
+            // label13
+            // 
+            this.label13.Location = new System.Drawing.Point(10, 59);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(125, 13);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "Tempo Imp:";
+            // 
+            // txtTempoImplementacao
+            // 
+            this.txtTempoImplementacao.Location = new System.Drawing.Point(10, 75);
+            this.txtTempoImplementacao.Name = "txtTempoImplementacao";
+            this.txtTempoImplementacao.Size = new System.Drawing.Size(72, 20);
+            this.txtTempoImplementacao.TabIndex = 23;
+            this.txtTempoImplementacao.Text = "20";
+            this.txtTempoImplementacao.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtTempoImplementacao.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
+            // 
+            // txtk
+            // 
+            this.txtk.Location = new System.Drawing.Point(159, 32);
+            this.txtk.Name = "txtk";
+            this.txtk.Size = new System.Drawing.Size(72, 20);
+            this.txtk.TabIndex = 22;
+            this.txtk.Text = "17";
+            this.txtk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtk.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
+            // 
+            // label11
+            // 
+            this.label11.Location = new System.Drawing.Point(156, 16);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(125, 13);
+            this.label11.TabIndex = 21;
+            this.label11.Text = "K:";
             // 
             // label25
             // 
@@ -998,67 +929,166 @@ namespace AGVFaultTolerant
             this.txtLimiarDistancia.Name = "txtLimiarDistancia";
             this.txtLimiarDistancia.Size = new System.Drawing.Size(72, 20);
             this.txtLimiarDistancia.TabIndex = 19;
-            this.txtLimiarDistancia.Text = "90";
+            this.txtLimiarDistancia.Text = "100";
             this.txtLimiarDistancia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtLimiarDistancia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
-            // chkFalhaSensorFrontal0
+            // pbLimiar3
             // 
-            this.chkFalhaSensorFrontal0.Location = new System.Drawing.Point(6, 19);
-            this.chkFalhaSensorFrontal0.Name = "chkFalhaSensorFrontal0";
-            this.chkFalhaSensorFrontal0.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal0.TabIndex = 20;
-            this.chkFalhaSensorFrontal0.Text = "Falha sensor 0";
-            this.chkFalhaSensorFrontal0.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal0_CheckedChanged);
+            this.pbLimiar3.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar3.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar3.Location = new System.Drawing.Point(470, 59);
+            this.pbLimiar3.Name = "pbLimiar3";
+            this.pbLimiar3.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar3.TabIndex = 68;
+            this.pbLimiar3.TabStop = false;
             // 
-            // chkFalhaSensorFrontal4
+            // pbLimiar2
             // 
-            this.chkFalhaSensorFrontal4.Location = new System.Drawing.Point(6, 119);
-            this.chkFalhaSensorFrontal4.Name = "chkFalhaSensorFrontal4";
-            this.chkFalhaSensorFrontal4.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal4.TabIndex = 20;
-            this.chkFalhaSensorFrontal4.Text = "Falha sensor 4";
-            this.chkFalhaSensorFrontal4.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal4_CheckedChanged);
+            this.pbLimiar2.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar2.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar2.Location = new System.Drawing.Point(397, 59);
+            this.pbLimiar2.Name = "pbLimiar2";
+            this.pbLimiar2.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar2.TabIndex = 67;
+            this.pbLimiar2.TabStop = false;
             // 
-            // chkFalhaSensorFrontal1
+            // pbLimiar1
             // 
-            this.chkFalhaSensorFrontal1.Location = new System.Drawing.Point(6, 42);
-            this.chkFalhaSensorFrontal1.Name = "chkFalhaSensorFrontal1";
-            this.chkFalhaSensorFrontal1.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal1.TabIndex = 20;
-            this.chkFalhaSensorFrontal1.Text = "Falha sensor 1";
-            this.chkFalhaSensorFrontal1.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal1_CheckedChanged);
+            this.pbLimiar1.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar1.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar1.Location = new System.Drawing.Point(381, 66);
+            this.pbLimiar1.Name = "pbLimiar1";
+            this.pbLimiar1.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar1.TabIndex = 66;
+            this.pbLimiar1.TabStop = false;
             // 
-            // chkFalhaSensorFrontal2
+            // pbLimiar4
             // 
-            this.chkFalhaSensorFrontal2.Location = new System.Drawing.Point(6, 68);
-            this.chkFalhaSensorFrontal2.Name = "chkFalhaSensorFrontal2";
-            this.chkFalhaSensorFrontal2.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal2.TabIndex = 20;
-            this.chkFalhaSensorFrontal2.Text = "Falha sensor 2";
-            this.chkFalhaSensorFrontal2.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal2_CheckedChanged);
+            this.pbLimiar4.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar4.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar4.Location = new System.Drawing.Point(486, 66);
+            this.pbLimiar4.Name = "pbLimiar4";
+            this.pbLimiar4.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar4.TabIndex = 65;
+            this.pbLimiar4.TabStop = false;
             // 
-            // chkFalhaSensorFrontal3
+            // pbLimiar5
             // 
-            this.chkFalhaSensorFrontal3.Location = new System.Drawing.Point(6, 93);
-            this.chkFalhaSensorFrontal3.Name = "chkFalhaSensorFrontal3";
-            this.chkFalhaSensorFrontal3.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal3.TabIndex = 20;
-            this.chkFalhaSensorFrontal3.Text = "Falha sensor 3";
-            this.chkFalhaSensorFrontal3.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal3_CheckedChanged);
+            this.pbLimiar5.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar5.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar5.Location = new System.Drawing.Point(500, 87);
+            this.pbLimiar5.Name = "pbLimiar5";
+            this.pbLimiar5.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar5.TabIndex = 64;
+            this.pbLimiar5.TabStop = false;
             // 
-            // chkFalhaSensorFrontal5
+            // pbLimiar0
             // 
-            this.chkFalhaSensorFrontal5.Location = new System.Drawing.Point(6, 141);
-            this.chkFalhaSensorFrontal5.Name = "chkFalhaSensorFrontal5";
-            this.chkFalhaSensorFrontal5.Size = new System.Drawing.Size(120, 26);
-            this.chkFalhaSensorFrontal5.TabIndex = 21;
-            this.chkFalhaSensorFrontal5.Text = "Falha sensor 5";
-            this.chkFalhaSensorFrontal5.CheckedChanged += new System.EventHandler(this.chkFalhaSensorFrontal5_CheckedChanged);
+            this.pbLimiar0.BackColor = System.Drawing.Color.Transparent;
+            this.pbLimiar0.Image = global::FaultTolerantAGV.Properties.Resources.bolaVermelha;
+            this.pbLimiar0.Location = new System.Drawing.Point(372, 87);
+            this.pbLimiar0.Name = "pbLimiar0";
+            this.pbLimiar0.Size = new System.Drawing.Size(10, 10);
+            this.pbLimiar0.TabIndex = 63;
+            this.pbLimiar0.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::FaultTolerantAGV.Properties.Resources.robo;
+            this.pictureBox2.Location = new System.Drawing.Point(310, 12);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(265, 296);
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pbRobot
+            // 
+            this.pbRobot.BackColor = System.Drawing.Color.Transparent;
+            this.pbRobot.Image = ((System.Drawing.Image)(resources.GetObject("pbRobot.Image")));
+            this.pbRobot.Location = new System.Drawing.Point(660, 411);
+            this.pbRobot.Name = "pbRobot";
+            this.pbRobot.Size = new System.Drawing.Size(10, 10);
+            this.pbRobot.TabIndex = 11;
+            this.pbRobot.TabStop = false;
+            // 
+            // pbTerrain
+            // 
+            this.pbTerrain.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pbTerrain.ErrorImage = null;
+            this.pbTerrain.Image = global::FaultTolerantAGV.Properties.Resources.Mapa4;
+            this.pbTerrain.InitialImage = null;
+            this.pbTerrain.Location = new System.Drawing.Point(581, 8);
+            this.pbTerrain.Name = "pbTerrain";
+            this.pbTerrain.Size = new System.Drawing.Size(654, 570);
+            this.pbTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbTerrain.TabIndex = 10;
+            this.pbTerrain.TabStop = false;
+            this.pbTerrain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseDown);
+            this.pbTerrain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbTerrain_MouseMove);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(5, 346);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(62, 13);
+            this.label15.TabIndex = 132;
+            this.label15.Text = "Ct Vira Esq:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(5, 324);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(57, 13);
+            this.label18.TabIndex = 133;
+            this.label18.Text = "Ct Vira Dir:";
+            // 
+            // lblCtViraEsq
+            // 
+            this.lblCtViraEsq.AutoSize = true;
+            this.lblCtViraEsq.Location = new System.Drawing.Point(73, 346);
+            this.lblCtViraEsq.Name = "lblCtViraEsq";
+            this.lblCtViraEsq.Size = new System.Drawing.Size(13, 13);
+            this.lblCtViraEsq.TabIndex = 134;
+            this.lblCtViraEsq.Text = "0";
+            // 
+            // lblCtViraDir
+            // 
+            this.lblCtViraDir.AutoSize = true;
+            this.lblCtViraDir.Location = new System.Drawing.Point(73, 324);
+            this.lblCtViraDir.Name = "lblCtViraDir";
+            this.lblCtViraDir.Size = new System.Drawing.Size(13, 13);
+            this.lblCtViraDir.TabIndex = 135;
+            this.lblCtViraDir.Text = "0";
+            // 
+            // txtVelFim
+            // 
+            this.txtVelFim.Location = new System.Drawing.Point(162, 75);
+            this.txtVelFim.Name = "txtVelFim";
+            this.txtVelFim.Size = new System.Drawing.Size(72, 20);
+            this.txtVelFim.TabIndex = 26;
+            this.txtVelFim.Text = "30";
+            this.txtVelFim.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtVelFim.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
+            // 
+            // label20
+            // 
+            this.label20.Location = new System.Drawing.Point(159, 59);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(125, 13);
+            this.label20.TabIndex = 25;
+            this.label20.Text = "Vel Fim:";
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(1238, 616);
+            this.Controls.Add(this.lblCtViraEsq);
+            this.Controls.Add(this.lblCtViraDir);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblGeneCircuito);
@@ -1069,47 +1099,43 @@ namespace AGVFaultTolerant
             this.Controls.Add(this.pbLimiar4);
             this.Controls.Add(this.pbLimiar5);
             this.Controls.Add(this.pbLimiar0);
-            this.Controls.Add(this.pbLimiar6);
-            this.Controls.Add(this.pbLimiar7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.gbComandos);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pbRobot);
             this.Controls.Add(this.pbTerrain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Fault Tolerant AGV";
+            this.Text = "Vel Fim:";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.gbComandos.ResumeLayout(false);
             this.gbComandos.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar0)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMotor2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMotor1)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLimiar0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRobot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTerrain)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1117,72 +1143,201 @@ namespace AGVFaultTolerant
         #endregion
 
 
+        //private void DoInferenceGA(int distance)
+        //{
+        //    //Considerando a distancia de 50 = 0.5m
+        //    //1000 = 40mm (0.04)
+        //    //Value algorithm       x       m
+        //    //------------------------------------
+        //    //1000                          0.04
+        //    //12500                         0.5
+
+        //    //Se o contador "ctControleParent" atingir o tamanho da população de pais estabelecido no Algoritimo Genético, deve ser resetado
+        //    //Se avaiou todos os país, e todos os clones do último pai
+        //    if ((ctControleParent == _ga.PopulationSize) && (ctControleClones == (_ga.Clonepopulation + 2)))
+        //    {
+        //        //Fazer o processo de seleção
+        //        //Manter apenas o melhor individuo (População de Pais)
+        //        _ga.FindSolution();
+        //        int intTemp = Convert.ToInt32(lblGeneration.Text);
+        //        intTemp++;
+        //        lblGeneration.Text = intTemp.ToString();
+        //        //lblFitness4.Text = _ga.GetBestIndividual().GetFitness().ToString();
+        //        lblFitness4.Text = _ga.BestCircuit.Fitness.ToString();
+        //        bestIndividualLatGeneration = _ga.BestCircuit;
+        //        //bestIndividualLatGeneration = _ga.GetBestIndividual();
+
+        //        ctControleParent = 0;
+        //    }
+
+
+        //    //Se o contador "ctControleClones" atingir o número de clones estabelecido no Algoritimo Genético, deve ser resetado
+        //    if (ctControleClones == (_ga.Clonepopulation + 2))
+        //        ctControleClones = 0;
+
+        //    CircuitoChromosome current = null;
+
+        //    ///WARNING:
+        //    //Se o contador de clones esta em 0, significa que o primeiro circuito da população de PAIS SERÁ
+
+        //    //Se o contador de clones esta em 1, significa que o primeiro circuito da população de PAIS foi avaliado por 140 ms
+        //    //e agora, é possível atribuir seu fitness, e a partir disto
+        //    //iniciar o processo de clonagem e avaliação da popuação de clones
+        //    if (ctControleClones == 0)
+        //        current = _ga.GetCurrentChromosome(ctControleParent);
+        //    //A primeira vez, é necesário atribuir para "current" apenas para o proposito de as informações do gene
+        //    //e atualizar as saídas do atuador para as saídas do circuito
+
+
+        //    if (ctControleClones == 1)
+        //    {
+        //        //Atribuir os valores medidos para o circuito
+        //        _ga.GetCurrentChromosome((ctControleParent)).Distance = distance;
+        //        _ga.GetCurrentChromosome((ctControleParent)).Time = 140;
+        //        _ga.GetCurrentChromosome((ctControleParent)).GetFitness();
+
+        //        //current = _ga.GetCurrentChromosome((ctControleParent));
+
+        //        //Inicializa população de clones para o determinado pai (Levando-se em consideração o fitness do pai)
+        //        _ga.InitializeClones(ctControleParent, sensors);
+        //        //Atribuir o primeiro clone para avaliação                
+        //        current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
+
+        //    }
+        //    //Se o contador de clones é maior que 1, significa que o primeiro circuito da população de CLONES foi avaliado por 140 ms
+        //    if (ctControleClones > 1)
+        //    {
+        //        _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Distance = distance;
+        //        _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Time = 140;
+
+        //        //Atribuir o clone seguinte para avaliação clone para avaliação
+        //        if ((ctControleClones - 1) < 3)
+        //            current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
+        //    }
+
+        //    if (current != null)
+        //    {
+        //        //{Cartesian genetic programming”,
+        //        ShowChromosome(current, lblFitness4);
+        //        lblGeneration.Text = _ga.Generation.ToString();
+        //        AtualizaDirecao(current);
+
+        //    }
+
+        //    ctControleClones++;
+
+        //    //Se terminou de avaliar os cloenes de determinado pai
+        //    if (ctControleClones == (_ga.Clonepopulation + 2))
+        //    {
+        //        ctControleParent++;
+        //    }
+        //}
+
         private void DoInferenceGA(int distance)
         {
-            //Considerando a distancia de 50 = 0.5m
-            //1000 = 40mm (0.04)
-            //Value algorithm       x       m
-            //------------------------------------
-            //1000                          0.04
-            //12500                         0.5
-
-            //Se o contador "ctControleParent" atingir o tamanho da população de pais estabelecido no Algoritimo Genético, deve ser resetado
-            //Se avaiou todos os país, e todos os clones do último pai
-            if ((ctControleParent == _ga.PopulationSize) && (ctControleClones == (_ga.Clonepopulation + 2)))
-            {
-                //Fazer o processo de seleção
-                //Manter apenas o melhor individuo (População de Pais)
-                _ga.FindSolution();
-                int intTemp = Convert.ToInt32(lblGeneration.Text);
-                intTemp++;
-                lblGeneration.Text = intTemp.ToString();
-                lblFitness4.Text = _ga.GetBestIndividual().GetFitness().ToString();
-                //bestIndividualLatGeneration = _ga.GetBestIndividual();
-
-                ctControleParent = 0;
-            }
-
-
-            //Se o contador "ctControleClones" atingir o número de clones estabelecido no Algoritimo Genético, deve ser resetado
-            if (ctControleClones == (_ga.Clonepopulation + 2))
-                ctControleClones = 0;
-
+            bool cicloPais = true;
+            bool AvaliarTodaPopulacao = false;
             CircuitoChromosome current = null;
-
-            ///WARNING:
-            //Se o contador de clones esta em 0, significa que o primeiro circuito da população de PAIS SERÁ
-
-            //Se o contador de clones esta em 1, significa que o primeiro circuito da população de PAIS foi avaliado por 140 ms
-            //e agora, é possível atribuir seu fitness, e a partir disto
-            //iniciar o processo de clonagem e avaliação da popuação de clones
-            if (ctControleClones == 0)
-                current = _ga.GetCurrentChromosome(ctControleParent);
-            //A primeira vez, é necesário atribuir para "current" apenas para o proposito de as informações do gene
-            //e atualizar as saídas do atuador para as saídas do circuito
-
-
-            if (ctControleClones == 1)
+            if (ctControleParent == _ga.PopulationSize)
+                cicloPais = false;
+            if (cicloPais)
             {
                 //Atribuir os valores medidos para o circuito
                 _ga.GetCurrentChromosome((ctControleParent)).Distance = distance;
                 _ga.GetCurrentChromosome((ctControleParent)).Time = 140;
-                //current = _ga.GetCurrentChromosome((ctControleParent));
+                _ga.GetCurrentChromosome((ctControleParent)).GetFitness();
 
-                //Inicializa população de clones para o determinado pai (Levando-se em consideração o fitness do pai)
-                _ga.InitializeClones(ctControleParent, sensors);
-                //Atribuir o primeiro clone para avaliação                
-                current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
-
+                current = _ga.GetCurrentChromosome(ctControleParent);
+                lblNumeroPortasAlteradas.Text = "-";
             }
-            //Se o contador de clones é maior que 1, significa que o primeiro circuito da população de CLONES foi avaliado por 140 ms
-            if (ctControleClones > 1)
-            {
-                _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Distance = distance;
-                _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Time = 140;
+            else
+                if (ctControleClones == 0)
+                {
+                    _ga.CalculaNormFit();
+                    _ga.InitializeClones((ctControleParent - ctPaisDecrescente), sensors);
+                    current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), 0);
 
-                //Atribuir o clone seguinte para avaliação clone para avaliação
-                if ((ctControleClones - 1) < 3)
-                    current = _ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 1));
+                }
+                else
+                {
+                    //_ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Distance = distance;
+                    //_ga.GetCurrentCloneChromosome(ctControleParent, (ctControleClones - 2)).Time = 140;
+                    _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).Distance = distance;
+                    _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).Time = 140;
+                    //_ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).GetFitness();
+
+                    //Mostra o numero de portas alteradas
+                    lblNumeroPortasAlteradas.Text = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).N.ToString();
+                    //lblNumeroPortasAlteradas.Text = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).RetornaValorN().ToString();
+
+
+
+                    //Atribuir o clone seguinte para avaliação clone para avaliação
+                    //if ((ctControleClones - 1) < 3)
+                    //if ((ctControleClones - 1) < 2)
+                    if ((ctControleClones - 1) < 3)
+                        current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1));
+                }
+            if (ctControleParent == _ga.PopulationSize && (cicloPais))
+            {
+                ctPaisDecrescente = 3;
+                cicloPais = false;
+            }
+
+
+            if ((!cicloPais) && (ctControleClones < _ga.Clonepopulation + 1))
+                ctControleClones++;
+
+
+            if (ctControleClones > (_ga.Clonepopulation))
+            {
+                //ctControleClones = 0;
+                ctPaisDecrescente--;
+            }
+
+            if (ctControleClones > (_ga.Clonepopulation) && (ctPaisDecrescente == 0))
+            {
+                AvaliarTodaPopulacao = true;
+            }
+
+            if (ctControleClones > (_ga.Clonepopulation))
+            {
+                ctControleClones = 0;
+                //ctPaisDecrescente--;
+            }
+
+            if (cicloPais && (ctControleClones <= _ga.Clonepopulation))
+                ctControleParent++;
+
+            if (AvaliarTodaPopulacao)
+            {
+                //Thread.Sleep(5);
+                cicloPais = true;
+                //Fazer o processo de seleção
+                //Manter apenas o melhor individuo (População de Pais)
+                _ga.FindSolution();
+                ctPaisDecrescente = 3;
+                int intTemp = Convert.ToInt32(lblGeneration.Text);
+                intTemp++;
+
+                DataRow drResultado = dtResultados.NewRow();
+                drResultado["Bestfitness"] = (int)_ga.BestCircuit.Fitness;
+                drResultado["Averagefitness"] = -1;
+                drResultado["geracao"] = Convert.ToInt32(lblGeneration.Text.Trim());
+                dtResultados.Rows.Add(drResultado);
+
+                lblGeneration.Text = intTemp.ToString();
+                lblFitness4.Text = _ga.BestCircuit.Fitness.ToString();
+                bestIndividualLatGeneration = _ga.BestCircuit;
+                current = _ga.BestCircuit;
+
+                ctControleParent = 0;
+                if (intTemp % 15 == 0)
+                {
+                    intTemp = intTemp;
+                }
+
+
             }
 
             if (current != null)
@@ -1194,13 +1349,6 @@ namespace AGVFaultTolerant
 
             }
 
-            ctControleClones++;
-
-            //Se terminou de avaliar os cloenes de determinado pai
-            if (ctControleClones == (_ga.Clonepopulation + 2))
-            {
-                ctControleParent++;
-            }
         }
 
         public void AtualizaDirecao(CircuitoChromosome chromoRobo)
@@ -1209,11 +1357,20 @@ namespace AGVFaultTolerant
             //_traz = false;
             _virou = false;
 
-            pbMotor1.Visible = !chromoRobo.OutputBits[0].Output;
-            pbMotor2.Visible = !chromoRobo.OutputBits[1].Output;
 
 
-            if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == false)
+            if ((!chromoRobo.OutputBits[0].Output && !chromoRobo.OutputBits[1].Output) || (chromoRobo.OutputBits[0].Output && chromoRobo.OutputBits[1].Output))
+                pbMotor1.Visible = pbMotor2.Visible = true;
+            else
+            {
+                pbMotor1.Visible = true;// !chromoRobo.OutputBits[0].Output;
+                pbMotor2.Visible = true; // !chromoRobo.OutputBits[1].Output;
+            }
+
+
+
+
+            if ((chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == false) || (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true))
             {
                 //NewAngle = 0;
                 //_traz = true;
@@ -1223,26 +1380,34 @@ namespace AGVFaultTolerant
             //vira esquerda
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == false)
             {
+                double vlTmp = Convert.ToDouble(lblCtViraEsq.Text);
+                vlTmp++;
+                lblCtViraEsq.Text = vlTmp.ToString();
+
                 //NewAngle = -10;
                 NewAngle = -5;
                 _virou = true;
             }
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
             {
+                double vlTmp = Convert.ToDouble(lblCtViraDir.Text);
+                vlTmp++;
+                lblCtViraDir.Text = vlTmp.ToString();
+
                 //NewAngle = +10;
                 NewAngle = +5;
                 _virou = true;
 
             }
-            else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true)
-            {
-                //_traz = false;
-                //NewAngle = 0;
-                NewAngle = 0;
-                //_traz = true;
-                //TODO: Arrumar lógica de andar para traz
-                _traz = false;
-            }
+            //else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == true)
+            //{
+            //    //_traz = false;
+            //    //NewAngle = 0;
+            //    NewAngle = 0;
+            //    //_traz = true;
+            //    //TODO: Arrumar lógica de andar para traz
+            //    _traz = false;
+            //}
 
             Angle += NewAngle;
 
@@ -1358,8 +1523,8 @@ namespace AGVFaultTolerant
             //System.Diagnostics.Debug.WriteLine(string.Format("XObstaculo2={0} ; YObstaculo3={1}", pFrontObstacle2.X, pFrontObstacle2.Y));
             //System.Diagnostics.Debug.WriteLine(string.Format("-------------------------------------------------------------------------------------------------------------"));
 
-            Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
-            Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
+            Point pLeft45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, -45);
+            Point pRight45Obstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 45);
 
             Point pLeftObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 90);
             Point pRightObstacle = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, -90);
@@ -1465,11 +1630,12 @@ namespace AGVFaultTolerant
             //A velocidade é determinada em tempo real de acordo com a distancia dos obstaculos
             //Se um dos sensores atingiu o valor da limiar diminui a velocidade            
             //Utilizar dois sensores proximos para determinar qundo esta p´rximo de um obstaculo
-            if (!((sensors[0] && sensors[1]) || (sensors[2] && sensors[3]) || (sensors[4] && sensors[5]) || (sensors[6] && sensors[7])))
+            //if (!((sensors[0] && sensors[1]) || (sensors[2] && sensors[3]) || (sensors[4] && sensors[5]) || (sensors[6] && sensors[7])))
+            if (!((sensors[0] && sensors[1]) || (sensors[1] && sensors[2]) || (sensors[2] && sensors[3]) || (sensors[3] && sensors[4]) || (sensors[4] && sensors[5])))
             {
                 //txtSpeed.Text = "12,0";
-                if (Speed < 14)
-                    Speed += 1;
+                if (Speed < Convert.ToInt32(txtVelFim.Text))
+                    Speed += 3;
                 if (_virou)
                     Speed = 0;
             }
@@ -1479,11 +1645,14 @@ namespace AGVFaultTolerant
                 //Speed = 5;
                 if (Speed > 3)
                     Speed -= 1;
+                else if (!_virou)
+                    Speed = 3;
 
                 if (_virou)
                     Speed = 0;
             }
             txtSpeed.Text = Speed.ToString();
+            Angle = Angle % 360;
             txtAngle.Text = Angle.ToString();
         }
 
@@ -1547,8 +1716,17 @@ namespace AGVFaultTolerant
             sensors[6] = false;
             sensors[7] = false;
             _traz = false;
-            _ga = new GA(4, 3, sensors);
-            _ga.K = 18;
+            //_ga = new EA(4, 3, sensors);
+            _ga = new EA(3, 2, sensors);
+            //_ga.K = 13;
+            _ga.K = Convert.ToInt32(txtk.Text);
+
+            dtResultados = new DataTable();
+            dtResultados.Columns.Add("geracao", typeof(int));
+            dtResultados.Columns.Add("Bestfitness", typeof(int));
+            dtResultados.Columns.Add("Averagefitness", typeof(int));
+
+
 
             FirstInference = true;
             pbRobot.Top = pbTerrain.Bottom - 100;
@@ -1559,6 +1737,9 @@ namespace AGVFaultTolerant
             btnRun.Enabled = true;
             ctControleParent = 0;
             ctControleClones = 0;
+            ctControleParent = 0;
+            ctControleClones = 0;
+            ctPaisDecrescente = 3;
 
             lblFitness4.Text = "0";
             lblGeneration.Text = "1";
@@ -1570,8 +1751,7 @@ namespace AGVFaultTolerant
             pbLimiar3.Visible = false;
             pbLimiar4.Visible = false;
             pbLimiar5.Visible = false;
-            pbLimiar6.Visible = false;
-            pbLimiar7.Visible = false;
+
 
             Angle = 0;
             pbTerrain.Image = new Bitmap(InitialMap);
@@ -1584,8 +1764,8 @@ namespace AGVFaultTolerant
             txtFront3.Text = "0";
             txtFront4.Text = "0";
             txtFront5.Text = "0";
-            txtFront6.Text = "0";
-            txtFront7.Text = "0";
+            //txtFront6.Text = "0";
+            //txtFront7.Text = "0";
 
             txtAngle.Text = "0,00";
         }
@@ -1689,6 +1869,11 @@ namespace AGVFaultTolerant
                 txtLimiarDistancia.Enabled = false;
                 cbLasers.Enabled = false;
                 cbTrajeto.Enabled = false;
+                txtLimiarDistancia.Enabled = false;
+                txtk.Enabled = false;
+                txtTempoImplementacao.Enabled = false;
+                txtVelFim.Enabled = false;
+
 
                 pbRobot.Hide();
                 StartMovement();
@@ -1704,6 +1889,10 @@ namespace AGVFaultTolerant
                 txtLimiarDistancia.Enabled = true;
                 cbLasers.Enabled = true;
                 cbTrajeto.Enabled = true;
+                txtLimiarDistancia.Enabled = true;
+                txtk.Enabled = true;
+                txtTempoImplementacao.Enabled = true;
+                txtVelFim.Enabled = true;
                 pbRobot.Show();
                 pbTerrain.Image = CopyImage(OriginalMap);
                 pbTerrain.Refresh();
@@ -1749,7 +1938,10 @@ namespace AGVFaultTolerant
 
 
                     //TimeSpan tresult = tFim.Subtract(tInicio);
-                    if (tFim.Subtract(tInicio).Milliseconds > 10)
+                    //if (tFim.Subtract(tInicio).Milliseconds > 10)
+                    //if (tFim.Subtract(tInicio).Milliseconds > 140)
+                    //if (tFim.Subtract(tInicio).Milliseconds > 140)
+                    if (tFim.Subtract(tInicio).Milliseconds > Convert.ToInt32(txtTempoImplementacao.Text))
                     {
                         _bCiclo = true;
                         tInicio = DateTime.Now.TimeOfDay;
@@ -1799,20 +1991,28 @@ namespace AGVFaultTolerant
         /// <summary>
         /// Mostra o fitness e desenha o quadrado resposta (cromossomo)
         /// </summary>
-        /// <param name="eqc"></param>
+        /// <param name="circuitChromo"></param>
         /// <param name="lFitness"></param>
-        private void ShowChromosome(CircuitoChromosome eqc, Label lFitness)
+        private void ShowChromosome(CircuitoChromosome circuitChromo, Label lFitness)
         {
-            if (eqc == null) return;
+            if (circuitChromo == null) return;
             lblGeneration.Text = (_ga.Generation + 1).ToString();
-            lFitness.Text = eqc.GetFitness().ToString();
-            lblFitness4.Text = eqc.GetFitness().ToString();
+            lFitness.Text = circuitChromo.GetFitness().ToString();
+            lblFitness4.Text = circuitChromo.GetFitness().ToString();
             //DrawTable(eqc.Valores);
             txtGeneAgv.Text = String.Empty;
-            foreach (int i in eqc.Cgp.Genotype)
+            foreach (int i in circuitChromo.Cgp.Genotype)
                 txtGeneAgv.Text = txtGeneAgv.Text + i + ";";
             //Remove o ultimo ';'
             txtGeneAgv.Text = txtGeneAgv.Text.Remove(txtGeneAgv.Text.Length - 1);
+
+            DataRow drResultado = dtResultados.NewRow();
+            drResultado["Bestfitness"] = -1;
+            drResultado["Averagefitness"] = (int)circuitChromo.Fitness;
+            drResultado["geracao"] = Convert.ToInt32(lblGeneration.Text.Trim());
+            dtResultados.Rows.Add(drResultado);
+
+
         }
 
 
@@ -1907,6 +2107,37 @@ namespace AGVFaultTolerant
             pbLimiar5.Visible = true;
             txtFront5.Text = "0";
             sensors[5] = true;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyValue)
+            {
+                case 'A':
+                case 'a':
+                    btnReset_Click(null, null);
+                    break;
+                case 'r':
+                case 'R':
+                    if (btnRun.Enabled)
+                        btnRun_Click(this.btnRun, null);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        private void txtValidaNumero_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar >= '0' && e.KeyChar <= '9') //The  character represents a backspace
+            {
+                e.Handled = false; //Do not reject the input
+            }
+            else
+            {
+                e.Handled = true; //Reject the input
+            }
         }
 
     }

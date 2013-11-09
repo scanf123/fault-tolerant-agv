@@ -93,9 +93,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Fuzzy">
-      <HintPath>..\Aforge-DLLs\Aforge DLLs\AForge.Fuzzy.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -119,9 +116,9 @@
     </Compile>
     <Compile Include="CGP\CGP.cs" />
     <Compile Include="CGP\Molecule.cs" />
-    <Compile Include="Circulo.cs" />
-    <Compile Include="GA\Chromosome.cs" />
-    <Compile Include="GA\GA.cs" />
+    <Compile Include="GUI\Circulo.cs" />
+    <Compile Include="EA\Chromosome.cs" />
+    <Compile Include="EA\EA.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,7 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Reta.cs" />
+    <Compile Include="GUI\Reta.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -160,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
     <None Include="Resources\bolaVermelha.png" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Mapa4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\robo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
