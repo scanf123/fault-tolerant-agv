@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-//namespace QuadradoSoma
 namespace AGVFaultTolerant
 {
 
@@ -86,16 +85,6 @@ namespace AGVFaultTolerant
             get { return generation; }
         }
 
-
-        /// <summary>
-        /// Numero de vezes que será colnado a população para gerar filhos mutados
-        /// </summary>
-        //public int Mi
-        //{
-        //    get { return _mi; }
-        //    set { _mi = value; }
-        //}
-
         /// <summary>
         /// Constant to be turned by the user (utilizada no calculo do numero de bits a ser mutado)
         /// </summary>
@@ -127,20 +116,10 @@ namespace AGVFaultTolerant
         public void FindSolution()
         {
             generation++;
-            //Ja foram avaliados os individuos
-            //Evaluate();
-
-            //Norm fit calculado quando é necessario criar a população de clones
-            //CalculaNormFit();
-            //GenerateChildren();
-            //Os Clones são cridos e avaliados dinamicamente (cda qual é implementado por 140 ms)
-            //QSChromosome c = GetBestIndividual();           
 
             //Apenas o melhor individuo será mantido
             Selecao();
-            //Selection(populationSize - 1);
-            //Atribui ao Pai, os melhores individuos dos clones (se houverem mudanças para melhor no circuito)
-            //return GetBestIndividual();
+
         }
 
         public void CalculaNormFit()
@@ -149,22 +128,12 @@ namespace AGVFaultTolerant
             //Avalia população de pais
             foreach (CircuitoChromosome c in this._chromosomes)
             {
-                ////Avalia população de clones
-                //foreach (CircuitoChromosome clone in c.Clones)
-                //{
-                //    fitTotalPopulacao += clone.Fitness;
-                //}
                 fitTotalPopulacao += c.Fitness;
             }
 
             //Avalia população de pais
             foreach (CircuitoChromosome c in this._chromosomes)
             {
-                ////Avalia população de clones
-                //foreach (CircuitoChromosome clone in c.Clones)
-                //{
-                //    clone.GetNormFitness(fitTotalPopulacao);
-                //}
                 c.GetNormFitness(fitTotalPopulacao);
             }
 
@@ -176,12 +145,7 @@ namespace AGVFaultTolerant
             //AvaliatePopulation();
             List<CircuitoChromosome> lsttmpClonesPais = new List<CircuitoChromosome>();
 
-            //ordena clones
-            //foreach (CircuitoChromosome c in _chromosomes)
-            //{
-            //    lsttmpClonesPais.Add(RetornaListaOrdenadaPorFitness(c.Clones)[0]);
-            //}
-            //lsttmpClonesPais.Add(RetornaListaOrdenadaPorFitness(_chromosomes)[0]);
+
 
             foreach (CircuitoChromosome c in _chromosomes)
             {
@@ -218,23 +182,7 @@ namespace AGVFaultTolerant
         {
             List<CircuitoChromosome> lstRetorno = new List<CircuitoChromosome>();
             lstRetorno.AddRange(lstCircuitos.ToArray());
-            //int min, aux;
 
-            //for (int i = 0; i < vetor.Length - 1; i++)
-            //{
-            //    min = i;
-
-            //    for (int j = i + 1; j < vetor.Length; j++)
-            //        if (vetor[j] < vetor[min])
-            //            min = j;
-
-            //    if (min != i)
-            //    {
-            //        aux = vetor[min];
-            //        vetor[min] = vetor[i];
-            //        vetor[i] = aux;
-            //    }
-            //}
 
             int min;
             CircuitoChromosome aux;
@@ -284,14 +232,6 @@ namespace AGVFaultTolerant
             return _chromosomes[0];
         }
 
-        /// <summary>
-        /// Inicializa a população
-        /// </summary>
-        //public void InitializePopulation()
-        //{
-        //    for (int i = 0; i < populationSize; i++)
-        //        this.chromosomes.Add(QSChromosome.CreateRandomChromosome());
-        //}
 
         public void InitializePopulation(bool[] sensors)
         {
@@ -348,39 +288,6 @@ namespace AGVFaultTolerant
 
 
 
-        }
-
-        /// <summary>
-        /// Gerando os filhos da população atual utilizando operadores de crossover e mutação.
-        /// Para controlar o tamanho da população, o número de filhos gerados não deve ultrapassar
-        ///  o de indivíduos eliminados pela seleção.
-        /// </summary>
-        public void GenerateChildren()
-        {
-            if (this._chromosomes.Count > 0)
-            {
-                CircuitoChromosome c = GetBestIndividual();
-                double fit = c.GetFitness();
-                int norm_fi = (int)Math.Truncate(fit);
-                List<CircuitoChromosome> lstClonedMutated = new List<CircuitoChromosome>(); ;
-
-                List<CircuitoChromosome> Cloned;
-                //Clona _mi vezes a população inicial
-                //for (int i = 0; i < (_mi); i++)
-                for (int i = 0; i < (this.clonepopulation); i++)
-                {
-                    Cloned = new List<CircuitoChromosome>();
-                    Cloned.AddRange(this._chromosomes.ToArray());
-                    for (int j = 0; j < Cloned.Count; j++)
-                    {
-                        //Aplica mutação no individuo
-                        Cloned[i].Mutate(_k, norm_fi);
-                    }
-                    //Adiciona os clones mutados a população atual
-                    lstClonedMutated.AddRange(Cloned.ToArray());
-                }
-                this._chromosomes.AddRange(lstClonedMutated.ToArray());
-            }
         }
 
 
@@ -471,7 +378,6 @@ namespace AGVFaultTolerant
             }
 
             //Retorna um item randomico(com limitação do tamanho do vetor de sorteio)            
-            //Int64 index = (int)htLista[random.Next((int)htct)];
             Int64 keyRoleta = Convert.ToInt64(random.Next((int)(htct - 1)).ToString());
 
             //Pega seu valor, que o indice de onde se localiza em "this.chromosomes"
