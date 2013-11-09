@@ -81,8 +81,6 @@ namespace AGVFaultTolerant
                 //if (ctGeral % 4 == 0 && ctGeral != 0)
 
                 //Trata-se da função                
-                //if ((linha + ((linha * ctl) + ctl) + ((ctc == 0) ? 0 : (linha * 4 + (ctc * 4)))) == ctGeral)
-                //if ((palavra + ((palavra * ctl) + ctl) + ((ctc == 0) ? 0 : (palavra * 4 + (ctc * 4)))) == ctGeral)
                 if ((palavra + ((palavra * ctl) + ctl) + ((ctc == 0) ? 0 : (palavra * linha * ctc + (ctc * linha)))) == ctGeral)
                 {
                     //Atribui funcao
@@ -90,7 +88,7 @@ namespace AGVFaultTolerant
                     //Atribui entradas
                     _digitalCircuit[ctl, ctc].Input = lstInputTmp.ToArray();
                     //Atribui nivel do level back
-                    _digitalCircuit[ctl, ctc].LevelsBack = ctc;
+                    _digitalCircuit[ctl, ctc].LevelsBack = 1;
 
                     lstInputTmp.Clear();
                     ctl++;
@@ -222,9 +220,10 @@ namespace AGVFaultTolerant
 
         /// <summary>
         /// Avalia se o GEnotype é valido
+        /// Restricoes por alelos
         /// </summary>
         /// <returns></returns>
-        public bool AvaliarGene()
+        public bool AvaliarGeneImplementavel()
         {
             bool retorno = true;
 
