@@ -27,7 +27,8 @@ namespace AGVFaultTolerant
         DataTable dtResultados;
         int ctControleParent = 0;
         int ctControleClones = 0;
-        int ctPaisDecrescente = 3;
+        //int ctPaisDecrescente = 3;
+        int ctPaisDecrescente = 5;
         private bool _bCiclo = false;
         private bool _ponto1 = true;
         private bool _ponto2 = false;
@@ -162,8 +163,10 @@ namespace AGVFaultTolerant
             sensors[7] = false;
             _traz = false;
 
-            _ga = new EA(3, 2, sensors);
-            ctPaisDecrescente = 3;
+            //_ga = new EA(3, 2, sensors);
+            _ga = new EA(5, 2, sensors);
+            //ctPaisDecrescente = 3;
+            ctPaisDecrescente = 5;
             _ga.K = Convert.ToInt32(txtk.Text);
             dtResultados = new DataTable();
             dtResultados.Columns.Add("geracao", typeof(int));
@@ -905,7 +908,7 @@ namespace AGVFaultTolerant
             this.txtTempoImplementacao.Name = "txtTempoImplementacao";
             this.txtTempoImplementacao.Size = new System.Drawing.Size(72, 20);
             this.txtTempoImplementacao.TabIndex = 23;
-            this.txtTempoImplementacao.Text = "20";
+            this.txtTempoImplementacao.Text = "25";
             this.txtTempoImplementacao.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtTempoImplementacao.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -915,7 +918,7 @@ namespace AGVFaultTolerant
             this.txtk.Name = "txtk";
             this.txtk.Size = new System.Drawing.Size(72, 20);
             this.txtk.TabIndex = 22;
-            this.txtk.Text = "22";
+            this.txtk.Text = "10";
             this.txtk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtk.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -941,7 +944,7 @@ namespace AGVFaultTolerant
             this.txtLimiarDistancia.Name = "txtLimiarDistancia";
             this.txtLimiarDistancia.Size = new System.Drawing.Size(72, 20);
             this.txtLimiarDistancia.TabIndex = 19;
-            this.txtLimiarDistancia.Text = "120";
+            this.txtLimiarDistancia.Text = "95";
             this.txtLimiarDistancia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtLimiarDistancia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -1158,7 +1161,8 @@ namespace AGVFaultTolerant
                 if (ctControleClones == 0)
                 {
                     _ga.CalculaNormFit();
-                    _ga.InitializeClones((ctControleParent - ctPaisDecrescente), sensors);
+                    //_ga.InitializeClones((ctControleParent - ctPaisDecrescente), sensors);
+                    _ga.InitializeClone((ctControleParent - ctPaisDecrescente), sensors);
                     current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), 0);
 
                 }
@@ -1173,10 +1177,12 @@ namespace AGVFaultTolerant
 
                     if ((ctControleClones - 1) < 3)
                         current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1));
+                    _ga.InitializeClone((ctControleParent - ctPaisDecrescente), sensors);
                 }
             if (ctControleParent == _ga.PopulationSize && (cicloPais))
             {
-                ctPaisDecrescente = 3;
+                //ctPaisDecrescente = 3;
+                ctPaisDecrescente = 5;
                 cicloPais = false;
             }
 
@@ -1209,7 +1215,8 @@ namespace AGVFaultTolerant
                 //Fazer o processo de seleção
                 //Manter apenas o melhor individuo (População de Pais)
                 _ga.FindSolution();
-                ctPaisDecrescente = 3;
+                //ctPaisDecrescente = 3;
+                ctPaisDecrescente = 5;
                 int intTemp = Convert.ToInt32(lblGeneration.Text);
                 intTemp++;
 
@@ -1255,7 +1262,7 @@ namespace AGVFaultTolerant
                 pbMotor1.Visible = pbMotor2.Visible = true;
             else
             {
-                pbMotor1.Visible = pbMotor2.Visible = true;
+                pbMotor1.Visible = pbMotor2.Visible = false;
             }
 
 
@@ -1269,6 +1276,7 @@ namespace AGVFaultTolerant
             //vira esquerda
             else if (chromoRobo.OutputBits[0].Output == true && chromoRobo.OutputBits[1].Output == false)
             {
+                pbMotor1.Visible = true;
                 double vlTmp = Convert.ToDouble(lblCtViraEsq.Text);
                 vlTmp++;
                 lblCtViraEsq.Text = vlTmp.ToString();
@@ -1278,6 +1286,7 @@ namespace AGVFaultTolerant
             }
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
             {
+                pbMotor2.Visible = true;
                 double vlTmp = Convert.ToDouble(lblCtViraDir.Text);
                 vlTmp++;
                 lblCtViraDir.Text = vlTmp.ToString();
@@ -1355,7 +1364,10 @@ namespace AGVFaultTolerant
 
             #region Nova logica retas
 
-            Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
+            //Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, -1, 0);
+            //Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, 1, 5);
+            Point pFront = GetObstacle(new Point(pPos.X, pPos.Y), b, 10, 0);
+
             Reta rPrincipal = new Reta(pPos, pFront);
 
 
@@ -1491,7 +1503,7 @@ namespace AGVFaultTolerant
             if (!((sensors[0] && sensors[1]) || (sensors[1] && sensors[2]) || (sensors[2] && sensors[3]) || (sensors[3] && sensors[4]) || (sensors[4] && sensors[5])))
             {
                 //txtSpeed.Text = "12,0";
-                if (Speed < Convert.ToInt32(txtVelFim.Text))
+                if ((Speed + 3) < Convert.ToInt32(txtVelFim.Text))
                     Speed += 3;
                 if (_virou)
                     Speed = 0;
@@ -1500,8 +1512,8 @@ namespace AGVFaultTolerant
             {
                 //txtSpeed.Text = "5,0";
                 //Speed = 5;
-                if (Speed > 3)
-                    Speed -= 1;
+                if ((Speed - 3) > 3)
+                    Speed -= 3;
                 else if (!_virou)
                     Speed = 3;
 
@@ -1573,7 +1585,8 @@ namespace AGVFaultTolerant
             sensors[6] = false;
             sensors[7] = false;
             _traz = false;
-            _ga = new EA(3, 2, sensors);
+            //_ga = new EA(3, 2, sensors);
+            _ga = new EA(5, 2, sensors);
             _ga.K = Convert.ToInt32(txtk.Text);
 
             dtResultados = new DataTable();
@@ -1594,7 +1607,8 @@ namespace AGVFaultTolerant
             ctControleClones = 0;
             ctControleParent = 0;
             ctControleClones = 0;
-            ctPaisDecrescente = 3;
+            //ctPaisDecrescente = 3;
+            ctPaisDecrescente = 5;
 
             lblFitness4.Text = "0";
             lblGeneration.Text = "1";
