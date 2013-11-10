@@ -135,6 +135,7 @@ namespace AGVFaultTolerant
             foreach (CircuitoChromosome c in this._chromosomes)
             {
                 c.GetNormFitness(fitTotalPopulacao);
+                //c.GetNormFitness(fitTotalPopulacao, this._chromosomes.Count);
             }
 
         }
@@ -174,7 +175,9 @@ namespace AGVFaultTolerant
                 //Apenas o melhor individuo será usado como modelo para a proxima geraçãos
                 //Utilização de eletismos
                 _chromosomes[i] = BestCircuit;
+                _chromosomes[i].Clones = new List<CircuitoChromosome>();
             }
+
 
         }
 
@@ -399,11 +402,27 @@ namespace AGVFaultTolerant
             return _chromosomes[ctControleParent].Clones[ctControleClones];
         }
 
+        /// <summary>
+        /// Instancia randomicamnete todos os clones
+        /// </summary>
+        /// <param name="ctControleParent"></param>
+        /// <param name="sensors"></param>
         public void InitializeClones(int ctControleParent, bool[] sensors)
         {
             for (int i = 0; i < clonepopulation; i++)
                 this._chromosomes[ctControleParent].Clones.Add(CircuitoChromosome.CreateRandomClone(sensors, this._chromosomes[ctControleParent].NormFitness, this._chromosomes[ctControleParent].Cgp.Genotype, this._k));
 
+        }
+
+        /// <summary>
+        /// Instancia randomicamnete apenas um clone
+        /// </summary>
+        /// <param name="ctControleParent"></param>
+        /// <param name="sensors"></param>
+        public void InitializeClone(int ctControleParent, bool[] sensors)
+        {
+            if (this._chromosomes[ctControleParent].Clones.Count < clonepopulation)
+                this._chromosomes[ctControleParent].Clones.Add(CircuitoChromosome.CreateRandomClone(sensors, this._chromosomes[ctControleParent].NormFitness, this._chromosomes[ctControleParent].Cgp.Genotype, this._k));
         }
     }
 }
