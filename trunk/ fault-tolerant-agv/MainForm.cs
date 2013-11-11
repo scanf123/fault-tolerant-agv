@@ -28,7 +28,7 @@ namespace AGVFaultTolerant
         int ctControleParent = 0;
         int ctControleClones = 0;
         //int ctPaisDecrescente = 3;
-        int ctPaisDecrescente = 5;
+        int ctPaisDecrescente = 3;
         private bool _bCiclo = false;
         private bool _ponto1 = true;
         private bool _ponto2 = false;
@@ -164,9 +164,9 @@ namespace AGVFaultTolerant
             _traz = false;
 
             //_ga = new EA(3, 2, sensors);
-            _ga = new EA(5, 2, sensors);
+            _ga = new EA(3, 2, sensors);
             //ctPaisDecrescente = 3;
-            ctPaisDecrescente = 5;
+            ctPaisDecrescente = 3;
             _ga.K = Convert.ToInt32(txtk.Text);
             dtResultados = new DataTable();
             dtResultados.Columns.Add("geracao", typeof(int));
@@ -1155,7 +1155,7 @@ namespace AGVFaultTolerant
                 _ga.GetCurrentChromosome((ctControleParent)).GetFitness();
 
                 current = _ga.GetCurrentChromosome(ctControleParent);
-                lblNumeroPortasAlteradas.Text = "-";
+                lblNumeroPortasAlteradas.Text = "P" + ctControleParent + " -";
             }
             else
                 if (ctControleClones == 0)
@@ -1173,7 +1173,7 @@ namespace AGVFaultTolerant
                     _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).Time = 140;
 
                     //Mostra o numero de portas alteradas
-                    lblNumeroPortasAlteradas.Text = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).N.ToString();
+                    lblNumeroPortasAlteradas.Text = "C" + ctControleClones + " : " + _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).N.ToString();
 
                     if ((ctControleClones - 1) < 3)
                         current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1));
@@ -1182,7 +1182,7 @@ namespace AGVFaultTolerant
             if (ctControleParent == _ga.PopulationSize && (cicloPais))
             {
                 //ctPaisDecrescente = 3;
-                ctPaisDecrescente = 5;
+                ctPaisDecrescente = 3;
                 cicloPais = false;
             }
 
@@ -1216,7 +1216,7 @@ namespace AGVFaultTolerant
                 //Manter apenas o melhor individuo (População de Pais)
                 _ga.FindSolution();
                 //ctPaisDecrescente = 3;
-                ctPaisDecrescente = 5;
+                ctPaisDecrescente = 3;
                 int intTemp = Convert.ToInt32(lblGeneration.Text);
                 intTemp++;
 
@@ -1281,7 +1281,8 @@ namespace AGVFaultTolerant
                 vlTmp++;
                 lblCtViraEsq.Text = vlTmp.ToString();
 
-                NewAngle = -5;
+                //NewAngle = -7;
+                NewAngle = -10;
                 _virou = true;
             }
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
@@ -1291,7 +1292,8 @@ namespace AGVFaultTolerant
                 vlTmp++;
                 lblCtViraDir.Text = vlTmp.ToString();
 
-                NewAngle = +5;
+                //NewAngle = +7;
+                NewAngle = +10;
                 _virou = true;
 
             }
@@ -1586,7 +1588,7 @@ namespace AGVFaultTolerant
             sensors[7] = false;
             _traz = false;
             //_ga = new EA(3, 2, sensors);
-            _ga = new EA(5, 2, sensors);
+            _ga = new EA(3, 2, sensors);
             _ga.K = Convert.ToInt32(txtk.Text);
 
             dtResultados = new DataTable();
@@ -1608,7 +1610,7 @@ namespace AGVFaultTolerant
             ctControleParent = 0;
             ctControleClones = 0;
             //ctPaisDecrescente = 3;
-            ctPaisDecrescente = 5;
+            ctPaisDecrescente = 3;
 
             lblFitness4.Text = "0";
             lblGeneration.Text = "1";
