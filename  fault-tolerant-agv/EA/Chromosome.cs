@@ -276,14 +276,16 @@ namespace AGVFaultTolerant
 
         internal void GetNormFitness(double fitTotalPopulacao)
         {
+            _normFitness = 0.2 * _fitness;
+            _normFitness = (_normFitness > 1) ? 1 : _normFitness;
+            _normFitness = (_normFitness < 0) ? 0 : _normFitness;
             //TODO: Alterar o GetNorm fitness para trabalhar como uma proporção linear, como uma reta, variando do melhor caso fitness = 5  (normFit=1), e pior caso fitness = 0(normFit=0)
-            if (fitTotalPopulacao == 0)
-                _normFitness = 0;
-            else
-            {
-                //fitTotalPopulacao = fitTotalPopulacao / tamPopulacao;
-                _normFitness = _fitness / fitTotalPopulacao;
-            }
+            //if (fitTotalPopulacao == 0)
+            //    _normFitness = 0;
+            //else
+            //{                
+            //    _normFitness = _fitness / fitTotalPopulacao;
+            //}
         }
     }
 
