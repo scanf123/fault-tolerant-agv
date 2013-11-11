@@ -23,12 +23,12 @@ namespace AGVFaultTolerant
 
         #region Private members
 
-
+        private double averagefitness = 0;
         DataTable dtResultados;
         int ctControleParent = 0;
         int ctControleClones = 0;
-        //int ctPaisDecrescente = 3;
-        int ctPaisDecrescente = 3;
+        //int ctPaisDecrescente = _ga.PopulationSize;
+        int ctPaisDecrescente = 3;//_ga.PopulationSize;
         private bool _bCiclo = false;
         private bool _ponto1 = true;
         private bool _ponto2 = false;
@@ -165,8 +165,8 @@ namespace AGVFaultTolerant
 
             //_ga = new EA(3, 2, sensors);
             _ga = new EA(3, 2, sensors);
-            //ctPaisDecrescente = 3;
-            ctPaisDecrescente = 3;
+            //ctPaisDecrescente = _ga.PopulationSize;
+            ctPaisDecrescente = _ga.PopulationSize;
             _ga.K = Convert.ToInt32(txtk.Text);
             dtResultados = new DataTable();
             dtResultados.Columns.Add("geracao", typeof(int));
@@ -882,7 +882,7 @@ namespace AGVFaultTolerant
             this.txtVelFim.Name = "txtVelFim";
             this.txtVelFim.Size = new System.Drawing.Size(72, 20);
             this.txtVelFim.TabIndex = 26;
-            this.txtVelFim.Text = "27";
+            this.txtVelFim.Text = "30";
             this.txtVelFim.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtVelFim.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -908,7 +908,7 @@ namespace AGVFaultTolerant
             this.txtTempoImplementacao.Name = "txtTempoImplementacao";
             this.txtTempoImplementacao.Size = new System.Drawing.Size(72, 20);
             this.txtTempoImplementacao.TabIndex = 23;
-            this.txtTempoImplementacao.Text = "25";
+            this.txtTempoImplementacao.Text = "30";
             this.txtTempoImplementacao.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtTempoImplementacao.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -918,7 +918,7 @@ namespace AGVFaultTolerant
             this.txtk.Name = "txtk";
             this.txtk.Size = new System.Drawing.Size(72, 20);
             this.txtk.TabIndex = 22;
-            this.txtk.Text = "10";
+            this.txtk.Text = "17";
             this.txtk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtk.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -944,7 +944,7 @@ namespace AGVFaultTolerant
             this.txtLimiarDistancia.Name = "txtLimiarDistancia";
             this.txtLimiarDistancia.Size = new System.Drawing.Size(72, 20);
             this.txtLimiarDistancia.TabIndex = 19;
-            this.txtLimiarDistancia.Text = "95";
+            this.txtLimiarDistancia.Text = "110";
             this.txtLimiarDistancia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtLimiarDistancia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidaNumero_KeyPress);
             // 
@@ -1175,19 +1175,19 @@ namespace AGVFaultTolerant
                     //Mostra o numero de portas alteradas
                     lblNumeroPortasAlteradas.Text = "C" + ctControleClones + " : " + _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1)).N.ToString();
 
-                    if ((ctControleClones - 1) < 3)
+                    if ((ctControleClones - 1) < (_ga.Clonepopulation + 1))
                         current = _ga.GetCurrentCloneChromosome((ctControleParent - ctPaisDecrescente), (ctControleClones - 1));
                     _ga.InitializeClone((ctControleParent - ctPaisDecrescente), sensors);
                 }
             if (ctControleParent == _ga.PopulationSize && (cicloPais))
             {
-                //ctPaisDecrescente = 3;
-                ctPaisDecrescente = 3;
+                //ctPaisDecrescente = _ga.PopulationSize;
+                ctPaisDecrescente = _ga.PopulationSize;
                 cicloPais = false;
             }
 
 
-            if ((!cicloPais) && (ctControleClones < _ga.Clonepopulation + 1))
+            if ((!cicloPais) && (ctControleClones < (_ga.Clonepopulation + 1)))
                 ctControleClones++;
 
 
@@ -1215,14 +1215,14 @@ namespace AGVFaultTolerant
                 //Fazer o processo de seleção
                 //Manter apenas o melhor individuo (População de Pais)
                 _ga.FindSolution();
-                //ctPaisDecrescente = 3;
-                ctPaisDecrescente = 3;
+                //ctPaisDecrescente = _ga.PopulationSize;
+                ctPaisDecrescente = _ga.PopulationSize;
                 int intTemp = Convert.ToInt32(lblGeneration.Text);
                 intTemp++;
 
                 DataRow drResultado = dtResultados.NewRow();
                 drResultado["Bestfitness"] = (int)_ga.BestCircuit.Fitness;
-                drResultado["Averagefitness"] = -1;
+                drResultado["Averagefitness"] = (averagefitness / (_ga.PopulationSize + (_ga.PopulationSize * _ga.Clonepopulation)));
                 drResultado["geracao"] = Convert.ToInt32(lblGeneration.Text.Trim());
                 dtResultados.Rows.Add(drResultado);
 
@@ -1232,7 +1232,7 @@ namespace AGVFaultTolerant
                 current = _ga.BestCircuit;
 
                 ctControleParent = 0;
-                if (intTemp % 15 == 0)
+                if (intTemp % 50 == 0)
                 {
                     intTemp = intTemp;
                 }
@@ -1282,7 +1282,7 @@ namespace AGVFaultTolerant
                 lblCtViraEsq.Text = vlTmp.ToString();
 
                 //NewAngle = -7;
-                NewAngle = -10;
+                NewAngle = -15;
                 _virou = true;
             }
             else if (chromoRobo.OutputBits[0].Output == false && chromoRobo.OutputBits[1].Output == true)
@@ -1293,7 +1293,7 @@ namespace AGVFaultTolerant
                 lblCtViraDir.Text = vlTmp.ToString();
 
                 //NewAngle = +7;
-                NewAngle = +10;
+                NewAngle = +15;
                 _virou = true;
 
             }
@@ -1609,8 +1609,8 @@ namespace AGVFaultTolerant
             ctControleClones = 0;
             ctControleParent = 0;
             ctControleClones = 0;
-            //ctPaisDecrescente = 3;
-            ctPaisDecrescente = 3;
+            //ctPaisDecrescente = _ga.PopulationSize;
+            ctPaisDecrescente = _ga.PopulationSize;
 
             lblFitness4.Text = "0";
             lblGeneration.Text = "1";
@@ -1861,11 +1861,12 @@ namespace AGVFaultTolerant
             //Remove o ultimo ';'
             txtGeneAgv.Text = txtGeneAgv.Text.Remove(txtGeneAgv.Text.Length - 1);
 
-            DataRow drResultado = dtResultados.NewRow();
-            drResultado["Bestfitness"] = -1;
-            drResultado["Averagefitness"] = (int)circuitChromo.Fitness;
-            drResultado["geracao"] = Convert.ToInt32(lblGeneration.Text.Trim());
-            dtResultados.Rows.Add(drResultado);
+            //DataRow drResultado = dtResultados.NewRow();
+            //drResultado["Bestfitness"] = -1;
+            //drResultado["Averagefitness"] = (int)circuitChromo.Fitness;
+            //drResultado["geracao"] = Convert.ToInt32(lblGeneration.Text.Trim());
+            //dtResultados.Rows.Add(drResultado);
+            averagefitness += (int)circuitChromo.Fitness;
 
 
         }
